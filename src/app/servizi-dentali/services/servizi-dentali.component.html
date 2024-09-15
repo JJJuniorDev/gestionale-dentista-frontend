@@ -1,0 +1,16 @@
+<div class="container">
+  <h2>Servizi Dentali</h2>
+  <ul class="list-group">
+    <li *ngFor="let servizio of servizi" class="list-group-item">
+      <h4>{{ servizio.nome }}</h4>
+      <p>{{ servizio.descrizione }}</p>
+      <p><strong>Prezzo:</strong> {{ servizio.prezzoMinimo }} - {{ servizio.prezzoMassimo }} EUR</p>
+      <!-- <mwl-calendar-month-view
+        [viewDate]="viewDate"
+        [events]="calendarEvents"
+        (dayClicked)="onDayClicked($event)"
+      >
+      </mwl-calendar-month-view> -->
+    </li>
+  </ul>
+</div>

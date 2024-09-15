@@ -1,0 +1,50 @@
+.navbar {
+background-color: #13678A; /* Colore di sfondo verde */
+  border: 1px solid #e2e8f0; /* Colore del bordo bianco chiaro */
+  /* border-radius: 10px; Bordi stondati */
+overflow: auto; /* Aggiunto overflow: auto per evitare problemi di layout */
+margin-left: 30px;
+margin-right: 30px;
+}
+
+.navbar-header {
+  float: left; /* Forza l'elemento a sinistra */
+  padding-left: 20px;
+}
+
+.navbar-collapse {
+  float: right; /* Forza l'elemento a destra */
+}
+
+.navbar-nav > li {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+.nav-item-box {
+  display: inline-block;
+  border: 1px solid #e2e8f0; /* Bordo bianco chiaro */
+  border-radius: 10px; /* Bordi stondati */
+  padding: 5px 10px;
+  margin-right: 10px;
+  background-color: #ffffff; /* Colore di sfondo bianco */
+}
+
+.nav-item-box a {
+  text-decoration: none;
+ color: #2c7a7b; /* Colore del testo verde */
+}
+
+.nav-item-box a:hover {
+    color: #ffffff; /* Colore del testo bianco al passaggio del mouse */
+  background-color: #2c7a7b; /* Colore di sfondo verde al passaggio del mouse */
+  border-radius: 10px; /* Mantiene i bordi stondati al passaggio del mouse */
+}
+
+/*titolo */
+.navbar-brand {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff; /* Colore del testo bianco */
+  margin-top: 10px;
+}

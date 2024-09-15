@@ -1,0 +1,41 @@
+<div  style="display: block; margin-bottom: 20px;">
+  <h3>Appuntamenti</h3>
+    <canvas baseChart
+          [data]="appointmentsData"
+          [options]="chartOptions"
+          chartType="bar"
+           [legend]="true"
+          [plugins]="[]">
+  </canvas>
+</div>
+
+<div  style="display: block; margin-bottom: 20px;">
+  <h3>Pazienti</h3>
+  <canvas baseChart
+          [data]="patientsData"
+          [options]="chartOptions"
+          chartType="bar"
+          [legend]="true">
+  </canvas>
+</div>
+
+<div   style="display: block;">
+  <h3>Performance Server/Browser</h3>
+  <canvas baseChart
+          [data]="serverData"
+          [options]="chartOptions"
+          chartType="bar"
+          [legend]="true">
+  </canvas>
+</div>
+
+<div class="chart-container" style="display: block; margin-bottom: 20px;">
+  <h3>Comparazione Totali</h3>
+  <canvas baseChart
+  #comparisonChart
+          [data]="comparisonData"
+          [options]="pieChartOptions"
+          chartType="pie"
+          [legend]="true">
+  </canvas>
+</div>

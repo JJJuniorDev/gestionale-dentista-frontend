@@ -1,0 +1,245 @@
+
+ 
+
+  <div *ngIf="!(isDentist)">
+    <div class="dashboard-river">
+
+  <div class="dashboard-container">
+
+    <div class="dashboard">
+
+      <div class="ui-row-1">
+
+        <div class="logo-comp">
+          <div></div>
+          <button class="btn btn-success" (click)="logout()">LOGOUT</button>
+        </div>
+
+        <div class="search">
+          <input type="search" id="search" name="search" placeholder="CERCA PRODOTTO...">
+      
+        </div>
+
+        <div class="profile">
+      
+          <div></div>
+        </div>
+
+        <div class="profile-small">
+          
+          <!-- IMMAGINE RICERCA dentro svg-->
+          
+         
+            <!-- IMMAGINE IMPOSTAZIONI dentro svg-->
+         
+        </div>
+
+      </div>
+
+      <div class="ui-row-2">
+
+        <div class="left-sidebar">
+
+         
+          <div>
+         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M543.8 287.6c17 0 32-14 32-32.1c1-9-3-17-11-24L309.5 7c-6-5-14-7-21-7s-15 1-22 8L10 231.5c-7 7-10 15-10 24c0 18 14 32.1 32 32.1h32V448c0 35.3 28.7 64 64 64H448.5c35.5 0 64.2-28.8 64-64.3l-.7-160.2h32zM256 208c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v48h48c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H320v48c0 8.8-7.2 16-16 16H272c-8.8 0-16-7.2-16-16V320H208c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16h48V208z"/></svg> 
+        </div>
+
+          <div (click)="navigateToOperazioni()">
+           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M142.4 21.9c5.6 16.8-3.5 34.9-20.2 40.5L96 71.1V192c0 53 43 96 96 96s96-43 96-96V71.1l-26.1-8.7c-16.8-5.6-25.8-23.7-20.2-40.5s23.7-25.8 40.5-20.2l26.1 8.7C334.4 19.1 352 43.5 352 71.1V192c0 77.2-54.6 141.6-127.3 156.7C231 404.6 278.4 448 336 448c61.9 0 112-50.1 112-112V265.3c-28.3-12.3-48-40.5-48-73.3c0-44.2 35.8-80 80-80s80 35.8 80 80c0 32.8-19.7 61-48 73.3V336c0 97.2-78.8 176-176 176c-92.9 0-168.9-71.9-175.5-163.1C87.2 334.2 32 269.6 32 192V71.1c0-27.5 17.6-52 43.8-60.7l26.1-8.7c16.8-5.6 34.9 3.5 40.5 20.2zM480 224a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></svg>
+          </div>
+
+
+          <div>
+         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V43.5c0 49.9-60.3 74.9-95.6 39.6L120.2 75C107.7 62.5 87.5 62.5 75 75s-12.5 32.8 0 45.3l8.2 8.2C118.4 163.7 93.4 224 43.5 224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H43.5c49.9 0 74.9 60.3 39.6 95.6L75 391.8c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l8.2-8.2c35.3-35.3 95.6-10.3 95.6 39.6V480c0 17.7 14.3 32 32 32s32-14.3 32-32V468.5c0-49.9 60.3-74.9 95.6-39.6l8.2 8.2c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-8.2-8.2c-35.3-35.3-10.3-95.6 39.6-95.6H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H468.5c-49.9 0-74.9-60.3-39.6-95.6l8.2-8.2c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-8.2 8.2C348.3 118.4 288 93.4 288 43.5V32zM176 224a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm128 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+          </div>
+
+          <div (click)="navigateToPazienti()">
+           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M211.2 96a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM32 256c0 17.7 14.3 32 32 32h85.6c10.1-39.4 38.6-71.5 75.8-86.6c-9.7-6-21.2-9.4-33.4-9.4H96c-35.3 0-64 28.7-64 64zm461.6 32H576c17.7 0 32-14.3 32-32c0-35.3-28.7-64-64-64H448c-11.7 0-22.7 3.1-32.1 8.6c38.1 14.8 67.4 47.3 77.7 87.4zM391.2 226.4c-6.9-1.6-14.2-2.4-21.6-2.4h-96c-8.5 0-16.7 1.1-24.5 3.1c-30.8 8.1-55.6 31.1-66.1 60.9c-3.5 10-5.5 20.8-5.5 32c0 17.7 14.3 32 32 32h224c17.7 0 32-14.3 32-32c0-11.2-1.9-22-5.5-32c-10.8-30.7-36.8-54.2-68.9-61.6zM563.2 96a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM321.6 192a80 80 0 1 0 0-160 80 80 0 1 0 0 160zM32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H608c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>
+          </div>
+
+         
+        </div>
+
+        <div class="main-content">
+
+          <div class="header">
+
+            <div class="page-display">
+              <h1>Dental Days</h1>
+            </div>
+
+            <div class="clay-category" (click)="navigateToServiziDentali()">
+         <!-- immagine svg qualcosa-->
+              <p>Servizi dentali </p>
+            </div>
+
+            <div class="clay-category">
+              <!-- immagine svg qualcosa-->
+              <p>Il nostro team</p>
+            </div>
+
+            <div class="clay-category" (click)="navigateToAppuntamenti()">
+              <!-- immagine svg qualcosa-->
+              <p>Prenota un appuntamento</p>
+            </div>
+
+          </div>
+
+          <div class="large-banner">
+
+            <h2>Explore a World of Clay</h2>
+            <a href="javascript:void(0);" title="Explore">
+              Take a Look
+            </a>
+
+          </div>
+
+          <hr>
+
+          <div class="featured-clay">
+
+            <div>
+
+              <div></div>
+
+              <div>
+                <h3>Igiene Orale</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <a href="javascript:void(0);" title="featured clay">Let's Go</a>
+              </div>
+
+            </div>
+
+            <div>
+
+              <div></div>
+
+              <div>
+                <h3>Prevenzione</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <a href="javascript:void(0);" title="featured clay">Let's Go</a>
+              </div>
+
+            </div>
+
+            <div>
+
+              <div></div>
+
+              <div>
+                <h3>Check Dentale</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <a href="javascript:void(0);" title="featured clay">Let's Go</a>
+              </div>
+
+            </div>
+
+            <div>
+
+              <div></div>
+
+              <div>
+                <h3>Impianti E Sostituzione Protesi</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <a href="javascript:void(0);" title="featured clay">Let's Go</a>
+              </div>
+
+            </div>
+
+            <div>
+
+              <div></div>
+
+              <div>
+                <h3>Salute E Benessere</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <a href="javascript:void(0);" title="featured clay">Let's Go</a>
+              </div>
+
+            </div>
+
+            <div>
+
+              <div></div>
+
+              <div>
+                <h3>Terapia Attiva</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <a href="javascript:void(0);" title="featured clay">Let's Go</a>
+              </div>
+
+            </div>
+
+          </div>
+
+          <hr>
+
+          <div class="featured-users">
+
+            <h2>Featured<br><span>Claymakers</span></h2>
+   
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</div> 
+
+
+
+
+<div *ngIf="isDentist">
+     <!-- <div class="logo-comp">
+          <div></div>
+          <button class="btn btn-success" (click)="logout()">LOGOUT</button>
+        </div> -->
+<div class="dashboard-containerDentist">
+  <div class="dashboard-headerDentist">
+    <p style="color: antiquewhite;">Questa è la tua dashboard manageriale.</p>
+  </div>
+
+  <div class="dashboard-overviewDentist">
+    <div class="overview-itemDentist">
+      <h2>Appuntamenti del Giorno</h2>
+      <p>{{ todayAppointmentsCount }} appuntamenti</p>
+      <button (click)="viewAppointmentsToday()"  class="btn btn-info btn-lg me-2">Vedi Appuntamenti</button>
+    </div>
+    <div class="overview-itemDentist">
+      <h2>Appuntamenti Futuri</h2>
+      <p>{{ upcomingAppointmentsCount }} appuntamenti</p>
+      <button (click)="viewUpcomingAppointments()"  class="btn btn-info btn-lg me-2">Vedi Appuntamenti</button>
+    </div>
+    <div class="overview-itemDentist">
+      <h2>Servizi Offerti</h2>
+      <button (click)="viewServices()"  class="btn btn-info btn-lg me-2">Vedi Servizi</button>
+    </div>
+    <div class="overview-itemDentist">
+      <h2>Statistiche di Oggi</h2>
+      <button (click)="viewStatistics()"  class="btn btn-info btn-lg me-2">Vedi Statistiche</button>
+    </div>
+  </div>
+
+  <div class="dashboard-recent-activitiesDentist">
+    <h2 style="color: antiquewhite;">Attività Recenti</h2>
+    <ul>
+      <li *ngFor="let activity of recentActivities">
+        <p>{{ activity.message }} - <span>{{ activity.date | date:'short' }}</span></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="dashboard-actionsDentist">
+    <h2 style="color: antiquewhite;">Azioni Rapide</h2>
+    <button (click)="navigateToNewAppointment()"  class="btn btn-info btn-lg me-2">Prenota Nuovo Appuntamento</button>
+    <button (click)="navigateToPazienti()"  class="btn btn-success btn-lg me-2">Visualizza Cartelle Pazienti</button>
+    <button (click)="navigateToSettings()"  class="btn btn-primary btn-lg me-2">Impostazioni</button>
+  </div>
+</div>
+</div>

@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-xs-12">
+    <button class="btn btn-success" (click)="onNewOperation()">Nuova Operazione</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <app-operazione-item
+      *ngFor="let operazioneElement of operazioni; let i= index"
+      [operazione]="operazioneElement"
+    [index]="i">
+    </app-operazione-item>
+  </div>
+</div>

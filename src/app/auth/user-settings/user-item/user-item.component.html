@@ -1,0 +1,23 @@
+<div style="cursor: pointer;"
+   [routerLink]="['/users', index]"
+   routerLinkActive="active"
+   class="list-group-item clearfix appointment-card">
+   <div class="card custom-card">
+      <div class="card-body">
+         <h4 class="card-title">EMAIL: {{ user?.email }}</h4>
+         <div class="card-text">
+            <ul class="list-unstyled">
+               <li><strong>RUOLO:</strong> {{ user?.ruolo }}</li>
+            </ul>
+            <p>Seleziona nuovo ruolo</p>
+               <select class="form-select" [(ngModel)]="selectedRole" 
+               (change)="onRoleChange()">
+        <option value="user">user</option>
+        <option value="dentista">dentista</option>
+         <option value="segretario">segretario</option>
+      </select>
+        <button (click)="updateUserRole()">Update ruolo</button>
+         </div>
+      </div>
+   </div>
+</div>

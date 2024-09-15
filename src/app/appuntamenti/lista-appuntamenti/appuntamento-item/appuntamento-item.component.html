@@ -1,0 +1,19 @@
+<a style="cursor: pointer;"
+   [routerLink]="[index]"
+   routerLinkActive="active"
+   class="list-group-item clearfix appointment-card">
+   <div class="card custom-card">
+      <div class="card-body">
+         <h4 class="card-title">DATA/ORARIO: {{ appuntamento?.dataEOrario | date:'short' }}</h4>
+         <div class="card-text">
+            <ul class="list-unstyled">
+               <li><strong>NOTE:</strong> {{ appuntamento?.note }}</li>
+               <li><strong>TRATTAMENTO:</strong> {{ appuntamento?.trattamento }}</li>
+               <li><strong>CF PAZIENTE:</strong> {{ appuntamento?.codiceFiscalePaziente }}</li>
+               <li><strong>OPERAZIONI:</strong> {{ appuntamento?.operazioni}}</li>
+            </ul>
+         <button (click)="onViewDetails()">Dettagli</button>
+         </div>
+      </div>
+   </div>
+</a>

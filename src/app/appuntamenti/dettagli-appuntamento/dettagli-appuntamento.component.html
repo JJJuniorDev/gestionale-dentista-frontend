@@ -1,0 +1,51 @@
+<div class="row">
+   <div class="col-xs-12">
+    <div *ngIf="appuntamento; else showAppuntamentiList">
+      <h1>Appuntamento prenotato per il: {{ appuntamento?.dataEOrario | date:'short' }}</h1>
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="manageAppuntamentoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          Manage Appuntamento
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="manageAppuntamentoDropdown">
+          <li><button class="dropdown-item" (click)="onAppuntamentoEdit()">Modifica Appuntamento</button></li>
+          <li><button class="dropdown-item" (click)="onDeleteAppuntamento()">Cancella Appuntamento</button></li>
+        </ul>
+      </div> 
+
+      <div class="card custom-card">
+        <div class="card-body">
+          <ul class="list-unstyled">
+            <li><strong>NOTE:</strong> {{ appuntamento?.note }}</li>
+            <li><strong>TRATTAMENTO:</strong> {{ appuntamento?.trattamento }}</li>
+            <li><strong>CF PAZIENTE:</strong> {{ appuntamento?.codiceFiscalePaziente }}</li>
+            <li><strong>OPERAZIONI:</strong> {{ appuntamento?.operazioni }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Se ho più appuntamenti -->
+    <ng-template #showAppuntamentiList>
+       <div *ngIf="appuntamenti.length > 0">
+    <!-- Mostra la lista degli appuntamenti -->
+    <h2>Appuntamenti del dentista</h2>
+      <div class="card custom-card">
+        <br>
+        <div class="card-body">
+   <ul class="list-group">
+  <li *ngFor="let appuntamentoItem of appuntamenti"
+  class="list-group-item mb-3 p-3 border rounded shadow-sm">
+    <strong>Data/Orario:</strong> {{ appuntamentoItem.dataEOrario | date:'short' }}<br>
+    <strong>Note:</strong> {{ appuntamentoItem.note }}<br>
+    <strong>Trattamento:</strong> {{ appuntamentoItem.trattamento }}<br>
+    <strong>CF Paziente:</strong> {{ appuntamentoItem.codiceFiscalePaziente }}<br>
+    <strong>Operazioni:</strong> {{ appuntamentoItem.operazioni }}<br>
+  </li>
+</ul>
+  </div>
+   </div>
+       </div>
+  </ng-template>
+
+  <!-- </div>
+</div> -->

@@ -1,0 +1,112 @@
+<div class="row">
+    <div class="col-xs-12">
+        <!-- passiamo il recipe form reactive creato nome-->
+        <form [formGroup]="formPaziente" (ngSubmit)="onSubmit()">
+            <div class="row">
+               <div class="col-xs-12">
+                <button type="submit"
+                 class="btn- btn-success"
+                 [disabled]="!formPaziente.valid">Save</button>
+                <button type="button" class="btn- btn-danger" (click)="onCancel()">Cancel</button>
+                
+               </div>
+            </div>
+            <div class="row" >
+                <div class="div-col-xs-12">
+                    <div class="form-group">
+                       <label for="nome">Nome</label>
+                       <input 
+                       type="text"
+                       id="nome"
+                       formControlName="nome"
+                       class="form-control">
+                    </div>
+                </div>
+            </div>
+             <div class="row" >
+                <div class="div-col-xs-12">
+                    <div class="form-group">
+                       <label for="cognome">Cognome</label>
+                        <input 
+                       type="text"
+                       id="cognome"
+                       formControlName="cognome"
+                       class="form-control">
+                </div>
+            </div>
+             </div>
+              <div class="row" >
+                <div class="div-col-xs-12">
+                    <div class="form-group">
+                       <label for="codiceFiscale">codice Fiscale</label>
+                       <input 
+                       type="text"
+                       id="codiceFiscale"
+                       formControlName="codiceFiscale"
+                       class="form-control">
+                    </div>
+                </div>
+            </div>
+             <div class="row" >
+                <div class="div-col-xs-12">
+                    <div class="form-group">
+                       <label for="indirizzo">indirizzo</label>
+                       <input 
+                       type="text"
+                       id="indirizzo"
+                       formControlName="indirizzo"
+                       class="form-control">
+                    </div>
+                </div>
+            </div>
+             <div class="row" >
+                <div class="div-col-xs-12">
+                    <div class="form-group">
+                       <label for="dataDiNascita">Data Di Nascita</label>
+                       <input 
+                       type="date"
+                       id="dataDiNascita"
+                       formControlName="dataDiNascita"
+                       class="form-control">
+                    </div>
+                </div>
+            </div>
+             <div class="row" >
+                <div class="div-col-xs-12">
+                    <div class="form-group">
+                       <label for="sesso">Sesso</label>
+                       <input 
+                       type="text"
+                       id="sesso"
+                       formControlName="sesso"
+                       class="form-control">
+                    </div>
+                </div>
+            </div>
+             <div class="row" >
+                <div class="div-col-xs-12">
+                    <div class="form-group">
+                       <label for="numeroDiCellulare">Numero Di Cellulare</label>
+                       <input 
+                       type="text"
+                       id="numeroDiCellulare"
+                       formControlName="numeroDiCellulare"
+                       class="form-control">
+                    </div>
+                </div>
+            </div>
+             <div class="row" >
+                <div class="div-col-xs-12">
+                    <div class="form-group">
+                       <label for="dentistaId">dentistaId</label>
+                       <input 
+                       type="text"
+                       id="dentistaId"
+                       formControlName="dentistaId"
+                       class="form-control">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

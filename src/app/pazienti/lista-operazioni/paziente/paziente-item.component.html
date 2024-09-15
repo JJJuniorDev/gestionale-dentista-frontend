@@ -1,0 +1,19 @@
+<a style="cursor: pointer;"
+   [routerLink]="[index]"
+   routerLinkActive="active"
+   class="list-group-item clearfix">
+   <div class="card">
+      <div class="card-body">
+         <h4 class="card-title">{{ paziente.nome + " "+paziente.cognome}}</h4>
+         <div class="card-text">
+            <ul class="list-unstyled">
+               <li><strong>codiceFiscale:</strong> {{ paziente.codiceFiscale }}</li>
+               <li><strong>dataDiNascita:</strong> {{ paziente.dataDiNascita }}</li>
+               <li><strong>sesso:</strong> {{ paziente.sesso }}</li>
+               <li><strong>indirizzo:</strong> {{ paziente.indirizzo }}</li>
+               <li><strong>numeroDiCellulare:</strong> {{ paziente.numeroDiCellulare }}</li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</a>

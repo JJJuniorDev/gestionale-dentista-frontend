@@ -1,0 +1,93 @@
+
+[
+  {
+    "nome": "Pulizia dei denti",
+    "descrizione": "Rimozione della placca e del tartaro dai denti.",
+    "prezzoMinimo": 50,
+    "prezzoMassimo": 100
+  },
+  {
+    "nome": "Otturazione",
+    "descrizione": "Riparazione di una cavità dentale con un materiale da otturazione.",
+    "prezzoMinimo": 80,
+    "prezzoMassimo": 150
+  },
+  {
+    "nome": "Sbiancamento dentale",
+    "descrizione": "Trattamento per schiarire il colore dei denti.",
+    "prezzoMinimo": 200,
+    "prezzoMassimo": 400
+  },
+  {
+    "nome": "Estrattura dentale",
+    "descrizione": "Rimozione di un dente dalla bocca.",
+    "prezzoMinimo": 100,
+    "prezzoMassimo": 250
+  },
+    {
+      "nome": "Apparecchio ortodontico",
+      "descrizione": "Dispositivo utilizzato per correggere la posizione dei denti e delle mascelle.",
+      "prezzoMinimo": 1000,
+      "prezzoMassimo": 3000
+    },
+    {
+      "nome": "Corone dentali",
+      "descrizione": "Coperture protesiche che vengono posizionate sopra un dente danneggiato.",
+      "prezzoMinimo": 500,
+      "prezzoMassimo": 1500
+    },
+    {
+      "nome": "Ponte dentale",
+      "descrizione": "Protesi fissa utilizzata per sostituire uno o più denti mancanti.",
+      "prezzoMinimo": 800,
+      "prezzoMassimo": 2500
+    },
+    {
+      "nome": "Impianto dentale",
+      "descrizione": "Dispositivo in titanio che viene inserito nell'osso per sostituire la radice di un dente mancante.",
+      "prezzoMinimo": 1500,
+      "prezzoMassimo": 3000
+    },
+    {
+      "nome": "Faccette dentali",
+      "descrizione": "Sottili strati di materiale posizionati sulla superficie anteriore dei denti per migliorare l'estetica.",
+      "prezzoMinimo": 400,
+      "prezzoMassimo": 1200
+    },
+    {
+      "nome": "Devitalizzazione",
+      "descrizione": "Rimozione della polpa infetta o danneggiata dal dente.",
+      "prezzoMinimo": 200,
+      "prezzoMassimo": 500
+    },
+    {
+      "nome": "Protesi dentarie",
+      "descrizione": "Dispositivi rimovibili utilizzati per sostituire denti mancanti.",
+      "prezzoMinimo": 300,
+      "prezzoMassimo": 2000
+    },
+    {
+      "nome": "Chirurgia parodontale",
+      "descrizione": "Procedure per trattare le malattie delle gengive e dell'osso che supporta i denti.",
+      "prezzoMinimo": 500,
+      "prezzoMassimo": 2000
+    },
+    {
+      "nome": "Trattamento canalare",
+      "descrizione": "Rimozione della polpa infetta dal dente e sigillatura del canale radicolare.",
+      "prezzoMinimo": 300,
+      "prezzoMassimo": 700
+    },
+    {
+      "nome": "Sigillatura dentale",
+      "descrizione": "Applicazione di un sottile rivestimento di resina sui solchi dei denti posteriori per prevenire le carie.",
+      "prezzoMinimo": 30,
+      "prezzoMassimo": 60
+    },
+    {
+      "nome": "Otturazione in composito",
+      "descrizione": "Riparazione di una cavità dentale con un materiale da otturazione di colore naturale.",
+      "prezzoMinimo": 90,
+      "prezzoMassimo": 170
+    }
+]

@@ -1,0 +1,67 @@
+<div class="row mb-4">
+  <div class="col-xs-4 d-flex ">
+    <button class="btn btn-success btn-lg ms-1" (click)="onNewAppuntamento()">Nuovo Appuntamento</button>
+ <button class="btn btn-primary btn-lg ms-1" (click)="onToggleCalendar()">
+   {{ showCalendar ? 'Nascondi Calendario' : 'Mostra Calendario' }}
+ </button>
+  </div>
+</div>
+
+
+<div *ngIf="showCalendar">
+  <h2>Calendario Appuntamenti</h2>
+  <mwl-calendar-month-view
+    [viewDate]="viewDate"
+    [events]="calendarEvents"
+    (dayClicked)="onDayClicked($event)">
+  </mwl-calendar-month-view>
+</div>
+
+<div *ngIf="!showCalendar">
+  <div class="row mb-3">
+    <div class="col-xs-6">
+      <p>Parametro utilizzato per la ricerca:</p>
+      <select class="form-select" [(ngModel)]="selectedParameter">
+        <option value="codiceFiscalePaziente">Codice Fiscale</option>
+        <option value="trattamento">Trattamento</option>
+        <option value="dataEOrario">Data</option>
+      </select>
+    </div>
+    <div class="col-xs-6">
+      <input 
+        *ngIf="selectedParameter === 'dataEOrario'" 
+        type="date" 
+        class="form-control" 
+        [(ngModel)]="searchDate" 
+        placeholder="Seleziona la data">
+        
+      <input 
+        *ngIf="selectedParameter !== 'dataEOrario'" 
+        type="text" 
+        class="form-control" 
+        [(ngModel)]="searchValue" 
+        placeholder="Inserisci il valore da ricercare">
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-xs-12">
+      <button class="btn btn-primary" (click)="onSearch()">Cerca</button>
+    </div>
+  </div>
+
+  <div class="row">
+  <div class="col-xs-6 col-md-6" *ngFor="let appuntamentoElement of paginatedAppuntamenti">
+    <app-appuntamento-item
+      [appuntamento]="appuntamentoElement"
+      [index]="appuntamentoElement.id"
+      (click)="onSelectAppuntamento(appuntamentoElement.id)">
+    </app-appuntamento-item>
+  </div>
+</div>
+  <!-- Controlli di paginazione -->
+<div class="pagination-controls">
+  <button (click)="previousPage()" [disabled]="!hasPreviousPage()">Previous</button>
+  <span>Page {{ currentPage }}</span>
+  <button (click)="nextPage()" [disabled]="!hasNextPage()">Next</button>
+</div>
+</div>

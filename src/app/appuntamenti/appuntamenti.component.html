@@ -1,0 +1,21 @@
+<!--  <div class="row">
+ <div class="col-md-5" *ngIf="!showDetails">
+    <app-lista-appuntamenti (viewDetails)="onViewDetails()"></app-lista-appuntamenti>
+  </div> 
+  <div class="col-md-7">
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
+  </div>
+</div> -->
+  <!-- Mostra solo i dettagli quando showDetails è true -->
+  <div class="col-md-12">
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
+    <!-- <button class="btn btn-secondary mt-3" (click)="onBackToList()">Torna alla lista</button> -->
+  </div>
+<div class="row">
+  <!-- Mostra solo la lista quando showDetails è false-->
+  <div class="col-md-12"  *ngIf="showDetails"> 
+    <app-lista-appuntamenti (viewDetails)="onViewDetails()"></app-lista-appuntamenti>
+  </div>
+
+
+</div>

@@ -1,0 +1,23 @@
+<a style="cursor: pointer;"
+   [routerLink]="[index]"
+   routerLinkActive="active"
+   class="list-group-item clearfix">
+   <div class="card">
+      <div class="card-body">
+         <h4 class="card-title">{{ operazione.nome }}</h4>
+         <div class="card-text">
+            <ul class="list-unstyled">
+               <li><strong>Note:</strong> {{ operazione.note }}</li>
+               <li><strong>Prezzo:</strong> {{ operazione.prezzo }}</li>
+               <li><strong>Durata:</strong> {{ operazione.durata }}</li>
+               <li><strong>Responsabile:</strong> {{ operazione.responsabile }}</li>
+               <li><strong>Categoria:</strong> {{ operazione.categoria }}</li>
+               <li><strong>Data:</strong> {{ operazione.data }}</li>
+               <li><strong>Materiali Necessari:</strong> {{ operazione.materialiNecessari }}</li>
+               <li><strong>Stato:</strong> {{ operazione.stato }}</li>
+               <li><strong>Paziente ID:</strong> {{ operazione.pazienteId }}</li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</a>

@@ -1,0 +1,20 @@
+<nav *ngIf="isDentist" class="navbar navbar-default py-3">
+  <div class="container-fluid">
+    <div class="navbar-header d-flex justify-content-between align-items-center w-100">
+      <h1 class="navbar-brand mb-0">GAETANO POLI STUDIO DENTISTICO</h1>
+      <div class="d-flex">
+         <!-- Nuovo pulsante per le Statistiche -->
+        <button *ngIf="currentRoute !== '/statistics'" class="btn btn-warning btn-lg me-2" (click)="onGoToStatistics()">Statistiche</button>
+
+        <button *ngIf="currentRoute !== '/dashboard'" class="btn btn-light btn-lg me-2" (click)="onGoToDashboard()">Torna alla Dashboard</button>
+        <button *ngIf="currentRoute !== '/appuntamenti'" class="btn btn-info btn-lg me-2" (click)="onGoToAppointments()">Appuntamenti</button>
+        <button *ngIf="currentRoute !== '/pazienti'" class="btn btn-primary btn-lg me-2" (click)="onGoToDentistAppointments()">I miei appuntamenti</button>
+        <button *ngIf="currentRoute !== '/pazienti'" class="btn btn-primary btn-lg me-2" (click)="onGoToPatients()">Pazienti</button>
+         <button class="btn btn-success  btn-lg me-2" (click)="onGoToOperazioni()">Interventi</button>
+        <button class="btn btn-light btn-lg me-2" (click)="onLogout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
+     
+    

@@ -1,0 +1,110 @@
+<div class="container">
+  <h2>Impostazioni Utente</h2>
+  <form [formGroup]="userForm" (ngSubmit)="onSaveUserData()">
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="ruolo">Ruolo</label>
+      <input
+        type="text"
+        class="form-control"
+        id="ruolo"
+       [value]="user.ruolo"
+        disabled
+      />
+    </div>
+
+  <div class="form-group">
+  <label for="currentPassword">Password Corrente</label>
+  <input
+    id="currentPassword"
+    type="password"
+    formControlName="currentPassword"
+    required
+    class="form-control"
+    [ngClass]="{ 'is-invalid': passwordError }"
+  />
+  <div *ngIf="passwordError" class="text-danger">{{ passwordError }}</div>
+</div>
+
+<!-- Campo per la nuova password -->
+<div class="form-group">
+  <label for="newPassword">Nuova Password</label>
+  <input
+    id="newPassword"
+    type="password"
+    formControlName="newPassword"
+    class="form-control"
+  />
+</div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
+      Salva Modifiche
+    </button>
+  </form>
+</div>
+
+<div id="roleUpdateForm">
+    <h3>Modifica Ruolo Utente</h3>
+    
+    <div class="row mb-3">
+    <div class="col-xs-6">
+      <p>Parametro utilizzato per la ricerca:</p>
+      <select class="form-select" [(ngModel)]="selectedParameter">
+        <option value="email">Email</option>
+        <option value="ruolo">Ruolo</option>
+      </select>
+    </div>
+  <div class="col-xs-6">
+       <input 
+        *ngIf="selectedParameter === 'ruolo'" 
+        type="text" 
+        class="form-control" 
+        [(ngModel)]="searchRole" 
+        placeholder="Inserisci il ruolo da ricercare">
+
+          <input 
+        *ngIf="selectedParameter === 'email'" 
+        type="text" 
+        class="form-control" 
+        [(ngModel)]="searchValue" 
+        placeholder="Inserisci l'email da ricercare">
+
+  </div>
+    <div class="row mb-3">
+    <div class="col-xs-12">
+      <button class="btn btn-primary" (click)="onSearch()">Cerca</button>
+    </div>
+     </div>
+     <!-- Lista utenti filtrati -->
+  <div class="row">
+    <div class="col-xs-12">
+      <app-user-item
+        *ngFor="let userElement of paginatedUsers"
+        [user]="userElement"
+        [index]="userElement.id"
+        [searchRole]="searchRole"
+          (click)="navigateToUserRole(userElement.id)">
+      </app-user-item>
+    </div>
+  </div>
+
+<!-- Controlli di paginazione -->
+<div class="pagination-controls">
+  <button (click)="previousPage()" [disabled]="!hasPreviousPage()">Previous</button>
+  <span>Page {{ currentPage }}</span>
+  <button (click)="nextPage()" 
+          [disabled]="!hasNextPage()">
+    Next
+  </button>
+</div>

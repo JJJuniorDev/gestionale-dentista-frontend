@@ -1,0 +1,32 @@
+
+<div class="row">
+  <div class="col-xs-12">
+    <h1>{{ operazione.nome }}</h1>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="btn-group" appDropdown>
+        <button type="button" class="btn btn-primary dropdown-toggle">
+          Manage Operazione
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a style="cursor: pointer;" (click)="onOperazioneEdit()">Modifica Operazione</a></li>
+          <li><a style="cursor: pointer;" routerLink="" (click)="onDeleteOperazione()">Cancella Operazione</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">{{ operazione.note }}</div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let materiale of operazione.materialiNecessari">
+        {{ materiale.name }} - {{ materiale.amount }}
+      </li>
+    </ul>
+  </div>
+</div>

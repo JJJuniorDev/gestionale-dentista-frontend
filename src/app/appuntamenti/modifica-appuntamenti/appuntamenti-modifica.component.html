@@ -1,0 +1,46 @@
+<h1>SIAMO IN MODIFICA</h1>
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="formAppuntamento" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-xs-12">
+          <button type="submit" class="btn btn-success" [disabled]="!formAppuntamento.valid">Save</button>
+          <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="dataEOrario">Data E Orario</label>
+            <input type="text" id="dataEOrario" [bsConfig]="bsConfig" bsDatepicker formControlName="dataEOrario" class="form-control">
+          </div>
+        </div>
+  
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="note">Note</label>
+            <textarea type="text" id="note" formControlName="note" class="form-control" rows="6"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="trattamento">Trattamento</label>
+            <input type="text" id="trattamento" formControlName="trattamento" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="codiceFiscalePaziente">Codice Fiscale Paziente</label>
+            <input type="text" id="codiceFiscalePaziente" formControlName="codiceFiscalePaziente" class="form-control">
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
