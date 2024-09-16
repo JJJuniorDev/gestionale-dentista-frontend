@@ -13,16 +13,10 @@
       "NPM_FLAGS": "--legacy-peer-deps"
     }
   },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "env": {
     "NODE_ENV": "production"
   },
   "installCommand": "npm install --legacy-peer-deps",
-  "buildCommand": "npm run build",
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "buildCommand": "npm run build"
 }
