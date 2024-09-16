@@ -8,7 +8,7 @@
       }
     }
   ],
-   "build": {
+  "build": {
     "env": {
       "NPM_FLAGS": "--legacy-peer-deps"
     }
@@ -23,5 +23,6 @@
     "NODE_ENV": "production"
   },
   "installCommand": "npm install --legacy-peer-deps",
-  "buildCommand": "npm run build"
+  "buildCommand": "npm run build",
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
