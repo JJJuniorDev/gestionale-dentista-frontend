@@ -7,7 +7,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './auth/store/auth.effects';
-import { NgForm, ReactiveFormsModule } from '@angular/forms';
+//import { NgForm, ReactiveFormsModule } from '@angular/forms';
 import * as fromApp from './auth/store/app.reducer';
 import { AuthInterceptorService } from './auth/auth.interceptor.service';
 import { HeaderComponent } from './header/header.component';
@@ -29,7 +29,7 @@ import { AuthModule } from './auth/auth.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgChartsModule } from 'ng2-charts';
 import { StatisticsComponent } from './statistics/statistics.component';
-
+//import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +38,7 @@ import { StatisticsComponent } from './statistics/statistics.component';
     //LoginComponent,
     DashboardComponent,
     ServiziDentaliComponent,
-    StatisticsComponent
+    StatisticsComponent,
   ],
   imports: [
     NgChartsModule,
@@ -62,11 +62,7 @@ import { StatisticsComponent } from './statistics/statistics.component';
     }),
   ],
   providers: [
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: AuthInterceptorService,
-    //   multi: true,
-    // },
+    //provideCharts(withDefaultRegisterables())
   ],
   bootstrap: [AppComponent],
 })
