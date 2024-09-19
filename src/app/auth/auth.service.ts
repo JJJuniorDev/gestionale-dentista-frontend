@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
-import { Store } from "@ngrx/store";
-import * as AuthActions from "./store/auth.actions";
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as AuthActions from './store/auth.actions';
 import * as fromApp from './store/app.reducer';
-import { HttpClient } from "@angular/common/http";
-import { BehaviorSubject, map, Observable, of } from "rxjs";
-import { Router } from "@angular/router";
-import { UserModel } from "./user.model";
-import { jwtDecode } from "jwt-decode";
-import { UserRoleAndCalendarService } from "../userRoleAndCalendar.service";
-import { environment } from "environments/environment";
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, map, Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { UserModel } from './user.model';
+import { jwtDecode } from 'jwt-decode';
+import { UserRoleAndCalendarService } from '../userRoleAndCalendar.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -48,18 +48,18 @@ export class AuthService {
   }
 
   getUserId(): string | null {
-    const token=this.getToken();
-      if (token) {
-        try {
-          const decodedToken: any = jwtDecode(token);
-          console.log("DECODED TOKEN ID: "+decodedToken.id);
-          return decodedToken.id;
-        } catch (error) {
-          console.error('Error decoding token', error);
-          return null;
-        }
+    const token = this.getToken();
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        console.log('DECODED TOKEN ID: ' + decodedToken.id);
+        return decodedToken.id;
+      } catch (error) {
+        console.error('Error decoding token', error);
+        return null;
       }
-      return null;
+    }
+    return null;
   }
 
   setUserRole(user: string): string | null {
@@ -110,4 +110,3 @@ export class AuthService {
     return null;
   }
 }
-
