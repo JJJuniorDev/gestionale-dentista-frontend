@@ -8,12 +8,13 @@ import { Router } from "@angular/router";
 import { UserModel } from "./user.model";
 import { jwtDecode } from "jwt-decode";
 import { UserRoleAndCalendarService } from "../userRoleAndCalendar.service";
+import { environment } from "environments/environment";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = '/api'; // URL del backend Spring
+  private apiUrl = environment.apiUrl; // URL del backend Spring
   private _userRole = new BehaviorSubject<string | null>(null);
   userRole$ = this._userRole.asObservable();
 
