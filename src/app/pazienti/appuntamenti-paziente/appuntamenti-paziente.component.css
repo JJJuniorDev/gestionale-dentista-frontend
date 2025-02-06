@@ -1,0 +1,67 @@
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Stile generale */
+h2 {
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+/* Card appuntamenti */
+.appointment-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  transition: transform 0.3s ease;
+}
+
+.appointment-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Lista appuntamenti */
+.list-group-item {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+/* Ordinamento */
+.sorting-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.sorting-container select {
+  flex: 1;
+  margin-right: 10px;
+}
+
+/* Paginazione */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.pagination-container span {
+  font-weight: bold;
+}
+
+.btn {
+  transition: 0.3s ease-in-out;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}

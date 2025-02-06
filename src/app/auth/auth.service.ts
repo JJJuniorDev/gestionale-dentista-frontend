@@ -17,9 +17,22 @@ export class AuthService {
   private apiUrl = environment.apiUrl; // URL del backend Spring
   private _userRole = new BehaviorSubject<string | null>(null);
   userRole$ = this._userRole.asObservable();
+  private _user = new BehaviorSubject<UserModel | null>(null);
+  user$ = this._user.asObservable(); // Osservabile per accedere all'utente ovunque
 
   constructor(private http: HttpClient, private router: Router) {
     this.loadUserRole();
+     this.loadUserFromToken();
+  }
+
+  loadUserFromToken() {
+    const token = this.getToken();
+    if (token) {
+      const user = this.getUserFromToken();
+      if (user) {
+        this._user.next(user);
+      }
+    }
   }
 
   getToken(): string | null {
@@ -72,13 +85,14 @@ export class AuthService {
     }
   }
 
-  isDentist(): boolean {
-    return this.getUserRole() === 'dentista';
+  isDoctor(): boolean {
+    return this.getUserRole() === 'dottore';
   }
 
   login(token: string) {
     localStorage.setItem('jwt', token);
     this.loadUserRole();
+     this.loadUserFromToken();
   }
 
   logout() {
@@ -86,6 +100,7 @@ export class AuthService {
     console.log('TOKEN: ' + localStorage.getItem('jwt'));
     this._userRole.next(null);
     this.setUserRole('user');
+     this._user.next(null);
     this.router.navigate(['/']);
   }
 

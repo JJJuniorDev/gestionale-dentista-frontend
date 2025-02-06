@@ -1,0 +1,210 @@
+mat-card-content {
+  color: rgba(0, 0, 0, 0.87); /* Colore nero opaco */
+ margin-bottom: 16px;
+}
+mat-card-title{
+    color: rgba(0, 89, 255, 0.87);
+     font-size: 24px; /* Dimensione più grande */
+  font-weight: bold; /* Testo in grassetto */
+  text-align: center; /* Centrare il testo */
+  margin-bottom: 16px; /* Spazio sotto il titolo */
+}
+
+p{
+  margin-bottom: 12px; /* Spazio tra i campi */
+  line-height: 1.5; /* Migliora la leggibilità */
+}
+
+.farmaco-card {
+  margin: 20px;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.farmaco-details p {
+  margin: 0 0 8px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+button mat-icon {
+  margin-right: 4px;
+}
+
+mat-card-header mat-card-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+
+mat-divider {
+  margin: 16px 0;
+}
+
+mat-dialog-title {
+  font-size: 24px;
+  color: #040404;
+  margin-bottom: 8px;
+}
+
+mat-dialog-content {
+  padding: 8px 0;
+}
+
+mat-dialog-actions {
+  padding: 8px 0;
+  justify-content: flex-end;
+}
+
+.farmaco-container {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr); /* 10 colonne */
+  gap: 10px;
+  margin: 20px;
+  border: 1px solid #ddd;
+    border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Aggiunge una leggera ombra per un effetto di profondità */
+  max-width: 1200px; /* Limita la larghezza della tabella */
+  background-color: #f9f9f9; /* Sfondo chiaro per la tabella */
+}
+
+.farmaco-header {
+  display: contents;
+  font-weight: bold;
+  color: #040404;
+  border-radius: 8px;
+   background-color: #4CAF50; /* Colore di sfondo verde per l'intestazione */
+}
+
+.header-item {
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #ddd;
+  text-align: center;
+  font-size: 14px;
+}
+
+.farmaco-row {
+  display: contents;
+  color: #040404;
+}
+
+.row-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  background-color: #fff;
+  color: #040404;
+  font-size: 14px;
+}
+
+.row-item:first-child {
+  font-weight: bold;
+  text-align: left;
+ padding-left: 20px; 
+}
+
+.row-item:last-child {
+  text-align: right;
+ 
+   padding-right: 20px;
+}
+
+.farmaco-container .farmaco-row:last-child .row-item {
+  border-bottom: none; /* Rimuovi il bordo inferiore per l'ultima riga */
+}
+
+/* Stile della tabella */
+.table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mat-header-cell{
+  background-color: #5000f1;
+}
+.header-cell {
+  background-color: #5000f1;
+  color: rgb(3, 3, 3);
+  font-weight: bold;
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.cell-data {
+  padding: 12px;
+  border: 1px solid #ddd;
+  color: #555;
+}
+
+.cell-content {
+  padding: 12px;
+  border: 1px solid #ddd;
+  color: #555;
+  text-align: left;
+}
+
+.content-preview {
+  display: inline-block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.content-full {
+  padding-top: 10px;
+  color: #333;
+  font-size: 14px;
+}
+
+.expand-btn {
+  margin-left: 10px;
+  color: #4CAF50;
+  font-weight: bold;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Effetti al passaggio del mouse */
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+button:focus {
+  outline: none;
+  border: 2px solid #4CAF50;
+}
+
+.efficacia-remissione {
+  margin: 16px 0;
+  padding: 16px;
+  border: 2px solid #3f51b5; /* Colore primario */
+  border-radius: 8px;
+  background-color: #e8eaf6; /* Colore di sfondo leggero */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.efficacia-remissione p {
+  margin: 8px 0;
+  font-size: 18px; /* Dimensione maggiore */
+  font-weight: 500;
+  color: #1a237e; /* Colore del testo più scuro */
+}
+
+.efficacia-remissione strong {
+  color: #283593; /* Colore primario scuro */
+}

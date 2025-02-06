@@ -1,3 +1,4 @@
+
 /* You can add global styles to this file, and also import other style files */
 
 * {
@@ -13,4 +14,67 @@ body {
   margin: 0;
   color: #dedede;
   background-color: #333;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Finestra di dialogo con angoli arrotondati e sfondo elegante */
+.mat-dialog-container {
+  background-color: #f4faff; /* Sfondo più chiaro e morbido */
+  border-radius: 12px; /* Angoli arrotondati più evidenti */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Ombra leggera per un effetto più elegante */
+  padding: 24px; /* Spaziatura maggiore per un layout più comodo */
+}
+
+/* Titolo del dialogo con colore blu elegante */
+.dialog-header {
+  color: #1e88e5; /* Colore blu più scuro */
+  font-weight: bold;
+  font-size: 20px; /* Aumentato per maggiore impatto */
+  margin-bottom: 16px; /* Distanza maggiore dal contenuto */
+}
+
+/* Contenuto del dialogo con testo più leggibile */
+.dialog-content {
+  color: #333; /* Colore scuro per il testo */
+  font-size: 16px;
+  line-height: 1.6; /* Maggiore spaziatura tra le righe per leggibilità */
+  margin-bottom: 20px; /* Distanza inferiore per separazione */
+}
+
+/* Azioni del dialogo con allineamento a destra */
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px; /* Maggiore spazio tra i pulsanti */
+}
+
+/* Pulsante Annulla con sfondo rosso */
+.btn-cancel {
+  background-color: #e57373; /* Colore di sfondo rosso per il pulsante annulla */
+  color: white;
+  border-radius: 8px; /* Angoli arrotondati per il pulsante */
+  padding: 10px 20px; /* Spaziatura maggiore per il pulsante */
+  font-size: 14px; /* Font più piccolo per una forma più elegante */
+  transition: background-color 0.3s ease; /* Transizione al passaggio del mouse */
+}
+
+/* Hover per il pulsante Annulla */
+.btn-cancel:hover {
+  background-color: #d32f2f; /* Colore rosso più scuro quando hover */
+}
+
+/* Pulsante Conferma con sfondo verde elegante */
+.btn-confirm {
+  background-color: #4caf50; /* Colore verde per il pulsante conferma */
+  color: white;
+  border-radius: 8px; /* Angoli arrotondati per il pulsante */
+  padding: 10px 20px; /* Spaziatura maggiore per il pulsante */
+  font-size: 14px; /* Font per un look elegante */
+  transition: background-color 0.3s ease; /* Transizione al passaggio del mouse */
+}
+
+/* Hover per il pulsante Conferma */
+.btn-confirm:hover {
+  background-color: #388e3c; /* Verde più scuro quando hover */
 }

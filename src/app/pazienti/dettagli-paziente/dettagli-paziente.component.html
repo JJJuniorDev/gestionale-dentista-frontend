@@ -1,24 +1,32 @@
 
 <div class="row">
-  <div class="col-xs-12">
-    <h1>{{ paziente.nome +" "+paziente.cognome}}</h1>
-  </div>
+    <div class="col-xs-12">
+ <div class="card custom-card">
+      <ul class="custom-ul">
+      
+          <li>CODICE FISCALE: {{paziente.codiceFiscale }}</li>
+           <li>NOME: {{paziente.nome }}</li>
+             <li>COGNOME: {{paziente.cognome }}</li>
+             <li>DATA DI NASCITA: {{paziente.dataDiNascita }}</li>
+              <li>NUMERO DI CELLULARE: {{paziente.numeroDiCellulare }}</li>
+               <li>INDIRIZZO: {{paziente.indirizzo }}</li>
+        </ul>
+        </div>
+         </div>
+</div>
   <div class="row">
     <div class="col-xs-12">
-      <div class="btn-group" appDropdown>
-        <button type="button" class="btn btn-primary dropdown-toggle">
-          Manage Operazione
-          <span class="caret"></span>
+      <div class="dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" id="managePazienteDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          Manage Paziente
+          <!-- <span class="caret"> </span> -->
         </button>
-        <ul class="dropdown-menu">
-          <li><a style="cursor: pointer;" (click)="onPazienteEdit()">Modifica Paziente</a></li>
-          <li><a style="cursor: pointer;" routerLink="" (click)="onDeletePaziente()">Cancella Paziente</a></li>
+        <ul class="dropdown-menu" aria-labelledby="managePazienteDropdown">
+          <li><button class="dropdown-item custom-dropdown-item" (click)="onPazienteEdit()">  <i class="bi bi-pencil"></i> Modifica Paziente</button></li>
+          <li><button class="dropdown-item custom-dropdown-item delete-item" (click)="onDeletePaziente()">  <i class="bi bi-trash"></i> Cancella Paziente</button></li>
         </ul>
+       
       </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">{{ paziente.codiceFiscale }}</div>
-</div>
 

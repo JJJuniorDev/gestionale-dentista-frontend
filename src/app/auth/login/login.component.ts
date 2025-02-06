@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
 
   submitForm() {
     if (this.loginForm.valid) {
+      console.log("In submit form del login");
       this.service.login(this.loginForm.value).subscribe(
         (response) => {
           console.log(response);
@@ -43,7 +44,8 @@ export class LoginComponent implements OnInit {
             const jwtToken = response.jwt;
             localStorage.setItem('jwt', jwtToken);
             this.authService.login(jwtToken); // Aggiorna il ruolo dell'utente
-            this.router.navigateByUrl('/dashboard');
+            const dottoreId = this.authService.getUserId();
+          this.router.navigateByUrl(`/appuntamenti/dottore/${dottoreId}`);
           }
         },
         (error) => {

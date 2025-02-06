@@ -1,51 +1,89 @@
-<div class="row">
-   <div class="col-xs-12">
-    <div *ngIf="appuntamento; else showAppuntamentiList">
-      <h1>Appuntamento prenotato per il: {{ appuntamento?.dataEOrario | date:'short' }}</h1>
-      <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" id="manageAppuntamentoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-          Manage Appuntamento
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="manageAppuntamentoDropdown">
-          <li><button class="dropdown-item" (click)="onAppuntamentoEdit()">Modifica Appuntamento</button></li>
-          <li><button class="dropdown-item" (click)="onDeleteAppuntamento()">Cancella Appuntamento</button></li>
-        </ul>
-      </div> 
+<div class="container">
+  <!-- Box dell'appuntamento -->
+  <div *ngIf="appuntamento" class="appointment-card">
+    <div class="appointment-header">
+     <h2><i class="bi bi-clipboard-pulse"></i> Dettagli  Appuntamento</h2>
+    <div class="date-time-container">
+  <p class="date-time">
+    <i class="bi bi-calendar-check"></i> {{ appuntamento?.dataEOrario | date:'EEEE d MMMM y, HH:mm':'it' }}
+  </p>
+</div>
+ <span class="status badge" [ngClass]="getBadgeClass(appuntamento?.stato)">{{ appuntamento?.stato }}</span>
+    </div>
 
-      <div class="card custom-card">
-        <div class="card-body">
-          <ul class="list-unstyled">
-            <li><strong>NOTE:</strong> {{ appuntamento?.note }}</li>
-            <li><strong>TRATTAMENTO:</strong> {{ appuntamento?.trattamento }}</li>
-            <li><strong>CF PAZIENTE:</strong> {{ appuntamento?.codiceFiscalePaziente }}</li>
-            <li><strong>OPERAZIONI:</strong> {{ appuntamento?.operazioni }}</li>
-          </ul>
+    <div class="buttons-container">
+      <!-- Pulsante "Modifica Stato" -->
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          <i class="bi bi-pencil-square"></i> Modifica Stato
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" (click)="onChangeStato('futuro')"> <i class="bi bi-calendar-check"></i> Futuro</a></li>
+          <li><a class="dropdown-item" (click)="onChangeStato('in_esecuzione')"><i class="bi bi-hourglass-split"></i> In Esecuzione</a></li>
+          <li><a class="dropdown-item" (click)="onChangeStato('eseguito')">  <i class="bi bi-check-circle"></i> Eseguito</a></li>
+          <li><a class="dropdown-item" (click)="onChangeStato('sospeso')">   <i class="bi bi-pause-circle"></i> Sospeso</a></li>
+          <li><a class="dropdown-item" (click)="onChangeStato('annullato')"> <i class="bi bi-x-circle"></i> Annullato</a></li>
+        </ul>
+      </div>
+
+      <!-- Pulsante "Visualizza in Calendario" -->
+      <button class="btn btn-warning"><i class="bi bi-calendar-event"></i>Visualizza in Calendario</button>
+
+     <div class="dropdown">
+        <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+         <i class="bi bi-gear"></i>  Gestisci Appuntamento
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" (click)="onAppuntamentoEdit()"><i class="bi bi-pencil"></i>Modifica</a></li>
+          <li><a class="dropdown-item text-danger" (click)="onDeleteAppuntamento()"><i class="bi bi-trash"></i>Elimina</a></li>
+        </ul>
+      </div>
+</div>
+  <!-- Lista dettagli in un layout più armonioso -->
+    <div class="appointment-details">
+      <div class="details-grid">
+        <div class="detail-item">
+          <i class="bi bi-calendar-week"></i>
+          <span>Data:</span> <strong>{{ appuntamento?.dataEOrario }}</strong>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-clipboard-check"></i>
+          <span>Stato:</span> <strong>{{ appuntamento?.stato }}</strong>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-chat-left-text"></i>
+          <span>Note:</span> <strong>{{ appuntamento?.note || 'Nessuna nota' }}</strong>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-heart-pulse"></i>
+          <span>Trattamento:</span> <strong>{{ appuntamento?.trattamento }}</strong>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-person-badge"></i>
+          <span>CF Paziente:</span> <strong>{{ appuntamento?.codiceFiscalePaziente }}</strong>
         </div>
       </div>
     </div>
-
-    <!-- Se ho più appuntamenti -->
-    <ng-template #showAppuntamentiList>
-       <div *ngIf="appuntamenti.length > 0">
-    <!-- Mostra la lista degli appuntamenti -->
-    <h2>Appuntamenti del dentista</h2>
-      <div class="card custom-card">
-        <br>
-        <div class="card-body">
-   <ul class="list-group">
-  <li *ngFor="let appuntamentoItem of appuntamenti"
-  class="list-group-item mb-3 p-3 border rounded shadow-sm">
-    <strong>Data/Orario:</strong> {{ appuntamentoItem.dataEOrario | date:'short' }}<br>
-    <strong>Note:</strong> {{ appuntamentoItem.note }}<br>
-    <strong>Trattamento:</strong> {{ appuntamentoItem.trattamento }}<br>
-    <strong>CF Paziente:</strong> {{ appuntamentoItem.codiceFiscalePaziente }}<br>
-    <strong>Operazioni:</strong> {{ appuntamentoItem.operazioni }}<br>
-  </li>
-</ul>
   </div>
-   </div>
-       </div>
+</div>
+
+  <!-- Lista appuntamenti se non selezionato uno specifico -->
+  <ng-template #showAppuntamentiList>
+    <div *ngIf="appuntamenti.length > 0" class="appointments-list">
+      <h3>Appuntamenti</h3>
+      <ul class="list-group">
+        <li *ngFor="let appuntamentoItem of appuntamenti" class="appointment-item">
+          <div class="item-content">
+            <p><strong>Data/Orario:</strong> {{ appuntamentoItem.dataEOrario | date:'short' }}</p>
+            <p><strong>Trattamento:</strong> {{ appuntamentoItem.trattamento }}</p>
+            <p><strong>CF Paziente:</strong> {{ appuntamentoItem.codiceFiscalePaziente }}</p>
+            <p><strong>Note:</strong> {{ appuntamentoItem.note }}</p>
+          </div>
+          <div class="item-actions">
+            <button class="btn btn-primary">Modifica</button>
+          </div>
+        </li>
+      </ul>
+    </div>
   </ng-template>
 
-  <!-- </div>
-</div> -->

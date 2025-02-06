@@ -1,0 +1,88 @@
+<!-- Pulsante per mostrare o nascondere il form -->
+<button class="btn btn-primary" (click)="toggleFatturaForm()">
+  {{ showFatturaForm ? 'Nascondi Modulo Fattura' : 'Mostra Modulo Fattura' }}
+</button>
+
+ <div *ngIf="showFatturaForm">
+  <h3>Crea Nuova Fattura</h3>
+  <form (ngSubmit)="onSubmitFattura()">
+    <div class="form-group">
+      <label for="nomePaziente">Nome Paziente</label>
+      <input type="text" id="nomePaziente" [(ngModel)]="fattura!.nomePaziente" name="nomePaziente" class="form-control" readonly>
+    </div>
+
+    <div class="form-group">
+      <label for="cognomePaziente">Cognome Paziente</label>
+      <input type="text" id="cognomePaziente" [(ngModel)]="fattura!.cognomePaziente" name="cognomePaziente" class="form-control" readonly>
+    </div>
+
+    <div class="form-group">
+      <label for="costo">Costo</label>
+      <input type="number" id="costo" [(ngModel)]="fattura!.costo" name="costo" class="form-control" required min="0" step="0.01">
+    </div>
+
+      <div class="form-group">
+      <label for="cf-paziente">cf-paziente</label>
+      <input type="text" id="cf-paziente" [(ngModel)]="appuntamento!.codiceFiscalePaziente" name="cf-paziente" class="form-control" readonly>
+    </div>
+
+      <div class="form-group">
+      <label for="costo">data E Orario</label>
+      <input type="text" id="dataEOrario" [(ngModel)]="appuntamento!.dataEOrario" name="dataEOrario" class="form-control" readonly>
+    </div>
+
+        <div class="form-group">
+      <label for="costo">trattamento</label>
+      <input type="text" id="trattamento" [(ngModel)]="appuntamento!.trattamento" name="trattamento" class="form-control" readonly>
+    </div>
+
+
+    <button type="submit" class="btn btn-success">Conferma Fattura</button>
+    <button type="button" class="btn btn-secondary" (click)="showFatturaForm = false">Annulla</button>
+  </form>
+</div>
+ 
+  
+
+<div *ngIf="fattura; else noFattura" class="invoice-details card p-3 shadow-sm compact-container">
+  <h2 class="mb-4 text-center">Dettagli Fattura</h2>
+  <div class="row">
+    <div class="col-4 label-cell">Nome:</div>
+    <div class="col-8 value-cell">{{ fattura.nomePaziente }}</div>
+  </div>
+  <div class="row">
+    <div class="col-4 label-cell">Cognome:</div>
+    <div class="col-8 value-cell">{{ fattura.cognomePaziente }}</div>
+  </div>
+  <div class="row">
+    <div class="col-4 label-cell">Costo:</div>
+    <div class="col-8 value-cell">{{ fattura.costo }} €</div>
+  </div>
+   <div class="row">
+    <div class="col-4 label-cell">CF Paziente:</div>
+    <div class="col-8 value-cell">{{ appuntamento?.codiceFiscalePaziente }}</div>
+  </div>
+    <div class="row">
+    <div class="col-4 label-cell">Data e orario:</div>
+    <div class="col-8 value-cell">{{ appuntamento?.dataEOrario }}</div>
+  </div>
+    <div class="row">
+    <div class="col-4 label-cell">Trattamento:</div>
+    <div class="col-8 value-cell">{{ appuntamento?.trattamento }}</div>
+  </div>
+  <div class="text-center mt-4">
+    <button class="btn btn-primary" (click)="onUpdateFattura()">Aggiorna Fattura</button>
+  </div>
+</div>
+<!-- Modulo HTML per raccogliere l'email e inviare la fattura -->
+<div *ngIf="fattura">
+  <label for="email">Inserisci l'email per inviare la fattura:</label>
+  <input type="email" id="email" [(ngModel)]="email" placeholder="Es. nome@dominio.com" />
+  <button class="btn btn-info" (click)="sendEmail()">Invia Fattura via Email</button>
+  <button class="btn btn-success" (click)="sendWhatsApp()">Invia Fattura su WhatsApp</button>
+</div>
+
+<ng-template #noFattura>
+  <p *ngIf="fatturaNotFound">La fattura non è stata inserita per questo appuntamento.</p>
+  <p *ngIf="!fatturaNotFound && !fattura">Errore nel recupero della fattura.</p>
+</ng-template>

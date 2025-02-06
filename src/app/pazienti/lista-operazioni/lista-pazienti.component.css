@@ -1,0 +1,98 @@
+
+app-paziente-item {
+  width: 100%; /* Assicurati che l'elemento occupi tutta la larghezza disponibile */
+  box-sizing: border-box;
+}
+/* Gestione della lista dei pazienti */
+.row-cols-1 .col {
+  display: flex;
+  justify-content: center;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap; /* Assicura che gli elementi possano andare su più righe */
+  gap: 20px; /* Aggiungi uno spazio tra gli item (importante!) */
+}
+.app-paziente-item {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 20px; /* Assicurati che ci sia spazio tra i componenti */
+ box-sizing: border-box;
+}
+
+.app-paziente-item:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Stilizzazione dei pulsanti */
+.btn {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+/* Paginazione */
+.pagination-controls {
+  margin-top: 30px;
+  font-size: 16px;
+}
+
+.pagination-controls .btn-outline-primary {
+  font-size: 18px;
+  padding: 10px 25px;
+  border-radius: 50px;
+  background-color: #f8f9fa;
+}
+
+.pagination-controls .btn-outline-primary:hover {
+  background-color: #e9ecef;
+}
+
+.pagination-controls span {
+  font-size: 18px;
+  color: #495057;
+}
+
+/* Contenitore generale */
+.container {
+     width: 100%;
+  max-width: 1200px;
+    padding: 0 15px; /* Rimuoviamo l'eventuale margine laterale */
+}
+
+/* Responsive design per la ricerca */
+@media (max-width: 768px) {
+  .row-cols-md-2 {
+    row-gap: 20px;
+  }
+  .row-cols-lg-3 {
+    row-gap: 15px;
+  }
+  .form-select,
+  .form-control {
+    width: 100%;
+  }
+}
+
+/* Aggiungere un gap tra le colonne nei dispositivi più grandi */
+.row-cols-1,
+.row-cols-md-2,
+.row-cols-lg-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px; /* Spazio tra le card */
+}
+.separator {
+  margin: 150px 0; /* Distanza tra gli item */
+  border-bottom: 1px solid #ddd; /* Una sottile linea per separare gli elementi */
+}

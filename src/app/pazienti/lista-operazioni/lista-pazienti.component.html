@@ -1,14 +1,76 @@
-<div class="row">
-  <div class="col-xs-12">
-    <button class="btn btn-success" (click)="onNewPatient()">Nuovo Paziente</button>
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col-12 text-center">
+      <button class="btn btn-lg btn-success" (click)="onNewPatient()">
+        <i class="bi bi-person-plus"></i> Nuovo Paziente
+      </button>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    <app-paziente-item
-      *ngFor="let pazienteElement of pazienti; let i= index"
-      [paziente]="pazienteElement"
-    [index]="i">
-    </app-paziente-item>
+
+  <!-- Parametro di ricerca -->
+  <div class="row mb-3">
+    <div class="col-md-6 offset-md-3">
+      <!-- <p class="text-center">Parametro utilizzato per la ricerca:</p> -->
+      <div class="d-flex justify-content-center">
+        <select class="form-select w-auto" [(ngModel)]="selectedParameter">
+          <option value="codiceFiscalePaziente">Codice Fiscale</option>
+          <option value="nome">Nome</option>
+           <option value="cognome">Cognome</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6 offset-md-3 mt-3">
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="searchValue"
+        placeholder="Inserisci il valore da ricercare"
+         (keydown.enter)="onSearch()"
+      />
+    </div>
+  </div>
+
+  <!-- Bottone di ricerca -->
+  <div class="row mb-4">
+    <div class="col-12 text-center">
+      <button class="btn btn-primary btn-lg" (click)="onSearch()">
+        <i class="bi bi-search"></i> Cerca
+      </button>
+    </div>
+  </div>
+
+  <!-- Lista dei pazienti -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="col mb-4" *ngFor="let pazienteElement of paginatedPazienti">
+      <app-paziente-item
+        [paziente]="pazienteElement"
+        (click)="onSelectPaziente(pazienteElement.id)">
+      </app-paziente-item>
+          <div class="separator"></div>
+    </div>
+  </div>
+
+  <!-- Controlli di paginazione -->
+  <div class="pagination-controls d-flex justify-content-center align-items-center mt-4">
+    <!-- Pulsante Previous -->
+    <button
+      (click)="previousPage()"
+      [disabled]="!hasPreviousPage()"
+      class="btn btn-outline-primary btn-lg me-3 d-flex align-items-center">
+      <i class="bi bi-caret-left-square me-2"></i> Previous
+    </button>
+
+    <!-- Indicatore di pagina -->
+    <span class="fs-4 text-dark mx-3">
+      Page <strong>{{ currentPage }}</strong>
+    </span>
+
+    <!-- Pulsante Next -->
+    <button
+      (click)="nextPage()"
+      [disabled]="!hasNextPage()"
+      class="btn btn-outline-primary btn-lg ms-3 d-flex align-items-center">
+      Next <i class="bi bi-caret-right-square ms-2"></i>
+    </button>
   </div>
 </div>

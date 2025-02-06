@@ -1,19 +1,43 @@
-<a style="cursor: pointer;"
-   [routerLink]="[index]"
-   routerLinkActive="active"
-   class="list-group-item clearfix">
-   <div class="card">
-      <div class="card-body">
-         <h4 class="card-title">{{ paziente.nome + " "+paziente.cognome}}</h4>
-         <div class="card-text">
-            <ul class="list-unstyled">
-               <li><strong>codiceFiscale:</strong> {{ paziente.codiceFiscale }}</li>
-               <li><strong>dataDiNascita:</strong> {{ paziente.dataDiNascita }}</li>
-               <li><strong>sesso:</strong> {{ paziente.sesso }}</li>
-               <li><strong>indirizzo:</strong> {{ paziente.indirizzo }}</li>
-               <li><strong>numeroDiCellulare:</strong> {{ paziente.numeroDiCellulare }}</li>
-            </ul>
-         </div>
+
+   <div class="card patient-card">
+  <div class="card-body">
+    <h4 class="card-title">{{ paziente.nome + " " + paziente.cognome }}</h4>
+    
+    <div class="card-actions">
+      <button class="btn btn-primary" data-bs-toggle="tooltip" (click)="getCorrelatedTreatmentPlans()">
+        <i class="bi bi-clipboard2-data"></i> Piani di trattamento
+      </button>
+      <button class="btn btn-success" (click)="getPatientMedicalHistory()">
+        <i class="bi bi-file-earmark-medical"></i> Storia Medica
+      </button>
+      
+    </div>
+    
+    
+    <div class="patient-details">
+      <div class="detail-item">
+        <label><strong>Codice Fiscale:</strong></label>
+        <div class="field-value">{{ paziente.codiceFiscale }}</div>
       </div>
-   </div>
-</a>
+      <div class="detail-item">
+        <label><strong>Data di Nascita:</strong></label>
+        <div class="field-value">{{ paziente.dataDiNascita | date:'dd/MM/yyyy' }}</div>
+      </div>
+      <div class="detail-item">
+        <label><strong>Sesso:</strong></label>
+        <div class="field-value">{{ paziente.sesso }}</div>
+      </div>
+      <div class="detail-item">
+        <label><strong>Indirizzo:</strong></label>
+        <div class="field-value">{{ paziente.indirizzo }}</div>
+      </div>
+      <div class="detail-item">
+        <label><strong>Numero di Cellulare:</strong></label>
+        <div class="field-value">{{ paziente.numeroDiCellulare }}</div>
+      </div>
+    </div>
+    <button class="btn btn-info" (click)="getCorrelatedAppointments()">
+        <i class="bi bi-calendar-check"></i> Storico Appuntamenti
+      </button>
+  </div>
+</div>

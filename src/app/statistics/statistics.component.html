@@ -1,41 +1,79 @@
-<div  style="display: block; margin-bottom: 20px;">
-  <h3>Appuntamenti</h3>
-    <canvas baseChart
-          [data]="appointmentsData"
-          [options]="chartOptions"
-          chartType="bar"
-           [legend]="true"
-          [plugins]="[]">
-  </canvas>
+
+<div class="card shadow-lg bg-light text-dark">
+  <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+    <h3 class="mb-0">Distribuzione dei Pazienti</h3>
+    <i class="bi bi-pie-chart-fill fs-4"></i>
+  </div>
+ <div class="card-body">
+    <label for="distributionParameter" class="form-label">Seleziona parametro:</label>
+    <select
+      id="distributionParameter"
+      class="form-select"
+      [(ngModel)]="selectedParameter"
+      (change)="updateGeneralChart()"
+    >
+      <option value="stato">Distribuzione per Stato</option>
+      <option value="eta">Distribuzione per Età</option>
+    </select>
+    <div class="d-flex justify-content-center align-items-center" style="height: 400px;">
+      <canvas id="generalChart" style="max-width: 100%; max-height: 100%;"></canvas>
+  </div>
 </div>
 
-<div  style="display: block; margin-bottom: 20px;">
-  <h3>Pazienti</h3>
-  <canvas baseChart
-          [data]="patientsData"
-          [options]="chartOptions"
-          chartType="bar"
-          [legend]="true">
-  </canvas>
+<br>
+<br>
+<hr>
+<!-- Card: Distribuzione degli Appuntamenti -->
+<div class="card shadow-lg bg-light text-dark mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center bg-info text-white">
+    <h3 class="mb-0">Distribuzione degli Appuntamenti</h3>
+    <i class="bi bi-bar-chart-line fs-4"></i>
+  </div>
+  <div class="card-body d-flex justify-content-center align-items-center" style="height: 400px;">
+    <canvas id="appointmentsChart" style="max-width: 100%; max-height: 100%;"></canvas>
+  </div>
 </div>
 
-<div   style="display: block;">
-  <h3>Performance Server/Browser</h3>
-  <canvas baseChart
-          [data]="serverData"
-          [options]="chartOptions"
-          chartType="bar"
-          [legend]="true">
-  </canvas>
+<!-- Card: Cerca Paziente -->
+<div class="card shadow-lg bg-light text-dark mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center bg-success text-white">
+    <h3 class="mb-0">Cerca Paziente</h3>
+    <i class="bi bi-search fs-4"></i>
+  </div>
+  <div class="card-body">
+    <label for="patientSearch" class="form-label">Codice Fiscale Paziente:</label>
+    <div class="input-group">
+      <input
+        type="text"
+        id="patientSearch"
+        [(ngModel)]="searchedCodiceFiscale"
+        class="form-control"
+        placeholder="Inserisci codice fiscale"
+      />
+      <button class="btn btn-primary" (click)="searchPatient()">Cerca</button>
+    </div>
+  </div>
 </div>
 
-<div class="chart-container" style="display: block; margin-bottom: 20px;">
-  <h3>Comparazione Totali</h3>
-  <canvas baseChart
-  #comparisonChart
-          [data]="comparisonData"
-          [options]="pieChartOptions"
-          chartType="pie"
-          [legend]="true">
-  </canvas>
+<!-- Card: Dati del Paziente -->
+<div class="card shadow-lg bg-light text-dark mb-4" *ngIf="selectedPatient">
+  <div class="card-header bg-warning text-white">
+    <h3 class="mb-0">Dati del Paziente</h3>
+  </div>
+  <div class="card-body">
+    <p><strong>Nome:</strong> {{ selectedPatient.nome }}</p>
+    <p><strong>Cognome:</strong> {{ selectedPatient.cognome }}</p>
+    <p><strong>Numero di Appuntamenti:</strong> {{ patientAppointments.length }}</p>
+  </div>
+</div>
+
+<!-- Card: Appuntamenti del Paziente -->
+<div class="card shadow-lg bg-light text-dark" *ngIf="patientAppointments.length > 0">
+  <div class="card-header d-flex justify-content-between align-items-center bg-danger text-white">
+    <h3 class="mb-0">Appuntamenti del Paziente</h3>
+    <i class="bi bi-calendar-event-fill fs-4"></i>
+  </div>
+  <div class="card-body d-flex justify-content-center align-items-center" style="height: 400px;">
+    <canvas id="patientAppointmentsChart" style="max-width: 100%; max-height: 100%;"></canvas>
+  </div>
 </div>

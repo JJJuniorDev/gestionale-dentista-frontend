@@ -1,19 +1,13 @@
-<a style="cursor: pointer;"
-   [routerLink]="[index]"
-   routerLinkActive="active"
-   class="list-group-item clearfix appointment-card">
-   <div class="card custom-card">
+ <div class="card custom-card">
       <div class="card-body">
-         <h4 class="card-title">DATA/ORARIO: {{ appuntamento?.dataEOrario | date:'short' }}</h4>
-         <div class="card-text">
-            <ul class="list-unstyled">
+            <ul class="custom-ul">
+                 <li><strong>DATA/ORARIO:</strong> {{ appuntamento?.dataEOrario | date:'short' }}</li>
                <li><strong>NOTE:</strong> {{ appuntamento?.note }}</li>
                <li><strong>TRATTAMENTO:</strong> {{ appuntamento?.trattamento }}</li>
-               <li><strong>CF PAZIENTE:</strong> {{ appuntamento?.codiceFiscalePaziente }}</li>
-               <li><strong>OPERAZIONI:</strong> {{ appuntamento?.operazioni}}</li>
+            <li><strong>CF PAZIENTE:</strong> {{ appuntamento?.codiceFiscalePaziente }}</li> 
             </ul>
-         <button (click)="onViewDetails()">Dettagli</button>
+         <button class="btn btn-success" data-bs-toggle="tooltip" (click)="onViewDetails()">Dettagli Appuntamento  <i class="bi bi-clipboard2-data"></i></button>
+         <!-- <button class="btn btn-warning" data-bs-toggle="tooltip" (click)="onViewFatturazione()">Dettagli Fatturazione  <i class="bi bi-currency-exchange"></i></button> -->
          </div>
       </div>
-   </div>
-</a>
+

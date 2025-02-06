@@ -1,67 +1,112 @@
-<div class="row mb-4">
-  <div class="col-xs-4 d-flex ">
-    <button class="btn btn-success btn-lg ms-1" (click)="onNewAppuntamento()">Nuovo Appuntamento</button>
- <button class="btn btn-primary btn-lg ms-1" (click)="onToggleCalendar()">
-   {{ showCalendar ? 'Nascondi Calendario' : 'Mostra Calendario' }}
- </button>
+
+<ng-template #customMonthCellTemplate let-day="day" let-locale="locale">
+  <div class="cal-cell-top" (click)="onDayClicked({ day: day })">
+    <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
+    <!-- Aggiungi una logica per sabato e domenica -->
+    <span 
+      class="cal-day-number" 
+      [ngClass]="{
+        'custom-day-number': true, 
+        'weekend-day': day.date.getDay() === 6 || day.date.getDay() === 0
+      }">
+      {{ day.date | calendarDate:'monthViewDayNumber':locale }}
+    </span>
   </div>
-</div>
-
-
-<div *ngIf="showCalendar">
-  <h2>Calendario Appuntamenti</h2>
-  <mwl-calendar-month-view
-    [viewDate]="viewDate"
-    [events]="calendarEvents"
-    (dayClicked)="onDayClicked($event)">
-  </mwl-calendar-month-view>
-</div>
-
-<div *ngIf="!showCalendar">
-  <div class="row mb-3">
-    <div class="col-xs-6">
-      <p>Parametro utilizzato per la ricerca:</p>
-      <select class="form-select" [(ngModel)]="selectedParameter">
-        <option value="codiceFiscalePaziente">Codice Fiscale</option>
-        <option value="trattamento">Trattamento</option>
-        <option value="dataEOrario">Data</option>
-      </select>
-    </div>
-    <div class="col-xs-6">
-      <input 
-        *ngIf="selectedParameter === 'dataEOrario'" 
-        type="date" 
-        class="form-control" 
-        [(ngModel)]="searchDate" 
-        placeholder="Seleziona la data">
-        
-      <input 
-        *ngIf="selectedParameter !== 'dataEOrario'" 
-        type="text" 
-        class="form-control" 
-        [(ngModel)]="searchValue" 
-        placeholder="Inserisci il valore da ricercare">
+  <div class="events-list">
+    <div
+      class="eventList-item"
+      *ngFor="let i of day.events"
+      [style]="'--current:' + i.colorBackground + ';--current-contrast:' + i.colorContrast"
+    >
+      <p class="event-title">
+        {{ i.title }}
+        <!-- <em *ngIf="i.titleAdditional">{{i.titleAdditional}}</em> -->
+      </p>
+      <p class="event-subtitle" [innerHTML]="i.subtitle"></p>
     </div>
   </div>
-  <div class="row mb-3">
-    <div class="col-xs-12">
-      <button class="btn btn-primary" (click)="onSearch()">Cerca</button>
+</ng-template>
+
+
+
+
+<div class="row mb-4 align-items-center">
+  <div class="col-md-4 d-flex justify-content-start">
+    <button class="btn btn-success btn-lg" (click)="onNewAppuntamento()">Nuovo Appuntamento</button>
+  </div>
+  
+  <div class="col-md-4 text-center">
+    <h2 class="calendar-title">📅 Calendario Appuntamenti</h2>
+  </div>
+  
+  <div class="col-md-4 text-end">
+    <h3 class="calendar-date">{{ viewDate | date: "MMMM yyyy" }}</h3>
+  </div>
+</div>
+
+<div class="calendar-container-wrapper">
+  <!-- Contenitore sinistro per il tasto "Previous" -->
+  <div class="calendar-nav-left">
+    <button class="btn btn-primary" (click)="onPreviousMonth()">
+      <i class="material-icons">chevron_left</i> Precedente
+    </button>
+  </div>
+  
+  <!-- Calendario centrale -->
+  <div class="calendar-container">
+    <mwl-calendar-month-view
+      [viewDate]="viewDate"
+      [events]="calendarEvents"
+      (dayClicked)="onDayClicked($event)"
+      [cellTemplate]="customMonthCellTemplate">
+    </mwl-calendar-month-view>
+  </div>
+  
+  <!-- Contenitore destro per il tasto "Next" -->
+  <div class="calendar-nav-right">
+    <button class="btn btn-primary" (click)="onNextMonth()">
+      Successivo
+      <i class="material-icons">chevron_right</i>
+    </button>
+  </div>
+</div>
+
+<!-- Modal per visualizzare gli appuntamenti del giorno -->
+<div *ngIf="showAppointmentsModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Appuntamenti per {{ selectedDay | date : "dd/MM/yyyy" }}</h3>
+      <button
+        class="btn-close"
+        (click)="showAppointmentsModal = false"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <ul class="appointment-list">
+        <li
+          *ngFor="let appuntamento of appuntamentiGiornalieri"
+          class="appointment-item appointment-hover"
+          (click)="onSelectAppuntamento(appuntamento.id)"
+        >
+          <div class="appointment-time">
+            🕒 {{ appuntamento.dataEOrario | date : "HH:mm" }}
+          </div>
+          <div class="appointment-details">
+           👤 {{ appuntamento.paziente?.nome }} {{ appuntamento.paziente?.cognome }}
+          </div>
+            <div class="appointment-cellphone">
+          <span class="material-icons">phone</span> {{ appuntamento.paziente?.numeroDiCellulare }}
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="showAppointmentsModal = false">
+        Chiudi
+      </button>
     </div>
   </div>
-
-  <div class="row">
-  <div class="col-xs-6 col-md-6" *ngFor="let appuntamentoElement of paginatedAppuntamenti">
-    <app-appuntamento-item
-      [appuntamento]="appuntamentoElement"
-      [index]="appuntamentoElement.id"
-      (click)="onSelectAppuntamento(appuntamentoElement.id)">
-    </app-appuntamento-item>
-  </div>
 </div>
-  <!-- Controlli di paginazione -->
-<div class="pagination-controls">
-  <button (click)="previousPage()" [disabled]="!hasPreviousPage()">Previous</button>
-  <span>Page {{ currentPage }}</span>
-  <button (click)="nextPage()" [disabled]="!hasNextPage()">Next</button>
-</div>
-</div>
+ 
+        <!-- <div class="btn btn-outline-secondary" (click)="onToday()">Today</div>-->

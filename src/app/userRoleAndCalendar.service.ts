@@ -6,10 +6,10 @@ import { BehaviorSubject } from "rxjs";
   providedIn: 'root',
 })
 export class UserRoleAndCalendarService {
-  private isDentistSubject = new BehaviorSubject<boolean>(false);
-  isDentist$ = this.isDentistSubject.asObservable();
+  private isDoctorSubject = new BehaviorSubject<boolean>(false);
+  isDoctor$ = this.isDoctorSubject.asObservable();
 
-  setIsDentist(isDentist: boolean) {
-    this.isDentistSubject.next(isDentist);
+  setIsDoctor(isDoctor: boolean) {
+    this.isDoctorSubject.next(isDoctor);
   }
 }

@@ -1,0 +1,18 @@
+.farmaco-item {
+  padding: 10px;
+  cursor: pointer;
+  border: 1px solid #ddd; /* Bordo leggero per tutti gli elementi */
+}
+
+.farmaco-selezionato {
+  background-color: #1976d2;  /* Colore blu per l'elemento selezionato */
+  color: white;               /* Colore del testo bianco */
+  font-weight: bold;          /* Grassetto per evidenziare */
+}
+
+.farmaci-list-container {
+  max-height: 400px; /* Limita l'altezza del contenitore */
+  overflow-y: auto;  /* Permette lo scroll verticale */
+  border: 1px solid #ccc; /* Aggiungi un bordo per visibilità */
+  padding: 8px;
+}

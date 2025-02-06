@@ -5,6 +5,7 @@ import { DettagliAppuntamentoComponent } from './dettagli-appuntamento/dettagli-
 import { AppuntamentiModificaComponent } from './modifica-appuntamenti/appuntamenti-modifica.component';
 import { NgModule } from '@angular/core';
 import { ListaAppuntamentiComponent } from './lista-appuntamenti/lista-appuntamenti.component';
+import { FatturazioneComponent } from './fatturazione/fatturazione.component';
 
 const routes: Routes = [
   {
@@ -12,12 +13,13 @@ const routes: Routes = [
     component: AppuntamentiComponent,
     canActivate: [AuthGuard],
     children: [
-      // { path: '', component: ListaOperazioniComponent },
-      //CONTROLLA QUESTO---------------------------------------new=modifica???
+      { path: '', component: ListaAppuntamentiComponent },
       { path: 'new', component: AppuntamentiModificaComponent },
       { path: ':id', component: DettagliAppuntamentoComponent },
       { path: ':id/edit', component: AppuntamentiModificaComponent },
-      { path: 'dentista/:id', component: DettagliAppuntamentoComponent },
+      { path: 'dottore/:id', component: ListaAppuntamentiComponent },
+      { path: 'fatturazione/:index', component: FatturazioneComponent },
+      { path: 'all', component: ListaAppuntamentiComponent },
       { path: 'upcoming', component: ListaAppuntamentiComponent },
     ],
   },

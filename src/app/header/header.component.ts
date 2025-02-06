@@ -7,7 +7,6 @@ import { map, filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserRoleAndCalendarService } from '../userRoleAndCalendar.service';
 import { AppuntamentoService } from '../appuntamenti/appuntamento.service';
-import { Appuntamento } from '../appuntamenti/appuntamento.model';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private userSub: Subscription = new Subscription();
   isAuthenticated = false;
   currentRoute: string = '';
-  isDentist: boolean = false;
+  isDoctor: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -31,9 +30,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .select('auth')
       .pipe(map((authState) => authState.user))
       .subscribe((user) => {
-        this.isDentist = authService.getUserRole() === 'dentista';
-        this.userRoleService.setIsDentist(this.isDentist); // Imposta lo stato dell'utente
-        console.log('Header.ts->Is Dentist:', this.isDentist);
+        this.isDoctor = authService.getUserRole() === 'dottore';
+        this.userRoleService.setIsDoctor(this.isDoctor); // Imposta lo stato dell'utente
+        console.log('Header.ts->Is isDoctor:', this.isDoctor);
       });
   }
 
@@ -55,9 +54,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
   }
 
-  onGoToDashboard() {
-    this.router.navigateByUrl('/dashboard');
-  }
+   onGoToSettings() {
+     this.router.navigate(['/users']);
+   }
+
+  // onGoToDashboard() {
+  //   this.router.navigateByUrl('/dashboard');
+  // }
 
   onGoToAppointments() {
     this.router.navigate(['/appuntamenti']);
@@ -65,10 +68,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onGoToPatients() {
     this.router.navigate(['/pazienti']);
-  }
-
-  onGoToOperazioni() {
-    this.router.navigate(['/operazioni']);
   }
 
   onGoToStatistics() {
@@ -79,17 +78,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.logout();
   }
 
-  onGoToDentistAppointments() {
-    const dentistId = this.authService.getUserId(); // Ottieni l'ID dell'utente autenticato
+  onGoToDoctorAppointments() {
+    const dottoreId = this.authService.getUserId(); // Ottieni l'ID dell'utente autenticato
 
     // Sottoscrizione all'Observable per ottenere i dati e stamparli
-    this.appuntamentoService.getAppuntamentiPerDentista(dentistId!).subscribe({
-      next: (getAppDentista) => {
-        console.log('RISULTATO ===', getAppDentista); // Stampa i risultati nel console
+    console.log('ID dottoreId: ' + dottoreId);
+    this.appuntamentoService.getAppuntamentiPerDottore(dottoreId!).subscribe({
+      next: (getAppDottore) => {
+        console.log('RISULTATO ===', getAppDottore); // Stampa i risultati nel console
         // Passa i dati attraverso lo stato della navigazione
-        this.router.navigate([`/appuntamenti/dentista/${dentistId}`], {
-          state: { appuntamenti: getAppDentista },
-        });
+        this.router.navigate([`/appuntamenti/dottore/${dottoreId}`]);
       },
       error: (err) => {
         console.error('Errore nel recupero degli appuntamenti:', err); // Gestione dell'errore

@@ -1,0 +1,300 @@
+/* Impostazioni globali per la card */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Allinea il contenuto verticalmente al centro */
+  align-items: center; /* Allinea il contenuto orizzontalmente al centro */
+  padding: 20px; /* Aggiungi un po' di spazio interno */
+}
+
+
+.treatment-card {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center; /* Centra orizzontalmente la card */
+  padding: 10px;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-item {
+  cursor: pointer; /* Cambia il cursore in una mano */
+  transition: background-color 0.2s ease, color 0.2s ease; /* Effetto morbido */
+}
+
+.dropdown-item.text-info:hover {
+  background-color: #d0ebff; /* Colore azzurro chiaro al passaggio */
+  color: #0b5ed7; /* Colore blu scuro */
+}
+
+.dropdown-item.text-danger:hover {
+  background-color: #f8d7da; /* Colore rosso chiaro al passaggio */
+  color: #dc3545; /* Colore rosso scuro */
+}
+.mat-row, .mat-header-row {
+  height: 40px; /* Riduce l'altezza delle righe */
+}
+
+/* Sezioni dei filtri */
+.filter-section {
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-section h5 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.filter-section .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filter-section .col-md-4 {
+  flex: 1 1 calc(33.333% - 1rem);
+  min-width: 200px;
+}
+
+.filter-section mat-form-field {
+  width: 100%;
+}
+
+.filter-section button {
+  margin-top: 1rem;
+}
+
+/* Pulsante di reset filtro */
+.filter-section button.mat-button {
+  color: #666;
+  font-size: 0.9rem;
+  text-decoration: underline;
+}
+
+.filter-section button.mat-button:hover {
+  color: #333;
+  background-color: transparent;
+}
+
+/* Generale */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 20px;
+}
+
+h3, h4 {
+  color: #343a40;
+  font-weight: bold;
+}
+
+p {
+  font-size: 16px;
+  color: #6c757d;
+}
+
+/* Contenitori principali */
+.no-plans-message {
+  text-align: center;
+  margin-top: 20px;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  background-color: #ffffff;
+  margin-top: 30px;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Intestazioni card */
+.card {
+  margin-bottom: 20px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  padding: 15px;
+  background-color: #ffffff;
+  color: #ffffff;
+  border-bottom: 1px solid #94b4d7;
+  border-radius: 8px 8px 0 0;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* Tabelle */
+table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th {
+  background-color: #343a40;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+}
+
+table td {
+  padding: 10px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+table tr:hover {
+  background-color: #9eb8fb;
+}
+
+/* Paginatori */
+.mat-paginator {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.mat-elevation-z1 {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #dee2e6;
+}
+
+/* Pulsanti */
+.btn {
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+button[mat-button] {
+  color: #007bff;
+  font-size: 14px;
+}
+
+button[mat-button]:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Filtri */
+.filter-section {
+  margin-top: 20px;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+}
+
+.filter-section h5 {
+  margin-bottom: 15px;
+  color: #343a40;
+}
+
+.mat-form-field {
+  margin-bottom: 10px;
+}
+
+input[matInput] {
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+/* Layout */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.col-md-4 {
+  flex: 0 0 calc(33.333% - 15px);
+  max-width: calc(33.333% - 15px);
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.mat-select-value {
+  font-size: 14px;
+}
+
+
+.row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 15px;
+}
+
+.col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.section {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.time-separator {
+  margin: 0 8px; /* Spazio tra la data e l'ora */
+  color: gray;   /* Colore separatore */
+}
+
+.time {
+  font-weight: bold; /* L'ora in grassetto */
+  color: #007acc;    /* Cambia colore dell'ora */
+}
+.success-snackbar {
+  background-color: #4caf50; /* Verde */
+  color: white;
+  font-weight: bold;
+}
+
+::ng-deep .clickable-row {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+::ng-deep .clickable-row:hover {
+  background-color: rgba(0, 0, 255, 0.2);
+}
+

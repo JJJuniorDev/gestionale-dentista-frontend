@@ -1,9 +1,11 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { Appuntamento } from '../appuntamento.model';
+import { forkJoin, map, Subscription } from 'rxjs';
 import { AppuntamentoService } from '../appuntamento.service';
-import { CalendarEvent } from 'angular-calendar';
+import { CalendarEvent, CalendarView } from 'angular-calendar';
+import { AppuntamentoDTO } from '../appuntamentoDTO.model';
+import { AuthService } from 'src/app/auth/auth.service';
+import { PazienteService } from 'src/app/pazienti/paziente.service';
 
 
 @Component({
@@ -12,103 +14,151 @@ import { CalendarEvent } from 'angular-calendar';
   styleUrls: ['./lista-appuntamenti.component.css'],
 })
 export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
-  appuntamenti: Appuntamento[] = [];
-  filteredAppuntamenti: Appuntamento[] = [];
+  appuntamenti: AppuntamentoDTO[] = [];
+  filteredAppuntamenti: AppuntamentoDTO[] = [];
   subscription!: Subscription;
   selectedParameter: string = 'codiceFiscalePaziente'; // Parametro di ricerca selezionato
   searchValue: string = ''; //inserito dall'utente
-  searchDate!: string;
+  searchDate!: Date | null; // Supporta il Datepicker
   @Output() viewDetails = new EventEmitter<void>();
   viewDate: Date = new Date(); // Data corrente
   calendarEvents: CalendarEvent[] = []; // Eventi del calendario
-  showCalendar: boolean = true; // Variabile per controllare la visualizzazione
-  paginatedAppuntamenti: Appuntamento[] = []; // Array per gli appuntamenti paginati
-  itemsPerPage: number = 5; // Numero di elementi per pagina
-  currentPage: number = 1; // Pagina corrente
-  isUpcomingView: boolean = false; //vista per gli appuntamenti futuri
+
+  //PER GESTIONE APPUNTAMENTI GIORNALIERI
+  // ****************************
+  appuntamentiGiornalieri: AppuntamentoDTO[] = []; // Appuntamenti del giorno selezionato
+  selectedDay!: Date | null; // Giorno selezionato
+  dottoreId!: string | null;
+  showAppointmentsModal: boolean = false;
+
+  // Navigate to previous month
+  onPreviousMonth() {
+    this.viewDate = new Date(
+      this.viewDate.setMonth(this.viewDate.getMonth() - 1)
+    );
+  }
+
+  // Navigate to next month
+  onNextMonth() {
+    this.viewDate = new Date(
+      this.viewDate.setMonth(this.viewDate.getMonth() + 1)
+    );
+  }
+
+  // Reset to today's date
+  onToday() {
+    this.viewDate = new Date();
+  }
 
   constructor(
     private appuntamentoService: AppuntamentoService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private pazienteService: PazienteService
   ) {}
 
   ngOnInit() {
-    // Controlla se sei nella rotta /upcoming
-    this.isUpcomingView = this.route.snapshot.url.some(
-      (segment) => segment.path === 'upcoming');
-console.log("UPCOMINg"+this.isUpcomingView);
-    this.subscription = this.appuntamentoService.appuntamentiChanged.subscribe(
-      (appuntamenti: Appuntamento[]) => {
-        //se abbiamo cambiato qualcosa riceviamo il nuovo array
-        this.appuntamenti = appuntamenti; //assegno le nostre operazioni alle nuove ricevute
-          // Se siamo nella rotta "upcoming", filtra gli appuntamenti futuri
-      if (this.isUpcomingView){
-    this.filteredAppuntamenti = appuntamenti.filter(
-      (a) => new Date(a.dataEOrario) > new Date()
-    );
-  } else {
-          this.filteredAppuntamenti = this.appuntamenti; // Mostra tutti gli appuntamenti in caso contrario
-        }
-
-this.updatePaginatedResults();
-this.updateCalendarEvents();
+    this.authService.user$.subscribe((user) => {
+      if (user) {
+        this.dottoreId! = user.id; // Ottieni l'ID dell'utente loggato
       }
-    );
-    // Sottoscrizione al metodo getOperazioni
-    this.appuntamentoService
-      .getAppuntamenti()
-      .subscribe((appuntamenti: Appuntamento[]) => {
-        this.appuntamenti = appuntamenti;
-        this.filteredAppuntamenti = appuntamenti;
-        this.updateCalendarEvents();
-      });
+    });
+    if (this.dottoreId) {
+      this.subscription = this.appuntamentoService
+        .getAppuntamentiPerDottore(this.dottoreId)
+        .subscribe(
+          (appuntamenti: AppuntamentoDTO[]) => {
+            // Creiamo un array di richieste per ottenere i pazienti
+            const richiestePazienti$ = appuntamenti.map((appuntamento) =>
+              this.pazienteService.getPaziente(appuntamento.pazienteId).pipe(
+                // Creiamo un oggetto che contiene sia l'appuntamento che il paziente
+                map((paziente) => ({
+                  ...appuntamento,
+                  paziente: paziente, // Aggiungiamo il paziente all'appuntamento
+                  dataEOrario: new Date(appuntamento.dataEOrario), // Convertiamo la data
+                }))
+              )
+            );
+            // Aspettiamo che tutte le richieste siano completate
+            forkJoin(richiestePazienti$).subscribe(
+              (appuntamentiCompleti) => {
+                this.appuntamenti = appuntamentiCompleti; // Salviamo gli appuntamenti con i pazienti associati
+                this.filteredAppuntamenti = [...this.appuntamenti]; // Filtra inizialmente tutti gli appuntamenti
+                console.log(this.appuntamenti);
+                this.updateCalendarEvents();
+              },
+              (error) => {
+                console.error(
+                  'Errore nel recupero degli appuntamenti con pazienti:',
+                  error
+                );
+              }
+            );
+          },
+          (error) => {
+            console.error('Errore nel recupero degli appuntamenti:', error);
+          }
+        );
+    }
   }
 
   updateCalendarEvents() {
-    this.calendarEvents = this.appuntamenti.map((appuntamento) => ({
-      start: new Date(appuntamento.dataEOrario),
-      title: `Appuntamento con ${appuntamento.codiceFiscalePaziente}`,
-      color: {
-        primary: '#ad2121',
-        secondary: '#FAE3E3',
-      },
-    }));
+    const eventiPerGiorno = new Map<string, number>();
+    // Conta gli appuntamenti per ogni giorno
+    this.appuntamenti.forEach((appuntamento) => {
+      const data = new Date(appuntamento.dataEOrario)
+        .toISOString()
+        .split('T')[0];
+      eventiPerGiorno.set(data, (eventiPerGiorno.get(data) || 0) + 1);
+    });
+
+    // Crea eventi con il numero di appuntamenti
+    this.calendarEvents = Array.from(eventiPerGiorno.entries()).map(
+      ([date, count]) => ({
+        start: new Date(date),
+        title: `${count} appuntamenti`,
+        color: { primary: '#007bff', secondary: '#cce5ff' },
+        allDay: true, // Importante per evitare errori nella visualizzazione del numero
+        meta: {
+          customTitle: count.toString(), // Salva il numero come metadato (se serve per la visualizzazione)
+        },
+      })
+    );
   }
 
+  // Metodo chiamato quando si clicca un giorno sul calendario
   onDayClicked(event: any) {
-    const date = event.day.date;
-    const appuntamentiInData = this.appuntamenti.filter(
+    const date = event.day.date; // Giorno cliccato
+    this.selectedDay = date;
+
+    this.appuntamentiGiornalieri = this.appuntamenti.filter(
       (appuntamento) =>
         new Date(appuntamento.dataEOrario).toDateString() ===
         date.toDateString()
     );
 
-    if (appuntamentiInData.length > 0) {
-      alert(
-        'Non è possibile prenotare un appuntamento in questa data poiché è già occupata.'
-      );
-    } else {
-      this.router.navigate(['new'], {
-        relativeTo: this.route,
-        queryParams: { date: date.toISOString() },
-      });
+    if (this.appuntamentiGiornalieri.length > 0) {
+      this.showAppointmentsModal = true;
     }
   }
 
-  //quando clicco
-  onToggleCalendar() {
-    this.showCalendar = !this.showCalendar;
-  }
 
   onSearch() {
     if (this.selectedParameter === 'dataEOrario' && this.searchDate) {
+      const searchDateISO = this.searchDate.toISOString().split('T')[0]; // Formatta la data
+      const searchDate = new Date(this.searchDate); // Crea una nuova data senza orario specificato
+      searchDate.setHours(0, 0, 0, 0); // Imposta l'orario a mezzanotte per evitare problemi con l'orario
+      console.log(`Ricerca per data: ${searchDateISO}`);
+
       // Filtra per data
-      this.filteredAppuntamenti = this.appuntamenti.filter(
-        (appuntamento) =>
-          new Date(appuntamento.dataEOrario).toDateString() ===
-          new Date(this.searchDate).toDateString()
-      );
+      this.filteredAppuntamenti = this.appuntamenti.filter((appuntamento) => {
+        const appuntamentoDate = new Date(appuntamento.dataEOrario);
+        appuntamentoDate.setHours(0, 0, 0, 0); // Imposta anche l'orario degli appuntamenti a mezzanotte
+
+        // Confronta solo la parte della data
+        return appuntamentoDate.getTime() === searchDate.getTime();
+      });
     } else if (this.searchValue) {
       // Filtra per gli altri parametri
       this.filteredAppuntamenti = this.appuntamenti.filter((appuntamento) => {
@@ -117,15 +167,17 @@ this.updateCalendarEvents();
           trattamento: appuntamento.trattamento,
           // Aggiungi altri parametri se necessario
         };
-        return properties[this.selectedParameter]
-          .toLowerCase()
-          .includes(this.searchValue.toLowerCase());
+        if (this.selectedParameter === 'codiceFiscalePaziente') {
+          return properties[this.selectedParameter].includes(this.searchValue);
+        } else {
+          return properties[this.selectedParameter]
+            .toLowerCase()
+            .includes(this.searchValue.toLowerCase());
+        }
       });
     } else {
       this.filteredAppuntamenti = this.appuntamenti; // Se il campo di ricerca è vuoto, mostra tutti gli appuntamenti
     }
-    this.currentPage = 1; // Resetta alla prima pagina
-    this.updatePaginatedResults(); // Aggiorna i risultati paginati
   }
 
   onSelectAppuntamento(id: string) {
@@ -138,45 +190,11 @@ this.updateCalendarEvents();
       this.subscription.unsubscribe();
     }
   }
-
+  
   onNewAppuntamento() {
-    this.router.navigate(['new'], { relativeTo: this.route }); //siamo già in /recipes
-  }
-
-  nextPage() {
-    if (
-      this.currentPage * this.itemsPerPage <
-      this.filteredAppuntamenti.length
-    ) {
-      this.currentPage++;
-      this.updatePaginatedResults(); // Aggiorna i risultati paginati
-    }
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePaginatedResults(); // Aggiorna i risultati paginati
-    }
-  }
-
-  hasNextPage(): boolean {
-    return (
-      this.currentPage * this.itemsPerPage < this.filteredAppuntamenti.length
-    );
-  }
-
-  hasPreviousPage(): boolean {
-    return this.currentPage > 1;
-  }
-
-  updatePaginatedResults() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedAppuntamenti = this.filteredAppuntamenti.slice(
-      startIndex,
-      endIndex
-    );
+    this.router.navigate(['/appuntamenti/new'], {
+      state: { appuntamenti: this.appuntamenti }, // Passa gli appuntamenti esistenti
+    });
   }
 }
 

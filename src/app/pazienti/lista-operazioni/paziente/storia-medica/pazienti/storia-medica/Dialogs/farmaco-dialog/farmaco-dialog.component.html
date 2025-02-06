@@ -1,0 +1,119 @@
+<h2 mat-dialog-title>Seleziona un Farmaco</h2>
+
+<mat-dialog-content>
+  <!-- Campo per selezionare la categoria del farmaco -->
+  <mat-form-field>
+    <mat-label>Categoria del Farmaco</mat-label>
+    <mat-select
+      [(value)]="categoriaSelezionata"
+      (selectionChange)="onCategoriaChange()"
+    >
+      <mat-option
+        *ngFor="let categoria of categorie"
+        [value]="categoria.trim()"
+      >
+        {{ categoria }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Campo per cercare per nome -->
+  <mat-form-field>
+    <mat-label>Cerca per Nome</mat-label>
+    <input matInput [(ngModel)]="nomeFarmaco" (input)="cercaPerNome()" />
+  </mat-form-field>
+
+  <!-- Elenco dei farmaci trovati con scroll -->
+  <div
+    *ngIf="farmaci.length > 0"
+    class="farmaci-list-container"
+  >
+    <mat-list>
+      <mat-list-item
+        *ngFor="let farmaco of farmaci"
+        (click)="selezionaFarmaco(farmaco)"
+      >
+        <div
+          class="farmaco-item"
+          [ngClass]="{ 'farmaco-selezionato': farmaco === farmacoSelezionato }"
+        >
+          {{ farmaco?.nomeFarmaco }}
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+  <!-- Aggiungere il paginator sotto l'elenco dei farmaci -->
+  <mat-paginator
+    *ngIf="totaleElementi > itemsPerPage"
+    [length]="totaleElementi"
+    [pageSize]="itemsPerPage"
+    [pageSizeOptions]="[4, 8, 12]"
+     [pageIndex]="paginaCorrente" 
+    (page)="paginaCambiata($event)"
+  ></mat-paginator>
+
+  <!-- Form per inserire dosaggio e frequenza -->
+  <div *ngIf="farmacoSelezionato">
+    <mat-form-field>
+      <mat-label>Dosaggio</mat-label>
+      <mat-select
+        [(value)]="farmacoSelezionato.dosaggio"
+        (selectionChange)="onDosaggioChange()"
+      >
+        <mat-option *ngFor="let dosaggio of dosaggiComuni" [value]="dosaggio">
+          {{ dosaggio }}
+        </mat-option>
+        <mat-option value="altro">Altro...</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Input per dosaggio personalizzato (solo se "Altro" è selezionato) -->
+    <mat-form-field *ngIf="isDosaggioAltro">
+      <mat-label>Inserisci Dosaggio</mat-label>
+      <input matInput [(ngModel)]="farmacoSelezionato.dosaggioPersonalizzato" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Frequenza</mat-label>
+       <mat-select
+        [(value)]="farmacoSelezionato.frequenza"
+        (selectionChange)="onFrequenzaChange()"
+      >
+       <mat-option *ngFor="let frequenza of frequenzeComuni" [value]="frequenza">
+          {{ frequenza }}
+        </mat-option>
+        <mat-option value="altro">Altro...</mat-option>
+      </mat-select>
+     
+    </mat-form-field>
+
+     <mat-form-field *ngIf="isFrequenzaAltro">
+      <mat-label>Inserisci Frequenza</mat-label>
+      <input matInput [(ngModel)]="farmacoSelezionato.frequenzaPersonalizzato" />
+    </mat-form-field>
+
+    <!-- Campo per Data Inizio Trattamento -->
+    <mat-form-field>
+      <mat-label>Data Inizio Trattamento</mat-label>
+      <input
+        matInput
+        [(ngModel)]="farmacoSelezionato.dataInizioTrattamento"
+        [matDatepicker]="pickerInizio"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="pickerInizio"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #pickerInizio></mat-datepicker>
+    </mat-form-field>
+
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close()">Annulla</button>
+  <button mat-button (click)="confermaAggiuntaFarmaco()">
+    Aggiungi Farmaco
+  </button>
+</mat-dialog-actions>

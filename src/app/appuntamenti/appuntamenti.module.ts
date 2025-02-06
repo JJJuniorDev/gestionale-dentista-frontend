@@ -15,7 +15,22 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from "@angular/common";
+import { FatturazioneComponent } from './fatturazione/fatturazione.component';
+import { FatturazioneService } from "./fatturazione/fatturazione.service";
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { PazienteService } from "../pazienti/paziente.service";
+import { MatIconModule } from "@angular/material/icon";
+import { MatCardModule } from "@angular/material/card";
+import { MatSelectModule } from "@angular/material/select";
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CalendarMonthViewComponent } from 'angular-calendar';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   //mettere tutti i componenti che usiamo nel routing-module
   declarations: [
     AppuntamentiComponent,
@@ -23,6 +38,7 @@ import { CommonModule } from "@angular/common";
     DettagliAppuntamentoComponent,
     ItemAppuntamentoComponent,
     AppuntamentiModificaComponent,
+    FatturazioneComponent,
   ],
   imports: [
     RouterModule,
@@ -37,8 +53,20 @@ import { CommonModule } from "@angular/common";
     }),
     CommonModule, // Usa CommonModule invece di BrowserModule
     BsDatepickerModule.forRoot(),
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatCardModule,
+    MatSelectModule,
+    MatAutocompleteModule,
   ],
-
-  providers: [AppuntamentoService], // Aggiungi il servizio ai provider
+  providers: [
+    AppuntamentoService,
+    FatturazioneService,
+    PazienteService,
+    { provide: MAT_DATE_LOCALE, useValue: 'it-IT' }, // Formato Italiano
+  ], // Aggiungi il servizio ai provider
 })
 export class AppuntamentiModule {}

@@ -1,46 +1,84 @@
-<h1>SIAMO IN MODIFICA</h1>
-<div class="row">
-  <div class="col-xs-12">
-    <form [formGroup]="formAppuntamento" (ngSubmit)="onSubmit()">
-      <div class="row">
-        <div class="col-xs-12">
-          <button type="submit" class="btn btn-success" [disabled]="!formAppuntamento.valid">Save</button>
-          <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
-        </div>
+<mat-card class="appuntamento-card">
+  <mat-card-title class="title">📅 Creazione Appuntamento</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="formAppuntamento" (ngSubmit)="onSubmit()" class="appointment-form">
+      
+      <mat-form-field appearance="fill" class="full-width">
+  <mat-label>Seleziona campo di ricerca</mat-label>
+  <mat-select [(value)]="searchField">
+    <mat-option value="cf">Codice Fiscale</mat-option>
+    <mat-option value="nome">Nome</mat-option>
+    <mat-option value="cognome">Cognome</mat-option>
+  </mat-select>
+</mat-form-field>
+      <!-- Selezione Paziente -->
+     <mat-form-field appearance="fill" class="full-width">
+  <mat-label>Seleziona Paziente</mat-label>
+  <input
+    type="text"
+    matInput
+    [formControl]="pazienteFilterCtrl"
+    [matAutocomplete]="auto"
+    placeholder="Cerca per codice fiscale o nome"
+  />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onPazienteSelect($event)">
+    <mat-option *ngFor="let paziente of filteredPazienti | async" [value]="paziente.codiceFiscale">
+      {{ paziente.codiceFiscale }} - {{ paziente.nome }} {{ paziente.cognome }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+   <!-- Data -->
+<mat-form-field appearance="fill" class="full-width">
+  <mat-label>Data</mat-label>
+  <input matInput [matDatepicker]="picker" formControlName="data">
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+<!-- Orario -->
+<mat-form-field appearance="fill" class="full-width">
+  <mat-label>Orario</mat-label>
+  <mat-select formControlName="orario">
+    <mat-option *ngFor="let ora of orariDisponibili" [value]="ora">
+      {{ ora }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+      <!-- Trattamento -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Trattamento</mat-label>
+        <input matInput formControlName="trattamento" placeholder="Es. Pulizia dentale">
+      </mat-form-field>
+
+      <!-- Note -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Note</mat-label>
+        <textarea matInput formControlName="note" rows="3" placeholder="Inserisci eventuali note"></textarea>
+      </mat-form-field>
+
+      <!-- Stato Appuntamento -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Stato</mat-label>
+        <mat-select formControlName="stato">
+          <mat-option value="futuro">📅 Futuro</mat-option>
+          <mat-option value="eseguito">✅ Eseguito</mat-option>
+          <mat-option value="in_esecuzione">⚙️ In esecuzione</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Pulsanti -->
+      <div class="button-group">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formAppuntamento.valid">
+          <mat-icon>check_circle</mat-icon> Salva
+        </button>
+        <button mat-stroked-button color="warn" type="button" (click)="onCancel()">
+          <mat-icon>close</mat-icon> Annulla
+        </button>
       </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label for="dataEOrario">Data E Orario</label>
-            <input type="text" id="dataEOrario" [bsConfig]="bsConfig" bsDatepicker formControlName="dataEOrario" class="form-control">
-          </div>
-        </div>
-  
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label for="note">Note</label>
-            <textarea type="text" id="note" formControlName="note" class="form-control" rows="6"></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label for="trattamento">Trattamento</label>
-            <input type="text" id="trattamento" formControlName="trattamento" class="form-control">
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label for="codiceFiscalePaziente">Codice Fiscale Paziente</label>
-            <input type="text" id="codiceFiscalePaziente" formControlName="codiceFiscalePaziente" class="form-control">
-          </div>
-        </div>
-      </div>
+      
     </form>
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>
+

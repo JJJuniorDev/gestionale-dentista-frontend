@@ -1,0 +1,112 @@
+/* Stile generale per il dialogo */
+::ng-deep .mat-dialog-container {
+  border-radius: 8px;  /* Bordi arrotondati per il contenitore */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Aggiungi una leggera ombra */
+}
+
+/* Rendi la larghezza del campo di testo più grande */
+mat-form-field.full-width {
+  width: 100%;
+}
+
+/* Migliora l'aspetto del campo di testo */
+textarea.mat-input-element {
+  padding: 12px; /* Aggiungi un po' di padding interno */
+  font-size: 16px; /* Aumenta leggermente la dimensione del font */
+  border-radius: 4px; /* Aggiungi bordi arrotondati */
+  border: 1px solid #ccc; /* Bordi sottili per il campo */
+  box-sizing: border-box; /* Assicura che il padding non superi i limiti del campo */
+  transition: border-color 0.3s; /* Animazione di transizione sul focus */
+}
+
+textarea.mat-input-element:focus {
+  border-color: #3f51b5; /* Colore del bordo quando il campo è selezionato */
+}
+
+mat-checkbox {
+  margin-top: 12px; /* Distanza tra il checkbox e i campi sopra */
+}
+
+/* Stile per il bottone */
+button.mat-button {
+  font-weight: bold;
+}
+
+/* Stile per il dialog */
+.dialog-content {
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Stile per la textarea con bordi arrotondati e transizioni fluide */
+.custom-textarea {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+}
+
+/* Focus sulla textarea per un effetto più elegante */
+.custom-textarea:focus {
+  border-color: #6200ea;
+  background-color: #ffffff;
+  box-shadow: 0 0 8px rgba(98, 0, 234, 0.3);
+  outline: none;
+  transform: scale(1.05); /* Ingrandisce il campo quando cliccato */
+}
+
+/* Stile per il mat-hint (il messaggio di testo sotto la textarea) */
+.hint-text {
+  font-style: italic;
+  font-size: 14px;
+  color: #0062eb; /* Colore del testo dell'hint */
+  transition: all 0.3s ease-in-out;
+  opacity: 0.7;
+}
+
+/* Animazione per ingrandire il riquadro al clic (per la textarea) */
+.custom-textarea:focus + .mat-hint {
+  opacity: 1;
+  font-weight: bold; /* Rende l'hint più visibile quando la textarea è in focus */
+}
+
+/* Bordi arrotondati per il form-field */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+
+/* Stile per i pulsanti */
+button.mat-button {
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-size: 14px;
+}
+
+/* Stile per i pulsanti di azione */
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+mat-dialog-actions button {
+  margin-left: 10px;
+}
+
+/* Ottimizzare il design per mobile */
+@media (max-width: 600px) {
+  .custom-textarea {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  mat-dialog-actions button {
+    font-size: 12px;
+  }
+}
+

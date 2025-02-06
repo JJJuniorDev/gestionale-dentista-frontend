@@ -22,8 +22,8 @@ export class AppuntamentiComponent implements OnInit {
 
         // Imposta showDetails a true solo se il path corrisponde a 'appuntamenti/:id'
         this.showDetails = currentPath === 'appuntamenti/:id';
-        if(currentPath === 'appuntamenti/dentista/:id'){
-          this.showDetails=true;
+        if (currentPath === 'appuntamenti/dottore/:id') {
+          this.showDetails = true;
         }
         // Rilevamento dei cambiamenti forzato
         this.cdr.detectChanges();
@@ -63,4 +63,10 @@ export class AppuntamentiComponent implements OnInit {
       this.cdr.detectChanges(); // Forza il rilevamento delle modifiche
     }
   }
+
+  // onShowAll() {
+  //   // Naviga alla lista degli appuntamenti
+  //   this.router.navigate(['/appuntamenti/all']);
+  //   this.showDetails = false; // Nascondi i dettagli
+  // }
 }

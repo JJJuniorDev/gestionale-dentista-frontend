@@ -1,0 +1,366 @@
+
+ <div *ngIf="treatmentPlans && treatmentPlans.length > 0;">
+  <!-- Colonna sinistra: Appuntamenti -->
+  <div class="row d-flex">
+    <div class="col-md-6 d-flex flex-column">
+      <div class="section p-3 border">
+        <h3>Appuntamenti</h3>
+        <button class="btn btn-primary mb-3" (click)="toggleTabella('appointments')">
+          {{ showAppointmentsTable ? 'Nascondi Appuntamenti' : 'Mostra Appuntamenti' }}
+        </button>
+       <!-- *ngIf="showAppointmentsTable"-->
+        <div  [hidden]="!showAppointmentsTable">
+       
+          <!-- Filtri Appuntamenti -->
+          <div class="filter-section mb-3">
+            <h5>Filtra Appuntamenti</h5>
+            <form (ngSubmit)="applyAppointmentsFilters()">
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <mat-label>Stato</mat-label>
+                    <mat-select [(value)]="appointmentsFilters.stato" name="stato" [ngModelOptions]="{standalone: true}">
+                      <mat-option value="">Tutti</mat-option>
+                      <mat-option value="futuro">Futuro</mat-option>
+                      <mat-option value="eseguito">Eseguito</mat-option>
+                      <mat-option value="sospeso">Sospeso</mat-option>
+                      <mat-option value="annullato">Annullato</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <mat-label>Data Appuntamento</mat-label>
+                    <input matInput [matDatepicker]="pickerAppointments" [(ngModel)]="appointmentsFilters.dataEOrario" name="dataEOrario" [ngModelOptions]="{standalone: true}" />
+                    <mat-datepicker-toggle matSuffix [for]="pickerAppointments"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerAppointments></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+              <button mat-raised-button color="primary" type="submit" class="mt-2 w-100">Applica Filtro</button>
+            </form>
+            <button mat-button (click)="resetAppointmentsFilters()">Resetta Filtro</button>
+               <button
+          type="button"
+          class="btn btn-secondary"
+         data-bs-toggle="modal"
+        data-bs-target="#addAppointmentModal"
+        >
+          Aggiungi Appuntamento
+        </button>
+          </div>
+
+          <!-- Tabella delle Tappe -->
+          <table mat-table [dataSource]="dataSourceAppointments" matSort class="w-100" [hidden]="!showAppointmentsTable">
+            <ng-container matColumnDef="dataEOrario">
+              <th mat-header-cell *matHeaderCellDef>Data e Orario</th>
+              <td mat-cell *matCellDef="let appointment">
+                <span>{{ appointment.dataEOrario | date: 'dd/MM/yyyy' }}</span>
+                <span class="time-separator"> - </span>
+                <span class="time">{{ appointment.dataEOrario | date: 'HH:mm' }}</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="stato">
+              <th mat-header-cell *matHeaderCellDef>Stato</th>
+              <td mat-cell *matCellDef="let appointment" >{{ appointment.stato }}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['dataEOrario', 'stato']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['dataEOrario', 'stato']" (click)="vaiAiDettagli(row)" class="clickable-row"></tr>
+          </table>
+          <mat-paginator [pageSize]="5" showFirstLastButtons></mat-paginator>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonna destra: Eventi -->
+    <div class="col-md-6 d-flex flex-column">
+      <div class="section p-3 border">
+        <h3>Eventi di promemoria</h3>
+        <button class="btn btn-primary mb-3" (click)="toggleTabella('events')">
+          {{ showEventsTable ? 'Nascondi Eventi' : 'Mostra Eventi' }}
+        </button>
+        <!-- <div *ngIf="showEventsTable"> -->
+        <div [hidden]="!showEventsTable">
+          <!-- Filtri Eventi -->
+          <div class="filter-section mb-3">
+            <h5>Filtra Eventi</h5>
+            <form (ngSubmit)="applyEventsFilters()">
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <mat-label>Tipologia</mat-label>
+                    <mat-select [(value)]="eventsFilters.tipologia">
+                      <mat-option value="">Tutti</mat-option>
+                      <mat-option value="modifica_terapia">Modifica terapia</mat-option>
+                      <mat-option value="promemoria_trattamento">Promemoria trattamento</mat-option>
+                      <mat-option value="follow_up_psichiatrico">Follow Up psichiatrico</mat-option>
+                      <mat-option value="nota_clinica">Nota clinica</mat-option>
+                      <mat-option value="comunicazione_con_familiari">Comunicazione con familiari</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <mat-label>Data Scadenza</mat-label>
+                    <input matInput [matDatepicker]="pickerEvents" [(ngModel)]="eventsFilters.dataScade" />
+                    <mat-datepicker-toggle matSuffix [for]="pickerEvents"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerEvents></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+              <button mat-raised-button color="primary" type="submit" class="mt-2 w-100">Applica Filtro</button>
+            </form>
+            <button mat-button (click)="resetEventsFilters()">Resetta Filtro</button>
+               <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-toggle="modal"
+        data-bs-target="#addEventModal"
+        >
+          Aggiungi Evento
+        </button>
+          </div>
+
+          <!-- Tabella degli Eventi -->
+          <table mat-table [dataSource]="dataSourceEvents" matSort class="w-100"  [hidden]="!showEventsTable">
+            <ng-container matColumnDef="descrizione">
+              <th mat-header-cell *matHeaderCellDef>Descrizione</th>
+              <td mat-cell *matCellDef="let event">{{ event.descrizione }}</td>
+            </ng-container>
+            <ng-container matColumnDef="tipologia">
+              <th mat-header-cell *matHeaderCellDef>Tipologia</th>
+              <td mat-cell *matCellDef="let event">{{ event.tipologia }}</td>
+            </ng-container>
+            <ng-container matColumnDef="dataScade">
+              <th mat-header-cell *matHeaderCellDef>Data Scadenza</th>
+              <td mat-cell *matCellDef="let event">{{ event.dataScade }}</td>
+            </ng-container>
+            <ng-container matColumnDef="completata">
+              <th mat-header-cell *matHeaderCellDef>Completata</th>
+              <td mat-cell *matCellDef="let event">{{ event.completata ? 'Sì' : 'No' }}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['descrizione', 'tipologia', 'dataScade', 'completata']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['descrizione', 'tipologia', 'dataScade', 'completata']"></tr>
+          </table>
+          <mat-paginator [pageSize]="5" showFirstLastButtons></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottone per mostrare/nascondere la tabella dei farmaci -->
+  <button class="btn btn-primary mb-3" (click)="toggleTabellaVisibile()">
+    {{ tabellaVisibile ? 'Nascondi Farmaci Attivi' : 'Mostra Farmaci Attivi del trattamento' }}
+  </button>
+
+  <!-- Tabella dei farmaci (sotto le tabelle degli appuntamenti e degli eventi) -->
+  <!-- <div *ngIf="tabellaVisibile"> -->
+    <div [hidden]="!tabellaVisibile">
+    <table mat-table [dataSource]="dataSourceFarmaci" matSort class="mat-elevation-z1" [hidden]="!tabellaVisibile">
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td mat-cell *matCellDef="let farmaco">{{ farmaco.nomeFarmaco }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dosaggio">
+        <th mat-header-cell *matHeaderCellDef>Dosaggio</th>
+        <td mat-cell *matCellDef="let farmaco">{{ farmaco.dosaggio }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="frequenza">
+        <th mat-header-cell *matHeaderCellDef>Frequenza</th>
+        <td mat-cell *matCellDef="let farmaco">{{ farmaco.frequenza }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataInizioAttivi">
+        <th mat-header-cell *matHeaderCellDef>Data Inizio</th>
+        <td mat-cell *matCellDef="let farmaco">{{ farmaco.dataInizioTrattamento | date }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns"></tr>
+    </table>
+    <mat-paginator #paginatorFarmaci="matPaginator" [pageSize]="5" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
+
+
+<!-- Modale per aggiungere un Appuntamento -->
+<div
+  class="modal fade"
+  id="addAppointmentModal"
+   #addAppointmentModal
+  tabindex="-1"
+  aria-labelledby="addAppointmentModalLabel"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addAppointmentModalLabel">Aggiungi Appuntamento</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="submitNewAppointment()" #stepForm="ngForm">
+<div class="mb-3">
+    <label for="statoAppuntamento" class="form-label">Stato Appuntamento</label>
+    <select
+      id="statoAppuntamento"
+      name="statoAppuntamento"
+      class="form-select"
+      [(ngModel)]="newAppointment.stato"
+      required
+    >
+      <option value="futuro">Futuro</option>
+    <option value="eseguito">Eseguito</option>
+  </select>
+  </div>
+          <div class="mb-3">
+            <label for="dataAppuntamento" class="form-label"
+              >Data Appuntamento</label
+            >
+            <input
+              type="date"
+              id="dataAppuntamento"
+              name="dataAppuntamento"
+              class="form-control"
+              [(ngModel)]="newAppointment.dataEOrario"
+              required
+            />
+          </div>
+
+<div class="mb-3">
+  <label for="orarioAppuntamento" class="form-label">Orario</label>
+  <select
+    id="orarioAppuntamento"
+    name="orarioAppuntamento"
+    class="form-select"
+    [(ngModel)]="selectedHour"
+    required
+  >
+    <option *ngFor="let ora of orariDisponibili" [value]="ora">{{ ora }}</option>
+  </select>
+</div>
+
+              <!-- Sezione Configurazione Appuntamento -->
+          <h6>Configura Appuntamento</h6>
+          <div class="mb-3">
+            <label for="note" class="form-label">Note</label>
+            <input
+              type="text"
+              id="note"
+              name="note"
+              class="form-control"
+              [(ngModel)]="newAppointment.note"
+              required
+            />
+          </div>
+        
+          <button type="submit" class="btn btn-success" [disabled]="!stepForm.valid">Aggiungi</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+           
+          >
+            Annulla
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div
+  class="modal fade"
+  id="addEventModal"
+    #addEventModal
+  tabindex="-1"
+  aria-labelledby="addEventModalLabel"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addEventModalLabel">Aggiungi Evento</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="submitNewEvent()" #eventForm="ngForm">
+           <div class="mb-3">
+            <label for="tipoEvento" class="form-label">Tipo di Evento</label>
+            <select
+              id="tipoEvento"
+              name="tipoEvento"
+              class="form-select"
+              [(ngModel)]="newEvent.tipologia"
+              required
+            >
+              <option value="modificaTerapia">Modifica Terapia</option>
+              <option value="promemoriaTrattamento">Promemoria Trattamento</option>
+              <option value="followUpPsichiatrico">Follow-Up Psichiatrico</option>
+              <option value="notaClinica">Nota Clinica</option>
+              <option value="comunicazioneFamiliari">Comunicazione con Familiari</option>
+              <option value="promemoriaScreening">Promemoria per Screening/Test</option>
+              <option value="obiettiviTrattamento">Obiettivi del Trattamento</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="descrizione" class="form-label">Descrizione</label>
+            <input
+              type="text"
+              id="descrizione"
+              name="descrizione"
+              class="form-control"
+              [(ngModel)]="newEvent.descrizione"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="dataAppuntamento" class="form-label"
+              >Data Scadenza</label
+            >
+            <input
+              type="date"
+              id="dataScade"
+              name="dataScade"
+              class="form-control"
+              [(ngModel)]="newEvent.dataScade"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="statoAvanzamento" class="form-label"
+              >Completato</label
+            >
+            <input
+              type="text"
+              id="completata"
+              name="completata"
+              class="form-control"
+              [(ngModel)]="newEvent.completata"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-success">Aggiungi</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Annulla
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

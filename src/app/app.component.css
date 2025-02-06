@@ -1,0 +1,17 @@
+button.btn-secondary {
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: burlywood;
+  margin-left: 30px;
+
+}
+
+button.btn-primary{
+     padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+ 
+}
+
+

@@ -1,0 +1,93 @@
+.custom-card {
+  background-color: #f0f8ff; /* Celeste chiaro */
+  border: 1px solid #00aaff; /* Celeste più scuro */
+  border-radius: 8px; /* Arrotonda gli angoli */
+  padding: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Aggiunge una leggera ombra */
+  transition: transform 0.2s ease-in-out;
+}
+
+.custom-card:hover {
+  transform: scale(1.02); /* Leggero ingrandimento al passaggio del mouse */
+}
+
+.custom-ul {
+  list-style-type: none; /* Rimuovi i bullet point */
+  padding: 0;
+  margin: 0;
+}
+
+.custom-ul li {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #e6f7ff; /* Sfondo più chiaro per ogni elemento */
+  border-left: 5px solid #00aaff; /* Linea a sinistra degli elementi in celeste */
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.custom-ul li strong {
+  color: #0077cc; /* Celeste scuro per i titoli */
+}
+
+
+.dropdown-menu {
+  min-width: 200px;
+}
+
+.dropdown-menu li a {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f1f1f1;
+}
+/* Personalizza i dropdown item */
+.custom-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Spazio tra icona e testo */
+  padding: 10px 15px; /* Più spazio nei pulsanti */
+  font-size: 16px; /* Dimensione del testo */
+  color: #1565c0; /* Colore primario */
+  background-color: #f9f9f9; /* Sfondo chiaro */
+  border-radius: 5px; /* Bordo arrotondato */
+  border: none; /* Nessun bordo visibile */
+  transition: all 0.3s ease; /* Animazione */
+}
+
+/* Hover su dropdown item */
+.custom-dropdown-item:hover {
+  background-color: #e3f2fd; /* Sfondo più scuro */
+  color: #0d47a1; /* Colore del testo */
+  transform: translateY(-2px); /* Effetto sollevamento */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra al passaggio */
+}
+
+/* Icona accanto al testo */
+.custom-dropdown-item i {
+  font-size: 18px;
+  color: inherit; /* Usa lo stesso colore del testo */
+}
+
+/* Stile personalizzato per l'elemento 'Cancella' */
+.delete-item {
+  color: #d32f2f; /* Colore rosso */
+}
+
+.delete-item:hover {
+  background-color: #ffebee; /* Sfondo rosso chiaro */
+  color: #b71c1c; /* Testo rosso scuro */
+}
+
+.dropdown-menu {
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #c7edec;
+}
+
+.dropdown-item:hover {
+  
+  color: #1565c0;
+}

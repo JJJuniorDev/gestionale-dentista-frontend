@@ -1,0 +1,197 @@
+<mat-card class="farmaco-card">
+  <mat-card-header>
+    <mat-card-title>{{ farmacoInUso?.nomeFarmaco }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="farmaco-details" style="margin-bottom: 16px">
+      <p><strong>Dosaggio:</strong> {{ farmacoInUso?.dosaggio }}</p>
+      <p><strong>Frequenza:</strong> {{ farmacoInUso?.frequenza }}</p>
+      <p><strong>Data Inizio:</strong> {{ farmacoInUso?.dataInizioTrattamento | date }}</p>
+      <p *ngIf="farmacoInUso?.dataFineTrattamento">
+        <strong>Data Fine:</strong> {{ farmacoInUso?.dataFineTrattamento | date }}
+      </p>
+    </div>
+     <!-- Sezione per Efficacia e Remissione -->
+    <div class="efficacia-remissione">
+      <p>
+        <strong>Efficacia del Trattamento:</strong> {{ farmacoInUso?.efficacia || 'N/A' }}
+      </p>
+      <p>
+        <strong>Remissione dei Sintomi:</strong> {{ farmacoInUso?.remissione || 'N/A' }}
+      </p>
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <div class="button-container" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="aggiungiNota(farmacoInUso.id)"
+        style="flex: 1; min-width: 120px"
+      >
+        <mat-icon>note_add</mat-icon> Aggiungi Nota
+      </button>
+      <button
+        mat-stroked-button
+        color="accent"
+        (click)="apriDialogModifica(farmacoInUso, editFarmacoDialog)"
+        style="flex: 1; min-width: 120px"
+      >
+        <mat-icon>edit</mat-icon> Modifica
+      </button>
+
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="eliminaFarmaco(farmacoInUso)"
+        style="flex: 1; min-width: 120px"
+      >
+        <mat-icon>delete</mat-icon> Elimina
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card>
+
+<!-- Template Dialog Modifica -->
+<ng-template #editFarmacoDialog let-dialogRef>
+  <h2 mat-dialog-title style="text-align: center;">Modifica Farmaco</h2>
+  <mat-divider></mat-divider>
+  <mat-dialog-content>
+    <form #farmacoForm="ngForm">
+      <div style="margin-bottom: 16px">
+        <mat-form-field appearance="fill" style="width: 100%">
+          <mat-label>Nome Farmaco</mat-label>
+          <input matInput [(ngModel)]="farmacoInUso.nomeFarmaco" name="nomeFarmaco" required />
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%">
+          <mat-label>Dosaggio</mat-label>
+          <input matInput [(ngModel)]="farmacoInUso.dosaggio" name="dosaggio" required />
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%">
+          <mat-label>Frequenza</mat-label>
+          <input matInput [(ngModel)]="farmacoInUso.frequenza" name="frequenza" required />
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%">
+          <mat-label>Data Inizio Trattamento</mat-label>
+          <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="farmacoInUso.dataInizioTrattamento" name="dataInizioTrattamento" required />
+          <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #startDatePicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%">
+          <mat-label>Data Fine Trattamento</mat-label>
+          <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="farmacoInUso.dataFineTrattamento" name="dataFineTrattamento" />
+          <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #endDatePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-divider></mat-divider>
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button (click)="dialogRef.close()">Annulla</button>
+    <button mat-raised-button color="primary" (click)="salvaModifiche(dialogRef)">Salva</button>
+  </mat-dialog-actions>
+</ng-template>
+
+
+   <button
+        mat-flat-button
+        color="primary"
+        style="flex: 1; min-width: 120px"
+      >Note del trattamento
+      </button>  
+
+      <div style="margin-top: 20px;">
+  <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8" style="width: 100%;">
+    <!-- Colonna: Data Creazione -->
+    <ng-container matColumnDef="dataCreazione">
+      <th mat-header-cell *matHeaderCellDef class="header-cell"> Data Creazione </th>
+      <td mat-cell *matCellDef="let nota" class="cell-data"> {{ nota.dataCreazione | date: 'short' }} </td>
+    </ng-container>
+
+    <!-- Colonna: Data Modifica -->
+    <ng-container matColumnDef="dataModifica">
+      <th mat-header-cell *matHeaderCellDef class="header-cell"> Data Modifica </th>
+      <td mat-cell *matCellDef="let nota" class="cell-data"> {{ nota.dataModifica | date: 'short' }} </td>
+    </ng-container>
+
+    <!-- Colonna: Contenuto -->
+    <ng-container matColumnDef="contenuto">
+      <th mat-header-cell *matHeaderCellDef class="header-cell"> Contenuto </th>
+       <td mat-cell *matCellDef="let nota" class="cell-data">
+    <span *ngIf="nota.expanded">
+      {{ nota.contenuto }}
+      <button mat-button color="accent" (click)="nota.expanded = false">
+        Leggi meno
+      </button>
+    </span>
+      <span *ngIf="!nota.expanded">
+      {{ nota.contenuto | slice: 0:50 }}{{ nota.contenuto.length > 50 ? '...' : '' }}
+      <button *ngIf="nota.contenuto.length > 50" mat-button color="accent" (click)="nota.expanded = true">
+        Leggi tutto
+      </button>
+    </span>
+  </td>
+    </ng-container>
+
+    <!-- Colonna: Tipo Nota -->
+    <ng-container matColumnDef="tipoNota">
+      <th mat-header-cell *matHeaderCellDef class="header-cell"> Tipo </th>
+      <td mat-cell *matCellDef="let nota" class="cell-data"> {{ nota.tipoNota }} </td>
+    </ng-container>
+
+    <!-- Colonna: Priorità -->
+    <ng-container matColumnDef="priorita">
+      <th mat-header-cell *matHeaderCellDef class="header-cell"> Priorità </th>
+      <td mat-cell *matCellDef="let nota" class="cell-data"> {{ nota.priorita }} </td>
+    </ng-container>
+
+    <!-- Colonna: Visibilità -->
+    <ng-container matColumnDef="visibilita">
+      <th mat-header-cell *matHeaderCellDef class="header-cell"> Visibilità </th>
+      <td mat-cell *matCellDef="let nota" class="cell-data">
+        {{ nota.visibilita ? 'Sì' : 'No' }}
+      </td>
+    </ng-container>
+
+    <!-- Intestazioni di colonna -->
+    <tr mat-header-row *matHeaderRowDef="['dataCreazione', 'dataModifica', 'contenuto', 'tipoNota', 'priorita', 'visibilita']"></tr>
+
+    <!-- Righe dei dati -->
+    <tr mat-row *matRowDef="let row; columns: ['dataCreazione', 'dataModifica', 'contenuto', 'tipoNota', 'priorita', 'visibilita'];"></tr>
+  </table>
+
+  <!-- <mat-paginator 
+  [length]="note.length" 
+  [pageSize]="4" 
+  [pageSizeOptions]="[4, 8, 12]" 
+  (page)="pageChanged($event)">
+</mat-paginator> -->
+<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons ></mat-paginator>
+</div>
+
+
+<div class="farmaco-container">
+  <div class="farmaco-header">
+    <div class="header-item">Nome</div>
+    <div class="header-item">Categoria</div>
+    <div class="header-item">Classe Terapeutica</div>
+    <div class="header-item">Principio Attivo</div>
+    <div class="header-item">Indicazioni</div>
+    <div class="header-item">Controindicazioni</div>
+    <div class="header-item">Effetti Collaterali</div>
+    <div class="header-item">Interazioni</div>
+  </div>
+
+  <div *ngFor="let farmaco of datasource" class="farmaco-row">
+    <div class="row-item">{{ farmaco.nomeFarmaco }}</div>
+    <div class="row-item">{{ farmaco.categoria }}</div>
+    <div class="row-item">{{ farmaco.classeTerapeutica }}</div>
+    <div class="row-item">{{ farmaco.principioAttivo }}</div>
+    <div class="row-item">{{ farmaco.indicazioni?.join(', ') }}</div>
+    <div class="row-item">{{ farmaco.controindicazioni?.join(', ') }}</div>
+    <div class="row-item">{{ farmaco.effettiCollaterali?.join(', ') }}</div>
+    <div class="row-item">{{ farmaco.interazioni?.join(', ') }}</div>
+  </div>
+</div>

@@ -1,107 +1,186 @@
-/* Styling for invalid input fields */
-input.ng-invalid.ng-touched,
-textarea.ng-invalid.ng-touched {
-    border: 1px solid red;
+/* Contenitore generale */
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #f4f7f6;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* General form styles */
-form {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 50%;
-    margin: 0 auto;
+/* Intestazione del form */
+.form-header h2 {
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: 30px;
+  color: #4CAF50;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
 }
 
-.form-section {
-    margin-bottom: 20px;
+/* Ombra per il titolo */
+.form-header h2::before {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, #4CAF50, #81C784);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-.form-group label {
-    font-weight: bold;
-    color: #333;
+/* Corpo del form */
+.form-body {
+  display: flex;
+  flex-direction: column;
 }
 
-.form-group input,
-.form-group textarea {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px;
-    font-size: 16px;
-    width: 100%;
+/* Gruppo di form per ogni campo */
+.form-group {
+  margin-bottom: 15px;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
-    border-color: #66afe9;
-    outline: none;
-    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+/* Bordi arrotondati e transizione */
+.form-control {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: all 0.4s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
 }
 
-/* Button styles */
-button {
-    margin-top: 10px;
-    font-size: 16px;
-    padding: 10px 15px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
+.form-control:focus {
+  border-color: #4CAF50;
+  outline: none;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+   background-color: #ffffff;
 }
 
-button.btn-success {
-    background-color: #28a745;
-    color: white;
+/* Sezione per le righe (colonne affiancate) */
+.row {
+  display: flex;
+  justify-content: space-between;
 }
 
-button.btn-success:hover {
-    background-color: #218838;
+.col {
+  flex: 1;
+  padding: 0 10px;
 }
 
-button.btn-danger {
-    background-color: #dc3545;
-    color: white;
+/* Errore campo */
+.error-message {
+   font-size: 14px;
+  color: red;
+  margin-top: 5px;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-button.btn-danger:hover {
-    background-color: #c82333;
+/* Pulsanti */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
 }
 
-/* Material row styles */
-.material-row {
-    margin-top: 10px;
+.btn {
+  padding: 12px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
-.material-row .form-control {
-    margin-bottom: 5px;
+/* Ombra leggera sui pulsanti */
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.material-row .btn-danger {
-    width: 100%;
+.btn-success {
+  background-color: #4CAF50;
+  color: white;
 }
 
-/* Align buttons to the right */
-.text-right {
-    text-align: right;
+.btn-success:hover {
+  background-color: #45a049;
+   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-hr {
-    margin: 10px 0;
-    border: 0;
-    border-top: 1px solid #eee;
+.btn-danger {
+  background-color: #f44336;
+  color: white;
 }
 
-/* Additional styles for responsive design */
+.btn-danger:hover {
+  background-color: #e53935;
+transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.mat-form-field {
+  width: 100%;
+  padding: 5px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Aggiungere effetti su hover per il form */
+.container:hover .form-container {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Campo select per sesso migliorato */
+select.form-control {
+  background-color: #f9f9f9;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: all 0.4s ease-in-out;
+}
+
+select.form-control:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.7);
+  background-color: #ffffff;
+}
+
+/* Aggiungi sfondo ombreggiato e transizione sul form */
+.form-container {
+  background: linear-gradient(to right, #e8f5e9, #ffffff);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Cambiare il colore di sfondo al focus di una data */
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #4CAF50;
+}
+
+.mat-form-field.mat-focused .mat-form-field-underline {
+  background-color: #4CAF50;
+}
+
+
+/* Responsive */
 @media (max-width: 767px) {
-    form {
-        width: 90%;
-    }
+  .container {
+    padding: 15px;
+  }
 
-    .text-right {
-        text-align: left;
-    }
-
-    .material-row .btn-danger {
-        margin-top: 10px;
-    }
+  .form-control {
+    font-size: 14px;
+    padding: 10px;
+  }
 }

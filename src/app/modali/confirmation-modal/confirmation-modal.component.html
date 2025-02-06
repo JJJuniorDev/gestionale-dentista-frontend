@@ -1,0 +1,39 @@
+<div cdkTrapFocus>
+  <h2 mat-dialog-title>{{ data.title || 'Conferma' }}</h2>
+  <mat-dialog-content>
+    <ng-container *ngIf="isEditable; else staticContent">
+      <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>{{ data.label || 'Modifica' }}</mat-label>
+        <textarea
+          matInput
+          [(ngModel)]="textareaContent"
+          rows="5"
+          style="resize: none;"
+        ></textarea>
+      </mat-form-field>
+    </ng-container>
+    <ng-template #staticContent>
+      <p>{{ data.message || 'Sei sicuro di voler continuare?' }}</p>
+    </ng-template>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Annulla</button>
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="onConfirm()"
+      *ngIf="!isEditable"
+      #confirmButton
+    >
+      Conferma
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onSave()"
+      *ngIf="isEditable"
+    >
+      Salva
+    </button>
+  </mat-dialog-actions>
+</div>

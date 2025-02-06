@@ -1,0 +1,52 @@
+<div class="container">
+  <h2 class="text-center">📅 Appuntamenti del Paziente</h2>
+
+  <!-- Ordinamento -->
+  <div class="sorting-container">
+    <label for="sortCriteria">Ordina per:</label>
+    <select id="sortCriteria" class="form-select" [(ngModel)]="sortCriteria" (change)="sortAppointments()">
+      <option value="dataEOrario">Data e ora</option>
+      <option value="trattamento">Trattamento</option>
+    </select>
+
+    <button class="btn btn-secondary" (click)="toggleSortOrder()">
+      <i class="bi" [ngClass]="sortAscending ? 'bi-arrow-down' : 'bi-arrow-up'"></i>
+      {{ sortAscending ? 'Dal più recente' : 'Dal meno recente' }}
+    </button>
+  </div>
+
+  <!-- Lista appuntamenti -->
+  <div class="card appointment-card" *ngIf="paginatedAppointments.length > 0; else noAppointments">
+    <div class="card-body">
+      <h4 class="card-title">🗓 Lista degli Appuntamenti</h4>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let appuntamento of paginatedAppointments">
+          <strong>📅 Data e ora:</strong> {{ appuntamento.dataEOrario | date:'short' }}<br />
+        <strong>📝 Stato:</strong>
+  <span [innerHTML]="getStatoIcon(appuntamento.stato)"></span>
+  {{ appuntamento.stato || 'Nessuno Stato' }}
+  
+  <br />
+          <strong>💉 Trattamento:</strong> {{ appuntamento.trattamento }}<br />
+          <strong>📝 Note:</strong> {{ appuntamento.note || 'Nessuna nota' }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Paginazione -->
+  <div class="pagination-container">
+    <button class="btn btn-outline-primary" (click)="previousPage()" [disabled]="currentPage === 1">
+      ◀ Precedente
+    </button>
+    <span>Pagina {{ currentPage }} di {{ totalPages }}</span>
+    <button class="btn btn-outline-primary" (click)="nextPage()" [disabled]="currentPage >= totalPages">
+      Successiva ▶
+    </button>
+  </div>
+
+  <!-- Messaggio se non ci sono appuntamenti -->
+  <ng-template #noAppointments>
+    <p class="text-danger text-center">❌ Nessun appuntamento trovato per questo paziente.</p>
+  </ng-template>
+</div>

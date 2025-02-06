@@ -1,7 +1,7 @@
 import { Materiale } from "../shared/materiale.module";
 
 export class Paziente {
-  public id: number;
+  public id: string;
   public nome: string;
   public cognome: string;
   public codiceFiscale: string; //es. pulizia, ortodonzia, chirurgia
@@ -10,10 +10,11 @@ export class Paziente {
   //public strumentiNecessari?: Strumento[];
   public indirizzo: string;
   public numeroDiCellulare: string;
-  public dentistaId: string; //usare User
+  public dottoreId: string; //usare User
+  public appuntamentiIds: string[]; // Aggiungi questo campo
 
   constructor(
-    id: number,
+    id: string,
     nome: string,
     cognome: string,
     codiceFiscale: string,
@@ -21,7 +22,8 @@ export class Paziente {
     sesso: string,
     indirizzo: string,
     numeroDiCellulare: string,
-    dentistaId: string
+    dottoreId: string,
+    appuntamentiIds: string[]
   ) {
     this.id = id;
     this.nome = nome;
@@ -31,6 +33,7 @@ export class Paziente {
     this.sesso = sesso;
     this.indirizzo = indirizzo;
     this.numeroDiCellulare = numeroDiCellulare;
-    this.dentistaId = dentistaId;
+    this.dottoreId = dottoreId;
+    this.appuntamentiIds = appuntamentiIds;
   }
 }

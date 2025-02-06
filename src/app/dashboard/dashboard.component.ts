@@ -5,7 +5,9 @@ import { AuthService } from "../auth/auth.service";
 import { UserRoleAndCalendarService } from "../userRoleAndCalendar.service";
 import { Observable, Subscription } from "rxjs";
 import { AppuntamentoService } from "../appuntamenti/appuntamento.service";
-import { Appuntamento } from "../appuntamenti/appuntamento.model";
+import { AppuntamentoDTO } from "../appuntamenti/appuntamentoDTO.model";
+import { UserModel } from "../auth/user.model";
+import { PazienteService } from "../pazienti/paziente.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -13,85 +15,165 @@ import { Appuntamento } from "../appuntamenti/appuntamento.model";
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
-  // message: string | undefined;
-  @Input() isDentist!: boolean; // Riceve il valore come input
-  private isDentistSub!: Subscription;
-  todayAppointmentsCount: number = 0;
-  upcomingAppointments: Appuntamento[] = [];
-  upcomingAppointmentsCount: number = 0;
-  recentActivities: { message: string; date: Date }[] = [];
+  // @Input() isDoctor!: boolean; 
+  // private isDoctorSub!: Subscription;
+  // todayAppointmentsCount: number = 0;
+  // upcomingAppointments: AppuntamentoDTO[] = [];
+  // upcomingAppointmentsCount: number = 0;
+  // recentActivities: { message: string; date: Date }[] = [];
+  // todayAppointments: AppuntamentoDTO[] = [];
+  // paginatedTodayAppointments: AppuntamentoDTO[] = []; 
+  // itemsPerPage: number = 4;
+  // currentPage: number = 1; 
+  // user: UserModel | undefined;
 
-  constructor(
-    private service: JwtService,
-    private authService: AuthService,
-    private router: Router,
-    private userRoleService: UserRoleAndCalendarService,
-    private appuntamentoService: AppuntamentoService
-  ) {}
+  // constructor(
+  //   private service: JwtService,
+  //   private authService: AuthService,
+  //   private router: Router,
+  //   private userRoleService: UserRoleAndCalendarService,
+  //   private appuntamentoService: AppuntamentoService,
+  //   private pazienteService: PazienteService
+  // ) {}
 
-  ngOnInit() {
-    this.isDentist = this.authService.isDentist(); // Ottiene il valore dal servizio
-    this.recentActivities = [
-      { message: 'Nuovo appuntamento prenotato', date: new Date() },
-      { message: 'Recensione ricevuta', date: new Date() },
-    ];
-  }
+  // ngOnInit() {
+  //   this.isDoctor = this.authService.isDoctor(); 
+  //   this.loadTodayAppointments(); 
+    
+  // }
 
-  getUpcomingAppointments() {
-    this.appuntamentoService
-      .getAppuntamentiFuturi()
-      .subscribe((appuntamenti) => {
-        this.upcomingAppointments = appuntamenti;
-        this.upcomingAppointmentsCount = appuntamenti.length; // Conta gli appuntamenti futuri
-        console.log(this.upcomingAppointmentsCount);
-      });
-  }
+  // loadTodayAppointments() {
+  //   const today = new Date();
+  //   today.setHours(0, 0, 0, 0);
 
-  viewAppointmentsToday() {
-    this.router.navigate(['/appuntamenti']); //   /today
-  }
+  //   this.appuntamentoService.getAppuntamenti().subscribe((appuntamenti) => {
+     
+  //     this.todayAppointments = appuntamenti.filter((appuntamento) => {
+  //       const appointmentDate = new Date(appuntamento.dataEOrario);
+  //       appointmentDate.setHours(0, 0, 0, 0); 
+  //       return appointmentDate.getTime() === today.getTime();
+  //     });
+    
+  //     this.todayAppointments.forEach((appuntamento) => {
+  //       this.loadPatientFromAppointment(appuntamento);
+  //     });
+  //     this.updatePaginatedAppointments();
+  //   });
+  // }
 
-  viewUpcomingAppointments() {
-    this.getUpcomingAppointments();
-    // Esegui la navigazione solo dopo che i dati sono stati caricati
-    setTimeout(() => {
-      this.router.navigate(['/appuntamenti/upcoming']);
-    }, 0); // Usa un timeout per assicurarti che la navigazione avvenga dopo l'aggiornamento dei dati
-  }
+  // loadPatientFromAppointment(appuntamento: AppuntamentoDTO) {
+   
+  //   const pazienteId = appuntamento.pazienteId;
 
-  viewServices() {
-    this.router.navigate(['/servizi-dentali']);
-  }
+  //   this.pazienteService.getPaziente(pazienteId).subscribe(
+  //     (paziente) => {
+       
+  //       appuntamento.paziente = paziente;
+  //     },
+  //     (error) => {
+  //       console.error("Errore nel recupero del paziente:", error);
+  //     }
+  //   );
 
-  viewStatistics() {
-    this.router.navigate(['/statistics']);
-  }
+  // }
 
-  navigateToNewAppointment() {
-    this.router.navigate(['/appuntamenti/new']);
-  }
+  // updatePaginatedAppointments() {
+  //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  //   const endIndex = startIndex + this.itemsPerPage;
+  //   this.paginatedTodayAppointments = this.todayAppointments.slice(
+  //     startIndex,
+  //     endIndex
+  //   );
+  // }
 
-  navigateToSettings() {
-    this.router.navigate(['/users']);
-  }
+  // nextPage() {
+  //   if (this.currentPage * this.itemsPerPage < this.todayAppointments.length) {
+  //     this.currentPage++;
+  //     this.updatePaginatedAppointments();
+  //   }
+  // }
 
-  navigateToOperazioni(): void {
-    this.router.navigate(['/operazioni']);
-  }
+  // previousPage() {
+  //   if (this.currentPage > 1) {
+  //     this.currentPage--;
+  //     this.updatePaginatedAppointments();
+  //   }
+  // }
 
-  navigateToPazienti(): void {
-    this.router.navigate(['/pazienti']);
-  }
+  // hasNextPage(): boolean {
+  //   return this.currentPage * this.itemsPerPage < this.todayAppointments.length;
+  // }
 
-  navigateToAppuntamenti(): void {
-    this.router.navigate(['/appuntamenti']);
-  }
+  // hasPreviousPage(): boolean {
+  //   return this.currentPage > 1;
+  // }
 
-  navigateToServiziDentali(): void {
-    this.router.navigate(['/servizi-dentali']);
-  }
+  // getUpcomingAppointments() {
+  //   this.appuntamentoService
+  //     .getAppuntamentiFuturi()
+  //     .subscribe((appuntamenti) => {
+  //       this.upcomingAppointments = appuntamenti;
+  //       this.upcomingAppointmentsCount = appuntamenti.length; 
+  //       console.log(this.upcomingAppointmentsCount);
+  //     });
+  // }
 
-  logout(): void {
-    this.authService.logout();
-  }
+  // viewAppointmentsToday() {
+  //   this.router.navigate(['/appuntamenti']); 
+  // }
+
+  // viewUpcomingAppointments() {
+  //   this.appuntamentoService
+  //     .getAppuntamentiFuturi()
+  //     .subscribe((appuntamenti) => {
+  //       this.upcomingAppointments = appuntamenti;
+  //       this.upcomingAppointmentsCount = appuntamenti.length;
+  //       this.router.navigate(['/appuntamenti/upcoming']);
+  //     });
+  // }
+
+  // onSelectAppuntamento(id: string) {
+  //   this.router.navigate(['/appuntamenti', id]);
+  // }
+
+  // viewStatistics() {
+  //   this.router.navigate(['/statistics']);
+  // }
+
+  // navigateToNewAppointment() {
+  //   this.router.navigate(['/appuntamenti/new']);
+  // }
+
+  // navigateToSettings() {
+  //   this.router.navigate(['/users']);
+  // }
+
+  // navigateToPazienti(): void {
+  //   this.router.navigate(['/pazienti']);
+  // }
+
+  // navigateToAppuntamenti(): void {
+  //   this.router.navigate(['/appuntamenti']);
+  // }
+
+  // logout(): void {
+  //   this.authService.logout();
+  // }
+
+  // getStatoIcon(stato: string): string {
+  //   switch (stato?.toLowerCase()) {
+  //     case 'eseguito':
+  //       return '✅';
+  //     case 'in_esecuzione':
+  //       return '⏳';
+  //     case 'futuro':
+  //       return '✔️';
+  //     case 'annullato':
+  //       return '❌';
+  //     case 'sospeso':
+  //       return '🔄';
+  //     default:
+  //       return '❓';
+  //   }
+  // }
 }

@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  Form,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PazienteService } from '../paziente.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-modifica-paziente',
@@ -16,99 +10,118 @@ import { PazienteService } from '../paziente.service';
   styleUrls: ['./modifica-paziente.component.css'],
 })
 export class ModificaPazienteComponent implements OnInit {
-  id: number | undefined;
-  editMode = false; //per capire se sto creando o modificando
-  formPaziente: FormGroup = new FormGroup({}); //reactive form
+  id: string | undefined;
+  editMode = false;
+  formPaziente!: FormGroup;
+  dottoreId: string | null = null;
+  stato: string = 'ATTIVO';
 
   constructor(
     private route: ActivatedRoute,
     private pazienteService: PazienteService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.id = +params['id'];
-      this.editMode = params['id'] != null; //se ha un id allora siamo in editMode
-      console.log('EDIT MODE==' + this.editMode);
-      this.initForm(); //LO CHIAMIAMO QUA PERCHE VUOL DIRE RICARICARE PAGINA CON NgonInit
+      this.id = params['id'];
+      this.editMode = params['id'] != null;
+      console.log('EDIT MODE == ' + this.editMode);
+      console.log('PARAMETRI ==', JSON.stringify(params));
+
+      this.authService.user$.subscribe((user) => {
+        if (user) {
+          this.dottoreId = user.id;
+        }
+      });
+
+      this.initForm();
     });
   }
 
   onSubmit() {
-    if (this.editMode) {
-      this.pazienteService.updatePaziente(this.id!, this.formPaziente.value);
-    } else {
-      this.pazienteService.addPaziente(this.formPaziente.value);
+    if (this.formPaziente.invalid) {
+      return; // Blocca il salvataggio se il form non è valido
     }
-    this.onCancel(); //navigo via una volta fatto
+
+    const pazienteFormValue = { ...this.formPaziente.value };
+
+    if (this.editMode) {
+      this.pazienteService.updatePaziente(this.id!, pazienteFormValue);
+    } else {
+      console.log(
+        'VALORE FORM JSON:',
+        JSON.stringify(this.formPaziente.value, null, 2)
+      );
+      this.pazienteService.addPaziente(pazienteFormValue);
+    }
+
+    this.onCancel();
   }
 
   private initForm() {
-    //inizializzo il form
-    let nomePaziente = '';
-    let cognomePaziente = '';
-    let codiceFiscalePaziente = '';
-    let dataDiNascitaPaziente: Date = new Date(); //questo deve diventare menu a tendina con scelta da array di Categoria[]
-    let sessoPaziente = '';
-    let indirizzoPaziente = ''; //questo deve diventare menu a tendina con scelta da array di Dentista[]
-    let numeroDiCellularePaziente = ''; //questo deve diventare menu a tendina con scelta stato
-    let dentistaIdPaziente = ''; //ID paziente associato
+    let nome = '';
+    let cognome = '';
+    let codiceFiscale = '';
+    let dataDiNascita: Date | null = null;
+    let sesso = '';
+    let indirizzo = '';
+    let numeroDiCellulare = '';
+    let dottoreId = this.dottoreId;
+    let stato = this.stato;
+
+    this.formPaziente = this.formBuilder.group({
+      nome: [nome, Validators.required],
+      cognome: [cognome, Validators.required],
+      codiceFiscale: [
+        codiceFiscale,
+        [
+          Validators.required,
+          Validators.pattern(
+            '^[A-Z]{6}[0-9]{2}[A-EHLMPR-T][0-9]{2}[A-Z][0-9]{3}[A-Z]$'
+          ),
+        ],
+      ],
+      dataDiNascita: [
+        dataDiNascita,
+        [Validators.required, this.dataDiNascitaValidator],
+      ],
+      sesso: [sesso, Validators.required],
+      indirizzo: [indirizzo, Validators.required],
+      numeroDiCellulare: [
+        numeroDiCellulare,
+        [Validators.required, Validators.pattern(/^\d{10}$/)],
+      ],
+      dottoreId: [dottoreId, Validators.required],
+      stato: [stato],
+    });
 
     if (this.editMode) {
       this.pazienteService.getPaziente(this.id!).subscribe((paziente) => {
-        nomePaziente = paziente.nome || '';
-        cognomePaziente = paziente.cognome || '';
-        codiceFiscalePaziente = paziente.codiceFiscale || '';
-        // Conversione della data di nascita da stringa a oggetto Date
-        dataDiNascitaPaziente = new Date(paziente.dataDiNascita);
-        sessoPaziente = paziente.sesso || '';
-        indirizzoPaziente = paziente.indirizzo || '';
-        numeroDiCellularePaziente = paziente.numeroDiCellulare || '';
-        dentistaIdPaziente = paziente.dentistaId || '';
-
-        this.formPaziente = this.formBuilder.group({
-          nome: [nomePaziente, Validators.required],
-          cognome: [cognomePaziente, Validators.required],
-          codiceFiscale: [
-            codiceFiscalePaziente,
-            Validators.required
-            //,
-            // Validators.pattern(
-            //   '^[A-Z]{6}[0-9]{2}[A-EHLMPR-T][0-9]{2}[A-Z][0-9]{3}[A-Z]$'
-            // ),
-          ],
-          dataDiNascita: [dataDiNascitaPaziente, Validators.required],
-          sesso: [sessoPaziente, Validators.required],
-          indirizzo: [indirizzoPaziente, Validators.required],
-          numeroDiCellulare: [numeroDiCellularePaziente, Validators.required],
-          dentistaId: [dentistaIdPaziente, Validators.required],
+        this.formPaziente.patchValue({
+          nome: paziente.nome,
+          cognome: paziente.cognome,
+          codiceFiscale: paziente.codiceFiscale,
+          dataDiNascita: new Date(paziente.dataDiNascita),
+          sesso: paziente.sesso,
+          indirizzo: paziente.indirizzo,
+          numeroDiCellulare: paziente.numeroDiCellulare,
+          dottoreId: paziente.dottoreId,
+          stato: this.stato,
         });
-      });
-    } else {
-      this.formPaziente = this.formBuilder.group({
-        nome: [nomePaziente, Validators.required],
-        cognome: [cognomePaziente, Validators.required],
-        codiceFiscale: [
-          codiceFiscalePaziente,
-          Validators.required
-          //,
-          // Validators.pattern(
-          //   '^[A-Z]{6}[0-9]{2}[A-EHLMPR-T][0-9]{2}[A-Z][0-9]{3}[A-Z]$'
-          // ),
-        ],
-        dataDiNascita: [dataDiNascitaPaziente, Validators.required],
-        sesso: [sessoPaziente, Validators.required],
-        indirizzo: [indirizzoPaziente, Validators.required],
-        numeroDiCellulare: [numeroDiCellularePaziente, Validators.required],
-        dentistaId: [dentistaIdPaziente, Validators.required],
       });
     }
   }
 
+  dataDiNascitaValidator(control: any) {
+    const inputDate = new Date(control.value);
+    const today = new Date();
+    return inputDate > today ? { futureDate: true } : null;
+  }
+
   onCancel() {
-    //se cancello in edit ritorno al detail page, se new mi porta in recipes page
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

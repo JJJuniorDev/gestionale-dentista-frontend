@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Modifica Appuntamento</h2>
+<div mat-dialog-content>
+  <form #stepForm="ngForm">
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>stato</mat-label>
+      <input
+        matInput
+        id="stato"
+        name="stato"
+        [(ngModel)]="updatedAppointment.stato"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>dataEOrario</mat-label>
+      <input
+        matInput
+        type="date"
+        id="dataEOrario"
+        name="dataEOrario"
+        [(ngModel)]="updatedAppointment.dataEOrario"
+        required
+      />
+    </mat-form-field>
+
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Annulla</button>
+  <button mat-raised-button color="primary" (click)="submitUpdatedAppointment()">
+    Salva Modifiche
+  </button>
+</div>

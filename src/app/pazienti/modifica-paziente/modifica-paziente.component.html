@@ -1,112 +1,128 @@
-<div class="row">
-    <div class="col-xs-12">
-        <!-- passiamo il recipe form reactive creato nome-->
-        <form [formGroup]="formPaziente" (ngSubmit)="onSubmit()">
-            <div class="row">
-               <div class="col-xs-12">
-                <button type="submit"
-                 class="btn- btn-success"
-                 [disabled]="!formPaziente.valid">Save</button>
-                <button type="button" class="btn- btn-danger" (click)="onCancel()">Cancel</button>
-                
-               </div>
-            </div>
-            <div class="row" >
-                <div class="div-col-xs-12">
-                    <div class="form-group">
-                       <label for="nome">Nome</label>
-                       <input 
-                       type="text"
-                       id="nome"
-                       formControlName="nome"
-                       class="form-control">
-                    </div>
-                </div>
-            </div>
-             <div class="row" >
-                <div class="div-col-xs-12">
-                    <div class="form-group">
-                       <label for="cognome">Cognome</label>
-                        <input 
-                       type="text"
-                       id="cognome"
-                       formControlName="cognome"
-                       class="form-control">
-                </div>
-            </div>
-             </div>
-              <div class="row" >
-                <div class="div-col-xs-12">
-                    <div class="form-group">
-                       <label for="codiceFiscale">codice Fiscale</label>
-                       <input 
-                       type="text"
-                       id="codiceFiscale"
-                       formControlName="codiceFiscale"
-                       class="form-control">
-                    </div>
-                </div>
-            </div>
-             <div class="row" >
-                <div class="div-col-xs-12">
-                    <div class="form-group">
-                       <label for="indirizzo">indirizzo</label>
-                       <input 
-                       type="text"
-                       id="indirizzo"
-                       formControlName="indirizzo"
-                       class="form-control">
-                    </div>
-                </div>
-            </div>
-             <div class="row" >
-                <div class="div-col-xs-12">
-                    <div class="form-group">
-                       <label for="dataDiNascita">Data Di Nascita</label>
-                       <input 
-                       type="date"
-                       id="dataDiNascita"
-                       formControlName="dataDiNascita"
-                       class="form-control">
-                    </div>
-                </div>
-            </div>
-             <div class="row" >
-                <div class="div-col-xs-12">
-                    <div class="form-group">
-                       <label for="sesso">Sesso</label>
-                       <input 
-                       type="text"
-                       id="sesso"
-                       formControlName="sesso"
-                       class="form-control">
-                    </div>
-                </div>
-            </div>
-             <div class="row" >
-                <div class="div-col-xs-12">
-                    <div class="form-group">
-                       <label for="numeroDiCellulare">Numero Di Cellulare</label>
-                       <input 
-                       type="text"
-                       id="numeroDiCellulare"
-                       formControlName="numeroDiCellulare"
-                       class="form-control">
-                    </div>
-                </div>
-            </div>
-             <div class="row" >
-                <div class="div-col-xs-12">
-                    <div class="form-group">
-                       <label for="dentistaId">dentistaId</label>
-                       <input 
-                       type="text"
-                       id="dentistaId"
-                       formControlName="dentistaId"
-                       class="form-control">
-                    </div>
-                </div>
-            </div>
-        </form>
+<div class="container">
+  <form [formGroup]="formPaziente" (ngSubmit)="onSubmit()" class="form-container">
+    <div class="form-header">
+      <h2>{{ editMode ? 'Modifica Paziente' : 'Crea Nuovo Paziente' }}</h2>
     </div>
+
+    <div class="form-body">
+      <!-- Row 1: Nome e Cognome -->
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input 
+              type="text"
+              id="nome"
+              formControlName="nome"
+              class="form-control"
+              placeholder="Inserisci il nome">
+            <div *ngIf="formPaziente.get('nome')?.invalid && formPaziente.get('nome')?.touched" class="error-message">
+              Nome obbligatorio.
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="cognome">Cognome</label>
+            <input 
+              type="text"
+              id="cognome"
+              formControlName="cognome"
+              class="form-control"
+              placeholder="Inserisci il cognome">
+            <div *ngIf="formPaziente.get('cognome')?.invalid && formPaziente.get('cognome')?.touched" class="error-message">
+              Cognome obbligatorio.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Data di Nascita e Codice Fiscale -->
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="dataDiNascita">Data di Nascita</label>
+            <mat-form-field class="full-width">
+              <input matInput [matDatepicker]="picker" formControlName="dataDiNascita" placeholder="Seleziona la data di nascita">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker startView="multi-year" panelClass="datepicker-panel"></mat-datepicker>
+            </mat-form-field>
+            <div *ngIf="formPaziente.get('dataDiNascita')?.invalid && formPaziente.get('dataDiNascita')?.touched" class="error-message">
+              Inserisci una data valida e non futura.
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="codiceFiscale">Codice Fiscale</label>
+            <input 
+              type="text"
+              id="codiceFiscale"
+              formControlName="codiceFiscale"
+              class="form-control"
+              placeholder="Inserisci il codice fiscale">
+            <div *ngIf="formPaziente.get('codiceFiscale')?.invalid && formPaziente.get('codiceFiscale')?.touched" class="error-message">
+              Inserisci un codice fiscale valido (16 caratteri).
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Indirizzo e Sesso -->
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="indirizzo">Indirizzo</label>
+            <input 
+              type="text"
+              id="indirizzo"
+              formControlName="indirizzo"
+              class="form-control"
+              placeholder="Inserisci l'indirizzo">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="sesso">Sesso</label>
+            <select id="sesso" formControlName="sesso" class="form-control">
+              <option value="" disabled selected>Seleziona...</option>
+              <option value="Maschio">Maschio</option>
+              <option value="Femmina">Femmina</option>
+              <option value="Non binario">Non binario</option>
+              <option value="Altro">Altro</option>
+              <option value="Preferisco non dire">Preferisco non dire</option>
+            </select>
+            <div *ngIf="formPaziente.get('sesso')?.invalid && formPaziente.get('sesso')?.touched" class="error-message">
+              Seleziona un'opzione.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4: Numero di Cellulare -->
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="numeroDiCellulare">Numero di Cellulare</label>
+            <input 
+              type="text"
+              id="numeroDiCellulare"
+              formControlName="numeroDiCellulare"
+              class="form-control"
+              placeholder="Inserisci il numero di cellulare">
+            <div *ngIf="formPaziente.get('numeroDiCellulare')?.invalid && formPaziente.get('numeroDiCellulare')?.touched" class="error-message">
+              Il numero deve avere 10 cifre e solo numeri.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-success" [disabled]="formPaziente.invalid">
+          Salva
+        </button>
+        <button type="button" class="btn btn-danger" (click)="onCancel()">Annulla</button>
+      </div>
+    </div>
+  </form>
 </div>

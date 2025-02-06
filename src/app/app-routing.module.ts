@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { ServiziDentaliComponent } from './servizi-dentali/services/servizi-dentali.component';
 import { UserSettingsComponent } from './auth/user-settings/user-settings.component';
 import { UserItemComponent } from './auth/user-settings/user-item/user-item.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { ListaAppuntamentiComponent } from './appuntamenti/lista-appuntamenti/lista-appuntamenti.component';
+import { AppuntamentiPazienteComponent } from './pazienti/appuntamenti-paziente/appuntamenti-paziente.component';
+import { PatientTreatmentPlansComponent } from './pazienti/patient-treatment-plans/patient-treatment-plans.component';
+import { FarmacoInUsoComponent } from './pazienti/lista-operazioni/paziente/storia-medica/pazienti/storia-medica/FarmacoInUso/farmaco-in-uso/farmaco-in-uso.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -15,11 +17,6 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
   { path: 'dashboard', component: DashboardComponent },
-  {
-    path: 'operazioni',
-    loadChildren: () =>
-      import('./operazioni/operazioni.module').then((m) => m.OperazioniModule),
-  },
   {
     path: 'pazienti',
     loadChildren: () =>
@@ -32,10 +29,18 @@ const routes: Routes = [
         (m) => m.AppuntamentiModule
       ),
   },
-  { path: 'servizi-dentali', component: ServiziDentaliComponent },
   { path: 'users', component: UserSettingsComponent },
   { path: 'users/:id', component: UserItemComponent },
   { path: 'statistics', component: StatisticsComponent },
+  {
+    path: 'patientAppointments/:id',
+    component: AppuntamentiPazienteComponent,
+  },
+  { path: 'appuntamenti/upcoming', component: ListaAppuntamentiComponent },
+  {
+    path: 'farmaci/:farmacoId',
+    component: FarmacoInUsoComponent,
+  },
   {
     path: '**',
     redirectTo: 'auth/login',

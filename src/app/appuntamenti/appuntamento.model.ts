@@ -1,26 +1,25 @@
-import { Operazione } from "../operazioni/operazione.model";
 
 export class Appuntamento {
   public id: string;
   public dataEOrario: Date;
-  public codiceFiscalePaziente: string;
   public trattamento: string;
   public note: string;
-  public operazioni: Operazione[];
+  public pazienteId: string; // Usare l'ID del paziente invece del codice fiscale
+  public stato: string;
 
   constructor(
     id: string,
     dataEOrario: Date,
-    codiceFiscalePaziente: string,
+    pazienteId: string,
     trattamento: string,
     note: string,
-    operazioni: Operazione[]
+    stato: string
   ) {
     this.id = id;
     this.dataEOrario = dataEOrario;
-    this.codiceFiscalePaziente = codiceFiscalePaziente;
+    this.pazienteId = pazienteId;
     this.trattamento = trattamento;
     this.note = note;
-    this.operazioni = operazioni;
+    this.stato = stato;
   }
 }

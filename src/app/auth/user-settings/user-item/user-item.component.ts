@@ -41,9 +41,9 @@ export class UserItemComponent {
     console.log('EMAIL:::' + this.user.email);
     this.userSettingsService.getUserByEmail(this.user.email).subscribe(
       (user) => {
-        if (user.ruolo === 'dentista') {
-          this.message = 'Non puoi modificare il ruolo di un dentista.';
-          alert('NON PUOI MODIFICARE IL RUOLO DI UN DENTISTA');
+        if (user.ruolo === 'dottore') {
+          this.message = 'Non puoi modificare il ruolo di un dottore.';
+          alert('NON PUOI MODIFICARE IL RUOLO DI UN dottore');
           return;
         }
 
@@ -53,7 +53,7 @@ export class UserItemComponent {
           return;
         }
 
-        // Esegui l'aggiornamento solo se l'utente non è un dentista
+        // Esegui l'aggiornamento solo se l'utente non è un dottore
         const updatedUser = {
           ...user,
           ruolo: this.selectedRole,
