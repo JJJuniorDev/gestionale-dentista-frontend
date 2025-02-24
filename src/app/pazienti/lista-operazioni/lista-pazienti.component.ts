@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Paziente } from '../paziente.model';
 import {  PazienteService } from '../paziente.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-lista-pazienti',
@@ -23,7 +24,8 @@ export class ListaPazientiComponent implements OnInit, OnDestroy {
   constructor(
     private pazienteService: PazienteService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -35,19 +37,20 @@ export class ListaPazientiComponent implements OnInit, OnDestroy {
         this.updatePaginatedResults(); // Assicurati che i dati siano aggiornati dopo averli ricevuti
       }
     );
+    console.log('DOTTORE ID: ' + this.authService.getUserId()!);
+    const dottoreId = this.authService.getUserId()!;
     this.pazienteService
-      .getPazienti()
+      .getPazienti(dottoreId)
       .subscribe((pazienti: Paziente[]) => {
         this.pazienti = pazienti;
-         console.log(
-           'Appuntamenti per ogni paziente:',
-           this.pazienti.map((p) => ({
-             id: p.id,
-             appuntamentiIds: p.appuntamentiIds,
-      
-           }))
-         );
-   this.filteredPazienti = this.pazienti;
+        console.log(
+          'Appuntamenti per ogni paziente:',
+          this.pazienti.map((p) => ({
+            id: p.id,
+            appuntamentiIds: p.appuntamentiIds,
+          }))
+        );
+        this.filteredPazienti = this.pazienti;
         this.updatePaginatedResults();
       });
   }

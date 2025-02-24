@@ -15,7 +15,6 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { PazientiModule } from './pazienti/pazienti.module';
 import { AppuntamentiModule } from './appuntamenti/appuntamenti.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -42,6 +41,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import localeIt from '@angular/common/locales/it';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './spinner/loading.interceptor';
+import { AllegatiComponent } from './allegati/allegati/allegati.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
 
@@ -49,11 +52,9 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
   declarations: [
     AppComponent,
     HeaderComponent,
-    //RegisterComponent,
-    //LoginComponent,
-    DashboardComponent,
     StatisticsComponent,
     ConfirmationModalComponent,
+    AllegatiComponent,
   ],
   imports: [
     NgChartsModule,
@@ -84,6 +85,11 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
     MatInputModule,
     MatTooltipModule,
     NgxSpinnerModule,
+    CommonModule,
+    BrowserAnimationsModule, // Necessario per il paginator
+    MatPaginatorModule, // Importa il modulo per il paginator
+    MatButtonModule, // Se utilizzi i bottoni Material
+    MatIconModule, // Se utilizzi le icone Material
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'it' },

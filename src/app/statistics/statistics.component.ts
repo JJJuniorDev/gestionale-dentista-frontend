@@ -50,39 +50,41 @@ export class StatisticsComponent implements OnInit {
     private http: HttpClient,
     private authService: AuthService,
     private pazienteService: PazienteService,
-    private appuntamentoService: AppuntamentoService
+    private appuntamentoService: AppuntamentoService,
   ) {}
 
   ngOnInit(): void {
-    this.pazienteService.getPazienti().subscribe((pazienti: Paziente[]) => {
-      // Calcolo statistiche
-      this.numberOfPatients = pazienti.length;
-      this.numberOfPatientsInAttesa = pazienti.filter(
-        (p: any) => p.stato === 'in attesa'
-      ).length;
-      this.numberOfPatientsCompleted = pazienti.filter(
-        (p: any) => p.stato === 'attivo'
-      ).length;
-      this.numberOfPatientsConclusi = pazienti.filter(
-        (p: any) => p.stato === 'concluso'
-      ).length;
+    this.pazienteService
+      .getPazienti(this.authService.getUserId()!)
+      .subscribe((pazienti: Paziente[]) => {
+        // Calcolo statistiche
+        this.numberOfPatients = pazienti.length;
+        this.numberOfPatientsInAttesa = pazienti.filter(
+          (p: any) => p.stato === 'in attesa'
+        ).length;
+        this.numberOfPatientsCompleted = pazienti.filter(
+          (p: any) => p.stato === 'attivo'
+        ).length;
+        this.numberOfPatientsConclusi = pazienti.filter(
+          (p: any) => p.stato === 'concluso'
+        ).length;
 
-      // Prepara i dati per il grafico
-      this.chartData = [
-        this.numberOfPatientsInAttesa,
-        this.numberOfPatientsCompleted,
-        this.numberOfPatientsConclusi,
-      ];
+        // Prepara i dati per il grafico
+        this.chartData = [
+          this.numberOfPatientsInAttesa,
+          this.numberOfPatientsCompleted,
+          this.numberOfPatientsConclusi,
+        ];
 
-      // Aggiorna il grafico dei pazienti
-      this.createCharts(
-        'generalChart',
-        this.chartData,
-        ['In attesa', 'Attivo', 'Concluso'],
-        'patientChart'
-      );
-      // this.updatePatientChart();
-    });
+        // Aggiorna il grafico dei pazienti
+        this.createCharts(
+          'generalChart',
+          this.chartData,
+          ['In attesa', 'Attivo', 'Concluso'],
+          'patientChart'
+        );
+        // this.updatePatientChart();
+      });
 
     this.appuntamentoService
       .getAppuntamenti()
@@ -277,28 +279,30 @@ export class StatisticsComponent implements OnInit {
       );
     } else if (this.selectedParameter === 'eta') {
       // Calcola distribuzione per età
-      this.pazienteService.getPazienti().subscribe((pazienti: Paziente[]) => {
-        const ageCounts = [0, 0, 0, 0]; // Inizializza i conteggi per ogni range di età
-        const currentYear = new Date().getFullYear();
+      this.pazienteService
+        .getPazienti(this.authService.getUserId()!)
+        .subscribe((pazienti: Paziente[]) => {
+          const ageCounts = [0, 0, 0, 0]; // Inizializza i conteggi per ogni range di età
+          const currentYear = new Date().getFullYear();
 
-        pazienti.forEach((paziente) => {
-          const birthYear = new Date(paziente.dataDiNascita).getFullYear();
-          const age = currentYear - birthYear;
+          pazienti.forEach((paziente) => {
+            const birthYear = new Date(paziente.dataDiNascita).getFullYear();
+            const age = currentYear - birthYear;
 
-          if (age <= 18) ageCounts[0]++;
-          else if (age <= 35) ageCounts[1]++;
-          else if (age <= 60) ageCounts[2]++;
-          else ageCounts[3]++;
+            if (age <= 18) ageCounts[0]++;
+            else if (age <= 35) ageCounts[1]++;
+            else if (age <= 60) ageCounts[2]++;
+            else ageCounts[3]++;
+          });
+
+          this.generalChartData = ageCounts;
+          this.createCharts(
+            'generalChart',
+            this.generalChartData,
+            this.ageRanges,
+            'patientChart'
+          );
         });
-
-        this.generalChartData = ageCounts;
-        this.createCharts(
-          'generalChart',
-          this.generalChartData,
-          this.ageRanges,
-          'patientChart'
-        );
-      });
     }
   }
 }

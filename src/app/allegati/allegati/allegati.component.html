@@ -1,0 +1,38 @@
+<div class="container-fluid mt-4">
+  <!-- Titolo principale con design migliore -->
+  <h2 class="text-center mb-4 main-title">Gestione Allegati</h2>
+
+  <!-- Upload File -->
+  <div class="mb-4 text-center">
+    <input type="file" (change)="onFileSelected($event)" class="form-control d-inline-block" style="width: 350px; border-radius: 25px;">
+    <button class="btn btn-primary mt-3" (click)="uploadFile()" [disabled]="!fileToUpload" style="border-radius: 25px; font-size: 1.1em;">Carica Allegato</button>
+  </div>
+
+  <!-- Lista Allegati -->
+  <h3 class="mt-4 text-center text-muted subtitle">Allegati</h3>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4" *ngFor="let allegato of allegati | slice: pageIndex * pageSize : (pageIndex + 1) * pageSize">
+      <div class="card shadow-lg rounded-lg h-100" style="border: none; transition: transform 0.3s; min-height: 380px; max-width: 320px; border-radius: 15px;">
+        <div class="card-body d-flex flex-column">
+          <span (click)="viewFile(allegato.id, allegato.tipoFile)" class="file-title">
+            {{ allegato.nomeFile }}
+          </span>
+          <p class="card-text text-muted mt-2 file-type">{{ allegato.tipoFile }}</p>
+          <p class="card-text upload-date" style="font-size: 1.1em;">Caricato il: {{ allegato.dataCaricamento | date: 'dd/MM/yyyy' }}</p>
+          <div class="d-flex justify-content-between mt-auto">
+            <button class="btn btn-success btn-lg" (click)="downloadFile(allegato.id, allegato.nomeFile)" style="border-radius: 20px; font-size: 1.1em;">Scarica</button>
+            <button class="btn btn-danger btn-lg" (click)="deleteFile(allegato.id)" style="border-radius: 20px; font-size: 1.1em;">Elimina</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paginatore Material -->
+  <mat-paginator [length]="totalFiles"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="[3, 5, 10, 20]"
+                 (page)="pageChanged($event)">
+  </mat-paginator>
+</div>

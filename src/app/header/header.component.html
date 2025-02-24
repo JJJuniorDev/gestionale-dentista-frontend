@@ -12,7 +12,9 @@
         <button *ngIf="currentRoute !== '/pazienti'" class="btn btn-primary btn-lg me-2" (click)="onGoToPatients()">Pazienti <i class="bi bi-person-vcard-fill"></i></button>
         <button *ngIf="currentRoute !== '/users'" class="btn btn-light btn-lg me-2" (click)="onGoToSettings()">Impostazioni</button> 
         <button class="btn btn-light btn-lg me-2" (click)="onLogout()">Logout <i class="bi bi-door-open-fill"></i></button>
-     
+     <button *ngIf="currentRoute !== '/allegati'" class="btn btn-info btn-lg me-2" (click)="onGoToAllegati()">
+  Allegati <i class="bi bi-paperclip"></i>
+</button>
       </div>
     </div>
   </div>

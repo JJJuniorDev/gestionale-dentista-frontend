@@ -69,7 +69,7 @@ export class AppuntamentiModificaComponent implements OnInit {
     });
     // Carica la lista dei pazienti
     this.subscription = this.pazienteService
-      .getPazienti()
+      .getPazienti(this.authService.getUserId()!)
       .subscribe((pazienti: Paziente[]) => {
         this.pazienti = pazienti;
         // Imposta il filtro in tempo reale
@@ -145,6 +145,7 @@ export class AppuntamentiModificaComponent implements OnInit {
   }
 
   onSubmit() {
+   
     this.formAppuntamento.patchValue({ dottoreId: this.dottoreId });
     console.log('Dottore ID:', this.dottoreId);
     const pazienteId = this.getPazienteId(
@@ -155,6 +156,7 @@ export class AppuntamentiModificaComponent implements OnInit {
       return;
     }
     const dataSelezionata: Date = this.formAppuntamento.value.data;
+     console.log('Data selezionata:', dataSelezionata.toISOString());
     if (!dataSelezionata) {
       console.error('Errore: Data non selezionata!');
       return;

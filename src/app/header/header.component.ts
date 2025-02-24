@@ -26,14 +26,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private userRoleService: UserRoleAndCalendarService,
     private appuntamentoService: AppuntamentoService
   ) {
-    this.userSub = this.store
-      .select('auth')
-      .pipe(map((authState) => authState.user))
-      .subscribe((user) => {
-        this.isDoctor = authService.getUserRole() === 'dottore';
-        this.userRoleService.setIsDoctor(this.isDoctor); // Imposta lo stato dell'utente
-        console.log('Header.ts->Is isDoctor:', this.isDoctor);
-      });
+  //   this.userSub = this.store
+  //     .select('auth')
+  //     .pipe(
+  //       map((authState) => authState.user),
+  // ).subscribe((user) => {
+  //       this.isDoctor = authService.getUserRole() === 'dottore';
+  //       this.userRoleService.setIsDoctor(this.isDoctor); // Imposta lo stato dell'utente
+  //       console.log('Header.ts->Is isDoctor:', this.isDoctor);
+  //     });
   }
 
   ngOnDestroy() {
@@ -41,6 +42,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Sottoscrizione al ruolo dell'utente
+   this.userSub = this.authService.userRole$.subscribe((role) => {
+     this.isDoctor = role === 'dottore';
+     this.userRoleService.setIsDoctor(this.isDoctor);
+     console.log('Header.ts -> Is Doctor:', this.isDoctor);
+   });
+    // Traccia la route corrente
     this.userSub.add(
       this.router.events
         .pipe(
@@ -54,14 +62,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
   }
 
-   onGoToSettings() {
-     this.router.navigate(['/users']);
-   }
+  onGoToSettings() {
+    this.router.navigate(['/users']);
+  }
 
-  // onGoToDashboard() {
-  //   this.router.navigateByUrl('/dashboard');
-  // }
-
+  onGoToAllegati() {
+    this.router.navigate(['/allegati']);
+  }
+  
   onGoToAppointments() {
     this.router.navigate(['/appuntamenti']);
   }
@@ -80,9 +88,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onGoToDoctorAppointments() {
     const dottoreId = this.authService.getUserId(); // Ottieni l'ID dell'utente autenticato
-
-    // Sottoscrizione all'Observable per ottenere i dati e stamparli
-    console.log('ID dottoreId: ' + dottoreId);
     this.appuntamentoService.getAppuntamentiPerDottore(dottoreId!).subscribe({
       next: (getAppDottore) => {
         console.log('RISULTATO ===', getAppDottore); // Stampa i risultati nel console

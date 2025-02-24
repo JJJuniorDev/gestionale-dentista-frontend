@@ -1,0 +1,190 @@
+/* Impostiamo il background scuro */
+body {
+  background-color: #1a1a1a; /* Scuro, quasi nero */
+  color: #e5e5e5; /* Testo chiaro per contrastare lo sfondo scuro */
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Contenitore centrale per il layout */
+.container-fluid {
+  max-width: 100%;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+/* Miglioramento del titolo principale */
+h2 {
+  font-size: 2.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Miglioramento dei titoli secondari */
+h3 {
+  font-size: 1.8rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+/* Form input file */
+input[type="file"] {
+  border-radius: 25px;
+  border: 2px solid #2980b9;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #2980b9;
+  transition: 0.3s ease-in-out;
+}
+
+input[type="file"]:hover {
+  border-color: #3498db;
+}
+
+/* Pulsante di upload e download con stile */
+.btn {
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  border: 1px solid #2980b9;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+  border: 1px solid #3498db;
+}
+
+.btn-success {
+  background-color: #2ecc71;
+  border: 1px solid #27ae60;
+}
+
+.btn-success:hover {
+  background-color: #27ae60;
+  border: 1px solid #2ecc71;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  border: 1px solid #c0392b;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+  border: 1px solid #e74c3c;
+}
+
+/* Styling per la card */
+.card {
+  transition: transform 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.card-text {
+  font-size: 1.1em;
+  color: #34495e;
+  margin-top: 10px;
+}
+
+/* Formattazione dei nomi file */
+.card span {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #2980b9;
+  font-weight: bold;
+}
+
+.card span:hover {
+  color: #3498db;
+}
+
+/* Effetto hover sulle card */
+.card:hover {
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+  transform: translateY(-10px);
+}
+
+/* Paginatore */
+.mat-paginator {
+  margin-top: 30px;
+}
+
+/* Card col-lg */
+@media (max-width: 1200px) {
+  .col-lg-2 {
+    max-width: 250px;
+  }
+}
+
+/* Titolo dei file, colorato e sottolineato */
+.file-title {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #2980b9;
+  font-weight: bold;
+  font-size: 1.2em;
+  transition: color 0.3s ease;
+}
+
+.file-title:hover {
+  color: #3498db;
+}
+
+/* Tipologia del file con stile delicato */
+.file-type {
+  font-size: 1.1em;
+  color: #7f8c8d;
+}
+
+/* Data di caricamento in formato leggibile */
+.upload-date {
+  font-size: 1.1em;
+  color: #34495e;
+  margin-top: 10px;
+}
+
+/* Titolo principale con design migliore */
+.main-title {
+  font-size: 2.7rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  color: white;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+  transition: all 0.3s ease;
+}
+
+/* Aggiunta animazione al passaggio sopra il titolo */
+.main-title:hover {
+  color: #2980b9;
+  transform: scale(1.05);
+}
+
+/* Titolo secondario, più delicato ma elegante */
+.subtitle {
+  font-size: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #7f8c8d;
+  font-weight: 500;
+  margin-bottom: 20px;
+}

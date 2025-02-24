@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserSettingsComponent } from './auth/user-settings/user-settings.component';
 import { UserItemComponent } from './auth/user-settings/user-item/user-item.component';
 import { StatisticsComponent } from './statistics/statistics.component';
@@ -8,6 +7,7 @@ import { ListaAppuntamentiComponent } from './appuntamenti/lista-appuntamenti/li
 import { AppuntamentiPazienteComponent } from './pazienti/appuntamenti-paziente/appuntamenti-paziente.component';
 import { PatientTreatmentPlansComponent } from './pazienti/patient-treatment-plans/patient-treatment-plans.component';
 import { FarmacoInUsoComponent } from './pazienti/lista-operazioni/paziente/storia-medica/pazienti/storia-medica/FarmacoInUso/farmaco-in-uso/farmaco-in-uso.component';
+import { AllegatiComponent } from './allegati/allegati/allegati.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -16,7 +16,6 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
-  { path: 'dashboard', component: DashboardComponent },
   {
     path: 'pazienti',
     loadChildren: () =>
@@ -40,6 +39,9 @@ const routes: Routes = [
   {
     path: 'farmaci/:farmacoId',
     component: FarmacoInUsoComponent,
+  },
+  {
+  path: 'allegati', component: AllegatiComponent
   },
   {
     path: '**',

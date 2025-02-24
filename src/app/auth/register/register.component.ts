@@ -24,7 +24,8 @@ export class RegisterComponent implements OnInit {
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required]],
         confermaPassword: ['', [Validators.required]],
-      } //{ validator: this.passwordMathValidator }
+      } ,
+      { validator: this.passwordMathValidator }
     );
   }
 

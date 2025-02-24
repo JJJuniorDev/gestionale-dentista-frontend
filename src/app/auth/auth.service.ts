@@ -91,15 +91,21 @@ export class AuthService {
 
   login(token: string) {
     localStorage.setItem('jwt', token);
-    this.loadUserRole();
-     this.loadUserFromToken();
+    const role = this.getUserRole(); // Recupera il ruolo dal token
+    console.log('Ruolo dopo login:', role); // Debug
+    this._userRole.next(role); // Assicura che il ruolo venga emesso
+    this.loadUserRole(); // Garantisce il refresh del ruolo
+    this.loadUserFromToken();
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   }
 
   logout() {
     localStorage.removeItem('jwt');
-    console.log('TOKEN: ' + localStorage.getItem('jwt'));
+    console.log('TOKEN dopo logout: ' + localStorage.getItem('jwt'));
     this._userRole.next(null);
-    this.setUserRole('user');
+    // this.setUserRole('user');
      this._user.next(null);
     this.router.navigate(['/']);
   }

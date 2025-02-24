@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 // import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { Observable, Subject, map } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Paziente } from './paziente.model';
 import { PatientTreatmentPlan } from './patient-treatment-plans/PatientTreatmentPlan.model';
 import { AppuntamentoDTO } from '../appuntamenti/appuntamentoDTO.model';
@@ -37,16 +37,20 @@ export class PazienteService {
     this.pazientiChanged.next(this.pazienti.slice());
   }
 
-  getPazienti(): Observable<Paziente[]> {
-    return this.http.get<any>(this.apiUrl).pipe(
-      map((data) => {
-        return data.pazienti.map((item: any) => ({
-          ...item,
-          id: item.id,
-          appuntamentiIds: item.appuntamentiIds, // Include direttamente gli appuntamentiIds
-        }));
+  getPazienti(dottoreId: string): Observable<Paziente[]> {
+    return this.http
+      .get<any>(this.apiUrl, {
+        params: { dottoreId }, // Invia dottoreId come parametro
       })
-    );
+      .pipe(
+        map((data) => {
+          return data.pazienti.map((item: any) => ({
+            ...item,
+            id: item.id,
+            appuntamentiIds: item.appuntamentiIds, // Include direttamente gli appuntamentiIds
+          }));
+        })
+      );
   }
 
   getPaziente(id: string): Observable<Paziente> {
