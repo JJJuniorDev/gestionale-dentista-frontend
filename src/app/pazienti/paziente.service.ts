@@ -6,12 +6,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Paziente } from './paziente.model';
 import { PatientTreatmentPlan } from './patient-treatment-plans/PatientTreatmentPlan.model';
 import { AppuntamentoDTO } from '../appuntamenti/appuntamentoDTO.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class PazienteService {
   pazientiChanged = new Subject<Paziente[]>();
   private pazienti: Paziente[] = [];
-  private apiUrl = 'http://localhost:8082/api/pazienti';
+  private apiUrl = environment.pazientiMicroserviceUrl;
 
   constructor(private http: HttpClient) {}
 
