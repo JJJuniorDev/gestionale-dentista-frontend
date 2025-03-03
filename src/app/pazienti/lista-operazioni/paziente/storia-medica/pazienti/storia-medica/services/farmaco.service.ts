@@ -8,7 +8,7 @@ import { Farmaco } from '../models/farmaco.model';
   providedIn: 'root',
 })
 export class FarmacoService {
-  private apiUrl = 'http://localhost:8082/api/pazienti/farmaci';
+  private apiUrl = 'http://localhost:8080/api/pazienti/farmaci';
 
   constructor(private http: HttpClient) {}
 

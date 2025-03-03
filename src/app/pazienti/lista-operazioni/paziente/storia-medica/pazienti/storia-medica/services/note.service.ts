@@ -8,7 +8,7 @@ import { NotaDTO } from "../models/notaDTO.model";
   providedIn: 'root',
 })
 export class NoteService {
-  private apiUrl = 'http://localhost:8082/api/nota';
+  private apiUrl = 'http://localhost:8080/api/nota';
 
   constructor(private http: HttpClient) {}
   getNotesByIds(ids: string[]): Observable<NotaDTO[]> {

@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class AllegatiService {
-  private baseUrl = 'http://localhost:8082/api/allegati';
+  private baseUrl = 'http://localhost:8080/api/allegati';
 
   constructor(private http: HttpClient) {}
 

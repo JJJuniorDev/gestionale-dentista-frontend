@@ -5,7 +5,7 @@ import { Fattura } from '../fatturazione/fattura.model';
 
 @Injectable()
 export class FatturazioneService {
-  private apiUrl = 'http://localhost:8081/api/appuntamenti';
+  private apiUrl = 'http://localhost:8080/api/appuntamenti';
 
   constructor(private http: HttpClient) {}
 
