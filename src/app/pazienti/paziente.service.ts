@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 export class PazienteService {
   pazientiChanged = new Subject<Paziente[]>();
   private pazienti: Paziente[] = [];
-  private apiUrl = environment.pazientiMicroserviceUrl;
+  private apiUrl = environment.pazientiMicroserviceUrl+'/pazienti';
 
   constructor(private http: HttpClient) {}
 

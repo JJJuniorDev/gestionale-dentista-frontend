@@ -17,7 +17,7 @@ import { PazienteService } from '../pazienti/paziente.service';
 export class AppuntamentoService {
   appuntamentiChanged = new Subject<AppuntamentoDTO[]>();
   private appuntamenti: AppuntamentoDTO[] = [];
-  private apiUrl = environment.appuntamentoMicroserviceUrl;
+  private apiUrl = environment.appuntamentoMicroserviceUrl+"/appuntamenti";
   private pazienteService!: PazienteService; // Dichiarazione senza inizializzazione
 
   constructor(
@@ -43,7 +43,7 @@ export class AppuntamentoService {
   ): Observable<AppuntamentoDTO[]> {
     console.log("DOTTORE ID: "+dottoreId);
     return this.http.get<AppuntamentoDTO[]>(
-      `${this.apiUrl}/appuntamenti/dottore/${dottoreId}`
+      `${this.apiUrl}/dottore/${dottoreId}`
     );
   }
 
