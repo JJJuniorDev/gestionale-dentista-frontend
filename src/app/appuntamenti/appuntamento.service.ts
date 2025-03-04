@@ -43,7 +43,7 @@ export class AppuntamentoService {
   ): Observable<AppuntamentoDTO[]> {
     console.log("DOTTORE ID: "+dottoreId);
     return this.http.get<AppuntamentoDTO[]>(
-      `${this.apiUrl}/dottore/${dottoreId}`
+      `${this.apiUrl}/appuntamenti/dottore/${dottoreId}`
     );
   }
 
