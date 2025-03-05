@@ -4,13 +4,13 @@
       <h1 class="navbar-brand mb-0">STUDIO</h1>
       <div class="d-flex">
          <!-- Nuovo pulsante per le Statistiche -->
-        <button *ngIf="currentRoute !== '/statistics'" class="btn btn-warning btn-lg me-2" (click)="onGoToStatistics()">Statistiche <i class="bi bi-bar-chart-line-fill"></i></button>
+        <!-- <button *ngIf="currentRoute !== '/statistics'" class="btn btn-warning btn-lg me-2" (click)="onGoToStatistics()">Statistiche <i class="bi bi-bar-chart-line-fill"></i></button> -->
 
         <!-- <button *ngIf="currentRoute !== '/dashboard'" class="btn btn-light btn-lg me-2" (click)="onGoToDashboard()">Torna alla Dashboard</button> -->
         <!-- <button *ngIf="currentRoute !== '/appuntamenti'" class="btn btn-info btn-lg me-2" (click)="onGoToAppointments()">Appuntamenti Della Clinica</button> -->
         <button *ngIf="currentRoute !== '/pazienti'" class="btn btn-success btn-lg me-2" (click)="onGoToDoctorAppointments()">I miei appuntamenti <i class="bi bi-clipboard2-pulse-fill"></i></button>
         <button *ngIf="currentRoute !== '/pazienti'" class="btn btn-primary btn-lg me-2" (click)="onGoToPatients()">Pazienti <i class="bi bi-person-vcard-fill"></i></button>
-        <button *ngIf="currentRoute !== '/users'" class="btn btn-light btn-lg me-2" (click)="onGoToSettings()">Impostazioni</button> 
+        <!-- <button *ngIf="currentRoute !== '/users'" class="btn btn-light btn-lg me-2" (click)="onGoToSettings()">Impostazioni</button>  -->
         <button class="btn btn-light btn-lg me-2" (click)="onLogout()">Logout <i class="bi bi-door-open-fill"></i></button>
      <button *ngIf="currentRoute !== '/allegati'" class="btn btn-info btn-lg me-2" (click)="onGoToAllegati()">
   Allegati <i class="bi bi-paperclip"></i>
