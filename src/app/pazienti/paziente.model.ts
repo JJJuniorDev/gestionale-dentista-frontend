@@ -1,4 +1,3 @@
-import { Materiale } from "../shared/materiale.module";
 
 export class Paziente {
   public id: string;

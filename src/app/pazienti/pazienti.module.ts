@@ -4,8 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PazientiRoutingModule } from './pazienti-routing.module';
-import { SharedModule } from '../shared/shared.module';
-
 import { HttpClientModule } from '@angular/common/http';
 import { ListaPazientiComponent } from './lista-operazioni/lista-pazienti.component';
 import { DettagliPazienteComponent } from './dettagli-paziente/dettagli-paziente.component';
@@ -67,7 +65,6 @@ import { AppuntamentoService } from '../appuntamenti/appuntamento.service';
     RouterModule,
     ReactiveFormsModule,
     PazientiRoutingModule,
-    SharedModule,
     HttpClientModule,
     FormsModule,
     MatDialogModule,
@@ -86,6 +83,7 @@ import { AppuntamentoService } from '../appuntamenti/appuntamento.service';
     MatIconModule,
     MatPaginatorModule,
     MatSortModule,
+    CommonModule
   ],
 
   providers: [

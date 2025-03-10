@@ -24,6 +24,9 @@ import { MatSort } from '@angular/material/sort';
 import { EditAppointmentModalComponent } from 'src/app/modali/edit-appointment-modal/edit-appointment-modal.component';
 import { Paziente } from '../paziente.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationModalComponent } from 'src/app/modali/confirmation-modal/confirmation-modal.component';
+import { AuthService } from 'src/app/auth/auth.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-patient-treatment-plans',
@@ -42,6 +45,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     note: '',
     codiceFiscalePaziente: '',
     pazienteId: '',
+    dottoreId: '',
     paziente: new Paziente(
       '', // id
       '', // nome
@@ -60,6 +64,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     dataScade: '',
     completata: false,
     tipologia: '',
+    dottoreId: ''
   };
   currentPlanId: string | null = null; // Tiene traccia del piano corrente
   storiaMedica: StoriaMedica | undefined;
@@ -88,6 +93,13 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
   @ViewChild('addAppointmentModal') addAppointmentModal!: ElementRef;
   @ViewChild('addEventModal') addEventModal!: ElementRef;
   orariDisponibili: string[] = [];
+  trattamentoSelezionato: PatientTreatmentPlan | null = null; // Aggiunto il campo
+  eventi: TreatmentEvent[] = [];
+  appuntamenti: AppuntamentoDTO[] = [];
+  showCreateButton: boolean = false;
+  dottoreId: string | undefined;
+  newAppointmentDate: string = ''; // Oppure Date se vuoi gestire il valore come oggetto data
+  newAppointmentHour: string = ''; // Formato orario, es: '14:30'
 
   constructor(
     private route: ActivatedRoute,
@@ -96,10 +108,16 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     private dialog: MatDialog,
     private storiaMedicaService: StoriaMedicaService,
     private appuntamentoService: AppuntamentoService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.authService.user$.pipe(take(1)).subscribe((user) => {
+      this.dottoreId = user?.id!;
+      this.newEvent.dottoreId= this.dottoreId;
+    });
+    console.log('DOTTORE ID : ' + this.dottoreId);
     this.route.paramMap.subscribe((params) => {
       this.pazienteId = params.get('id')!;
       this.getPatientTreatmentPlans();
@@ -112,22 +130,47 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
         this.storiaMedica = data;
         this.filtraFarmaci(true);
       });
-    // Applica i filtri iniziali per tappe ed eventi
-    this.applyAppointmentsFilters();
-    this.applyEventsFilters();
     this.generaOrariDisponibili();
   }
 
+  selezionaTrattamento(trattamento: any) {
+    this.currentPlanId = trattamento.id; // Salva l'ID del piano attivo
+    this.applyAppointmentsFilters(); // Filtra gli appuntamenti per questo trattamento
+    this.applyEventsFilters(); // Filtra gli eventi per questo trattamento
+  }
+
   private checkAndCreateDefaultPlan() {
-    if (!this.treatmentPlans || this.treatmentPlans.length === 0) {
-      // Se non ci sono piani, crea un piano di default nel backend
-      this.pazienteService
-        .creaPianoDefault(this.pazienteId!)
-        .subscribe((newPlan) => {
-          // Aggiungi il piano appena creato alla lista dei piani
-          this.treatmentPlans = [newPlan];
-        });
-    }
+    this.pazienteService
+      .getPatientTreatmentPlansByPatientId(this.pazienteId!)
+      .subscribe((piani) => {
+        if (!this.treatmentPlans || this.treatmentPlans.length === 0) {
+          // Filtra i piani per verificare se esiste almeno un piano attivo
+          const pianoAttivo = piani.find((piano: any) => piano.attivo);
+          if (!pianoAttivo) {
+            // Nessun piano trovato, mostriamo il tasto per crearne uno
+            this.showCreateButton = true; // Variabile che controlla la visibilità del tastoo
+            this.creaPianoDefault();
+          }
+        } else {
+          // Se esiste già un piano attivo, assegna la lista dei piani esistenti
+          this.treatmentPlans = piani;
+          console.log('PIANI ATTIVI DEL PAZIENTE: ' + this.treatmentPlans);
+          this.selezionaTrattamento(this.treatmentPlans[0]);
+        }
+      });
+  }
+
+  creaPianoDefault() {
+    this.pazienteService.creaPianoDefault(this.pazienteId!).subscribe(
+      (newPlan) => {
+        this.treatmentPlans.push(newPlan);
+        this.showCreateButton = false; // Nascondi il bottone dopo la creazione
+        this.selezionaTrattamento(newPlan); // Seleziona il nuovo piano appena creato
+      },
+      (error) => {
+        console.error('Errore nella creazione del piano: ', error);
+      }
+    );
   }
 
   // Inizializza il paginator
@@ -239,16 +282,38 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
       console.error('Compila tutti i campi obbligatori della tappa.');
       return;
     }
-    // Creiamo un oggetto Date combinando data e ora
-    const dataSelezionata = new Date(this.newAppointment.dataEOrario);
-    dataSelezionata.setHours(this.selectedHour, 0, 0, 0); // Imposta l'orario selezionato
 
-    // Aggiorniamo l'oggetto con il formato corretto
-    this.newAppointment.dataEOrario = dataSelezionata;
+    console.log('Data selezionata:', this.newAppointmentDate);
+    console.log('Orario selezionato:', this.newAppointmentHour);
 
-    // Usando .then() e .catch() per la gestione della Promise
+    // Creiamo una data completa
+    const [hour, minute] = this.newAppointmentHour.split(':').map(Number);
+    const selectedDateTime = new Date(this.newAppointmentDate);
+    selectedDateTime.setHours(hour, minute, 0, 0); // Imposta ora e minuti
+
+    console.log('DATA COMPLETA:', selectedDateTime.toISOString());
+
+    if (isNaN(selectedDateTime.getTime())) {
+      console.error('Errore: Data non valida!');
+      return;
+    }
+
+    // Controllo se esiste già un appuntamento alla stessa ora
+    const appuntamentoEsistente = this.appuntamenti.find(
+      (app) =>
+        new Date(app.dataEOrario).getTime() === selectedDateTime.getTime()
+    );
+
+    if (appuntamentoEsistente) {
+      alert('Errore: Esiste già un appuntamento a questa data e ora!');
+      return;
+    }
+
+    // Aggiorniamo `dataEOrario` con il valore corretto
+    this.newAppointment.dataEOrario = new Date(selectedDateTime);
+
     this.appuntamentoService
-      .addAppuntamento(this.newAppointment, this.pazienteId!)
+      .addAppuntamento(this.newAppointment, this.pazienteId!, this.dottoreId!)
       .then((savedAppuntamento) => {
         this.newAppointment = {
           ...savedAppuntamento,
@@ -377,6 +442,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
       note: '',
       codiceFiscalePaziente: '',
       pazienteId: '',
+      dottoreId: '',
       paziente: new Paziente(
         '', // id
         '', // nome
@@ -463,6 +529,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
           const activePlan = this.treatmentPlans.find((plan) => plan.attivo);
           if (activePlan) {
             this.currentPlanId = activePlan.id;
+            this.trattamentoSelezionato = activePlan; // Seleziona automaticamente il piano attivo
             // Applica i filtri SOLO dopo aver ricevuto i dati
             this.applyAppointmentsFilters();
             this.applyEventsFilters();
@@ -554,22 +621,34 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
       dataScade: '',
       completata: false,
       tipologia: '',
+      dottoreId: ''
     };
   }
 
   // Applica filtri eventi
   applyEventsFilters(): void {
-    this.filteredEvents = this.treatmentPlans
-      .flatMap((plan) => plan.eventi)
-      .filter((event) => {
-        const matchesType =
-          !this.eventsFilters.tipologia ||
-          event.tipologia === this.eventsFilters.tipologia;
-        const matchesDate =
-          !this.eventsFilters.dataScade ||
-          event.dataScade === this.eventsFilters.dataScade;
-        return matchesType && matchesDate;
-      });
+    // this.filteredEvents = this.treatmentPlans
+    //   .flatMap((plan) => plan.eventi)
+    //   .filter((event) => {
+    //     const matchesType =
+    //       !this.eventsFilters.tipologia ||
+    //       event.tipologia === this.eventsFilters.tipologia;
+    //     const matchesDate =
+    //       !this.eventsFilters.dataScade ||
+    //       event.dataScade === this.eventsFilters.dataScade;
+    //     return matchesType && matchesDate;
+    //   });
+    if (!this.trattamentoSelezionato) return; // Se nessun trattamento è selezionato, esci
+
+    this.filteredEvents = this.trattamentoSelezionato.eventi.filter((event) => {
+      const matchesType =
+        !this.eventsFilters.tipologia ||
+        event.tipologia === this.eventsFilters.tipologia;
+      const matchesDate =
+        !this.eventsFilters.dataScade ||
+        event.dataScade === this.eventsFilters.dataScade;
+      return matchesType && matchesDate;
+    });
     // Aggiorna il data source e forza il refresh
     this.dataSourceEvents.data = this.filteredEvents;
     this.dataSourceEvents._updateChangeSubscription();
@@ -577,10 +656,10 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
 
   // Applica filtri appuntamenti
   applyAppointmentsFilters(): void {
-    this.filteredAppointments = this.treatmentPlans
-      .flatMap((plan) => plan.appuntamenti)
+    if (!this.trattamentoSelezionato) return; // Se nessun trattamento è selezionato, esci
+    this.filteredAppointments = (this.trattamentoSelezionato.appuntamenti || [])
+      // .flatMap((plan) => plan.appuntamenti)
       .filter((appointment) => {
-        if (!appointment) return false; // Evita errori su undefined/null
         const matchesCategory =
           !this.appointmentsFilters.stato ||
           appointment.stato === this.appointmentsFilters.stato;
@@ -591,6 +670,18 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
             this.appointmentsFilters.dataEOrario
           );
         return matchesCategory && matchesDate;
+        // this.filteredAppointments = this.trattamentoSelezionato.appuntamenti.filter(
+        //   (appointment) => {
+        //     const matchesCategory =
+        //       !this.appointmentsFilters.stato ||
+        //       appointment.stato === this.appointmentsFilters.stato;
+        //     const matchesDate =
+        //       !this.appointmentsFilters.dataEOrario ||
+        //       this.areDatesEqual(
+        //         appointment.dataEOrario,
+        //         this.appointmentsFilters.dataEOrario
+        //       );
+        //     return matchesCategory && matchesDate;
       });
     // Aggiorna il data source e forza il refresh
     this.dataSourceAppointments.data = this.filteredAppointments;
@@ -631,5 +722,26 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     for (let ora = 8; ora <= 20; ora++) {
       this.orariDisponibili.push(`${ora}:00`, `${ora}:30`);
     }
+  }
+
+  openConfirmationModal(treatmentPlanId: string): void {
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      width: '400px',
+      data: {
+        content: 'Sei sicuro di voler disattivare questo piano di trattamento?',
+        isEditable: false,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.deactivateTreatmentPlan(treatmentPlanId);
+      }
+    });
+  }
+
+  deactivateTreatmentPlan(treatmentPlanId: string): void {
+    console.log(`Piano di trattamento ${treatmentPlanId} disattivato`);
+    // Qui puoi chiamare il servizio per aggiornare lo stato nel backend
   }
 }

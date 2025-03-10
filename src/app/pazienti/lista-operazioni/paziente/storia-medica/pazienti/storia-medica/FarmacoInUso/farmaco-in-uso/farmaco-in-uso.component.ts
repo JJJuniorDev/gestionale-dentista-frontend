@@ -34,7 +34,8 @@ export class FarmacoInUsoComponent implements OnChanges {
     '', // note
     '', // pazienteId
     '', // stato,
-    null
+    null,
+    ''
   );
   farmaco?: Farmaco;
   displayedColumns: string[] = [
@@ -115,7 +116,6 @@ export class FarmacoInUsoComponent implements OnChanges {
     });
   }
 
-
   aggiungiNota(farmacoInUsoId: string): void {
     console.log('ID del farmaco per aggiungere la nota: ' + farmacoInUsoId);
 
@@ -184,8 +184,6 @@ export class FarmacoInUsoComponent implements OnChanges {
     );
   }
 
-
-  
   onNoClick(): void {
     console.log('Operazione annullata.');
   }

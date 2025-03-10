@@ -205,7 +205,7 @@ export class AppuntamentiModificaComponent implements OnInit {
       console.log('SIAMO IN ADD APPUNTAMENTO');
       // const pazienteId = selectedPaziente.id; // Prendiamo l'ID del paziente
       //   this.appuntamentoService.addAppuntamento(formData, pazienteId);
-      this.appuntamentoService.addAppuntamento(formData, pazienteId);
+      this.appuntamentoService.addAppuntamento(formData, pazienteId, this.dottoreId!);
     }
 
     this.onCancel();

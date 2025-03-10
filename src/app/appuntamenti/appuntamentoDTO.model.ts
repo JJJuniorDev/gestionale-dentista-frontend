@@ -10,6 +10,7 @@ export class AppuntamentoDTO {
   public pazienteId: string; // Dati del paziente
   public stato: string;
   public paziente: Paziente | undefined | null;
+public dottoreId: string;
 
   constructor(
     id: string,
@@ -19,7 +20,8 @@ export class AppuntamentoDTO {
     note: string,
     pazienteId: string,
     stato: string,
-    paziente: Paziente | null
+    paziente: Paziente | null,
+    dottoreId: string 
   ) {
     this.id = id;
     this.dataEOrario = dataEOrario;
@@ -29,5 +31,6 @@ export class AppuntamentoDTO {
     this.pazienteId = pazienteId;
     this.stato = stato;
     this.paziente!=paziente;
+    this.dottoreId=dottoreId;
   }
 }

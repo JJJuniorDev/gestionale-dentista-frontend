@@ -20,6 +20,7 @@ export class EditAppointmentModalComponent {
     paziente: null,
     codiceFiscalePaziente: '', // Add these missing fields
     pazienteId: '',
+    dottoreId: ''
   };
   currentPlanId = ''; // Per tenere traccia dell'ID del piano attuale
 

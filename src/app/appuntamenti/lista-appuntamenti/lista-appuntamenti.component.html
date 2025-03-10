@@ -1,6 +1,7 @@
 
 <ng-template #customMonthCellTemplate let-day="day" let-locale="locale">
-  <div class="cal-cell-top" (click)="onDayClicked({ day: day })">
+  <div class="cal-cell-top" (click)="onDayClicked({ day: day })"
+  [ngClass]="{'today': isToday(day.date)}">
     <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
     <!-- Aggiungi una logica per sabato e domenica -->
     <span 
@@ -75,7 +76,7 @@
 <div *ngIf="showAppointmentsModal" class="modal-overlay">
   <div class="modal-content">
     <div class="modal-header">
-      <h3>Appuntamenti per {{ selectedDay | date : "dd/MM/yyyy" }}</h3>
+      <h3>{{ selectedDay | date : "dd/MM/yyyy" }}</h3>
       <button
         class="btn-close"
         (click)="showAppointmentsModal = false"
@@ -83,6 +84,8 @@
       ></button>
     </div>
     <div class="modal-body">
+      <div *ngIf="appuntamentiGiornalieri.length > 0" class="appointments-section">
+    <h4 class="section-title">📌 Appuntamenti</h4>
       <ul class="appointment-list">
         <li
           *ngFor="let appuntamento of appuntamentiGiornalieri"
@@ -97,6 +100,28 @@
           </div>
             <div class="appointment-cellphone">
           <span class="material-icons">phone</span> {{ appuntamento.paziente?.numeroDiCellulare }}
+          </div>
+        </li>
+          </ul>
+  </div>
+  <!-- Separatore -->
+  <hr *ngIf="appuntamentiGiornalieri.length > 0 && eventiGiornalieri.length > 0" class="divider">
+
+
+         <!-- Elenco degli eventi -->
+            <div *ngIf="eventiGiornalieri.length > 0" class="events-section">
+    <h4 class="section-title">📅 Eventi</h4>
+    <ul class="event-list">
+        <li
+          *ngFor="let evento of eventiGiornalieri"
+          class="event-item event-item:hover"
+          (click)="onSelectEvento(evento.id)"
+        >
+          <div class="event-time">
+            📅 {{ evento.dataScade | date : "HH:mm" }}
+          </div>
+          <div class="event-details">
+            📝 {{ evento.tipologia }}
           </div>
         </li>
       </ul>

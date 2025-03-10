@@ -12,9 +12,10 @@ import { environment } from 'src/environments/environment';
 export class PazienteService {
   pazientiChanged = new Subject<Paziente[]>();
   private pazienti: Paziente[] = [];
-  private apiUrl = environment.pazientiMicroserviceUrl+'/pazienti';
+  private apiUrl = environment.pazientiMicroserviceUrl + '/pazienti';
 
   constructor(private http: HttpClient) {}
+
 
   // Aggiorna il paziente aggiungendo l'ID dell'appuntamento
   updatePazienteAppuntamenti(pazienteId: string, appuntamentoId: string) {
@@ -151,6 +152,7 @@ export class PazienteService {
       dataScade: string;
       completata: boolean;
       tipologia: string;
+      dottoreId: string;
     }
   ): Observable<PatientTreatmentPlan> {
     return this.http.post<PatientTreatmentPlan>(
@@ -168,6 +170,7 @@ export class PazienteService {
 
   // Aggiungi un piano di trattamento di default per il paziente
   creaPianoDefault(pazienteId: string): Observable<PatientTreatmentPlan> {
+    console.log('SIAMO in creaPianoDefault');
     const defaultPlan: PatientTreatmentPlan = {
       id: '', // Il backend dovrebbe generare l'ID
       pazienteId: pazienteId,

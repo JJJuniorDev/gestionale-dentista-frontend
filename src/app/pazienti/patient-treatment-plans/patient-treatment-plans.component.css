@@ -298,3 +298,24 @@ input[matInput] {
   background-color: rgba(0, 0, 255, 0.2);
 }
 
+.container-disattiva {
+  display: flex;
+  justify-content: center; /* Centra il bottone */
+  margin-top: 20px; /* Spazio sopra */
+}
+
+.btn-disattiva {
+  font-size: 18px; /* Testo più grande */
+  padding: 12px 24px; /* Aumenta dimensioni */
+  background-color: #d32f2f; /* Rosso intenso */
+  color: white; /* Testo bianco */
+  border-radius: 8px; /* Angoli arrotondati */
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Spazio tra icona e testo */
+}
+
+.btn-disattiva:hover {
+  background-color: #b71c1c; /* Rosso più scuro al passaggio del mouse */
+}

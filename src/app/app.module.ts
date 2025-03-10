@@ -11,7 +11,6 @@ import { AuthEffects } from './auth/store/auth.effects';
 import * as fromApp from './auth/store/app.reducer';
 import { AuthInterceptorService } from './auth/auth.interceptor.service';
 import { HeaderComponent } from './header/header.component';
-import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -64,7 +63,6 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
     HttpClientModule,
     StoreModule.forRoot(fromApp.appReducer),
     EffectsModule.forRoot([AuthEffects]),
-    SharedModule,
     CoreModule,
     AppuntamentiModule,
     BsDropdownModule.forRoot(),

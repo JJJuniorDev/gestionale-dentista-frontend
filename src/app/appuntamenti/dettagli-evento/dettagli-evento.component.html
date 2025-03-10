@@ -1,0 +1,61 @@
+<p>dettagli-evento works!</p>
+<div class="container">
+  <!-- Box evento -->
+  <div *ngIf="evento" class="event-card">
+    <div class="event-header">
+      <h2><i class="bi bi-calendar-event"></i> Dettagli Evento</h2>
+      <div class="date-time-container">
+        <p class="date-time">
+          <i class="bi bi-calendar"></i>
+          {{ evento?.dataScade | date:'EEEE d MMMM y, HH:mm':'it' }}
+        </p>
+      </div>
+      <span class="status badge" [ngClass]="getBadgeClass(evento?.tipologia)">{{ evento?.tipologia }}</span>
+    </div>
+
+    <div class="buttons-container">
+      <!-- Pulsante "Modifica Stato" -->
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          <i class="bi bi-pencil-square"></i> Modifica Stato
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" (click)="onChangeStato('in_attesa')"> <i class="bi bi-hourglass"></i> In Attesa</a></li>
+          <li><a class="dropdown-item" (click)="onChangeStato('in_corso')"><i class="bi bi-play-circle"></i> In Corso</a></li>
+          <li><a class="dropdown-item" (click)="onChangeStato('completato')"> <i class="bi bi-check-circle"></i> Completato</a></li>
+          <li><a class="dropdown-item" (click)="onChangeStato('sospeso')"> <i class="bi bi-pause-circle"></i> Sospeso</a></li>
+          <li><a class="dropdown-item" (click)="onChangeStato('annullato')"> <i class="bi bi-x-circle"></i> Annullato</a></li>
+        </ul>
+      </div>
+
+      <!-- Pulsante "Gestisci Evento" -->
+      <div class="dropdown">
+        <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          <i class="bi bi-gear"></i> Gestisci Evento
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" (click)="onEventoEdit()"><i class="bi bi-pencil"></i> Modifica</a></li>
+          <li><a class="dropdown-item text-danger" (click)="onDeleteEvento()"><i class="bi bi-trash"></i> Elimina</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Dettagli evento -->
+    <div class="event-details">
+      <div class="details-grid">
+        <div class="detail-item">
+          <i class="bi bi-clipboard-check"></i>
+          <span>tipologia:</span> <strong>{{ evento?.tipologia }}</strong>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-chat-left-text"></i>
+          <span>Descrizione:</span> <strong>{{ evento?.descrizione || 'Nessuna descrizione' }}</strong>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-person"></i>
+          <span>data:</span> <strong>{{ evento?.dataScade }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

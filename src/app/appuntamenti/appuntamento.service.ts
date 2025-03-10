@@ -109,10 +109,12 @@ export class AppuntamentoService {
 
   addAppuntamento(
     appuntamento: AppuntamentoDTO,
-    pazienteId: string
+    pazienteId: string,
+    dottoreId: string
   ): Promise<AppuntamentoDTO> {
     console.log('PAZIENTE ID: ' + pazienteId);
     appuntamento.pazienteId = pazienteId;
+    appuntamento.dottoreId = dottoreId;
     console.log(' appuntamento.pazienteId: ' + appuntamento.pazienteId);
     return new Promise((resolve, reject) => {
       // Effettua la richiesta per creare l'appuntamento

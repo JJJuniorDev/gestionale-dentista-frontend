@@ -6,6 +6,8 @@ import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { AppuntamentoDTO } from '../appuntamentoDTO.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { PazienteService } from 'src/app/pazienti/paziente.service';
+import { EventoDTO } from '../eventoDTO.model';
+import { EventoService } from '../evento.service';
 
 
 @Component({
@@ -15,6 +17,7 @@ import { PazienteService } from 'src/app/pazienti/paziente.service';
 })
 export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
   appuntamenti: AppuntamentoDTO[] = [];
+  eventi: EventoDTO[] = [];
   filteredAppuntamenti: AppuntamentoDTO[] = [];
   subscription!: Subscription;
   selectedParameter: string = 'codiceFiscalePaziente'; // Parametro di ricerca selezionato
@@ -27,6 +30,7 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
   //PER GESTIONE APPUNTAMENTI GIORNALIERI
   // ****************************
   appuntamentiGiornalieri: AppuntamentoDTO[] = []; // Appuntamenti del giorno selezionato
+  eventiGiornalieri: EventoDTO[] = []; // Eventi del giorno selezionato
   selectedDay!: Date | null; // Giorno selezionato
   dottoreId!: string | null;
   showAppointmentsModal: boolean = false;
@@ -55,7 +59,8 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private pazienteService: PazienteService
+    private pazienteService: PazienteService,
+    private eventoService: EventoService
   ) {}
 
   ngOnInit() {
@@ -100,6 +105,16 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
             console.error('Errore nel recupero degli appuntamenti:', error);
           }
         );
+      // Recupera gli eventi (qui dovresti chiamare un servizio simile per gli eventi)
+      this.eventoService.getEventiPerDottore(this.dottoreId).subscribe(
+        (eventi: EventoDTO[]) => {
+          this.eventi = eventi;
+          this.updateCalendarEvents(); // Rivedi anche il codice per la gestione eventi
+        },
+        (error: any) => {
+          console.error('Errore nel recupero degli eventi:', error);
+        }
+      );
     }
   }
 
@@ -113,11 +128,17 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
       eventiPerGiorno.set(data, (eventiPerGiorno.get(data) || 0) + 1);
     });
 
+    // Conta gli eventi per ogni giorno
+    this.eventi.forEach((evento) => {
+      const data = new Date(evento.dataScade).toISOString().split('T')[0];
+      eventiPerGiorno.set(data, (eventiPerGiorno.get(data) || 0) + 1);
+    });
+
     // Crea eventi con il numero di appuntamenti
     this.calendarEvents = Array.from(eventiPerGiorno.entries()).map(
       ([date, count]) => ({
         start: new Date(date),
-        title: `${count} appuntamenti`,
+        title: `${count} eventi/appuntamenti`,
         color: { primary: '#007bff', secondary: '#cce5ff' },
         allDay: true, // Importante per evitare errori nella visualizzazione del numero
         meta: {
@@ -138,11 +159,19 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
         date.toDateString()
     );
 
-    if (this.appuntamentiGiornalieri.length > 0) {
+    // Filtra gli eventi per il giorno selezionato
+    this.eventiGiornalieri = this.eventi.filter((evento) => {
+      const dataEvento = new Date(evento.dataScade);
+      return dataEvento.toDateString() === date.toDateString();
+    });
+
+    if (
+      this.appuntamentiGiornalieri.length > 0 ||
+      this.eventiGiornalieri.length > 0
+    ) {
       this.showAppointmentsModal = true;
     }
   }
-
 
   onSearch() {
     if (this.selectedParameter === 'dataEOrario' && this.searchDate) {
@@ -185,16 +214,30 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
     this.router.navigate(['/appuntamenti', id]);
   }
 
+  onSelectEvento(id: string) {
+    this.viewDetails.emit();
+    this.router.navigate(['/eventi', id]);
+  }
+
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
-  
+
   onNewAppuntamento() {
     this.router.navigate(['/appuntamenti/new'], {
       state: { appuntamenti: this.appuntamenti }, // Passa gli appuntamenti esistenti
     });
+  }
+
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
   }
 }
 

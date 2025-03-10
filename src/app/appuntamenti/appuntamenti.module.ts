@@ -5,7 +5,6 @@ import { DettagliAppuntamentoComponent } from "./dettagli-appuntamento/dettagli-
 import { AppuntamentiModificaComponent } from "./modifica-appuntamenti/appuntamenti-modifica.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AppuntamentiRoutingModule } from "./appuntamenti-routing.module";
-import { SharedModule } from "../shared/shared.module";
 import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { ListaAppuntamentiComponent } from "./lista-appuntamenti/lista-appuntamenti.component";
@@ -28,6 +27,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CalendarMonthViewComponent } from 'angular-calendar';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { DettagliEventoComponent } from './dettagli-evento/dettagli-evento.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -39,12 +39,12 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     ItemAppuntamentoComponent,
     AppuntamentiModificaComponent,
     FatturazioneComponent,
+    DettagliEventoComponent,
   ],
   imports: [
     RouterModule,
     ReactiveFormsModule,
     AppuntamentiRoutingModule,
-    SharedModule,
     HttpClientModule,
     FormsModule,
     CalendarModule.forRoot({

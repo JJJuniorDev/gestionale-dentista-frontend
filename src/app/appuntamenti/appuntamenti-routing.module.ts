@@ -6,6 +6,7 @@ import { AppuntamentiModificaComponent } from './modifica-appuntamenti/appuntame
 import { NgModule } from '@angular/core';
 import { ListaAppuntamentiComponent } from './lista-appuntamenti/lista-appuntamenti.component';
 import { FatturazioneComponent } from './fatturazione/fatturazione.component';
+import { DettagliEventoComponent } from './dettagli-evento/dettagli-evento.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: '', component: ListaAppuntamentiComponent },
       { path: 'new', component: AppuntamentiModificaComponent },
       { path: ':id', component: DettagliAppuntamentoComponent },
+      { path: 'eventi/:id', component: DettagliEventoComponent },
       { path: ':id/edit', component: AppuntamentiModificaComponent },
       { path: 'dottore/:id', component: ListaAppuntamentiComponent },
       { path: 'fatturazione/:index', component: FatturazioneComponent },

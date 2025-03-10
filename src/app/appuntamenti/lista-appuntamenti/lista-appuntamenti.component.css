@@ -70,11 +70,32 @@
 }
 
 .appointment-item {
+  background-color: #d1e7dd; /* Verde chiaro */
   display: flex;
   justify-content: space-between;
   padding: 10px;
   margin-bottom: 10px;
   border-bottom: 1px solid #eee;
+    transition: background-color 0.3s ease;
+}
+
+.appointment-hover:hover {
+  background-color: #42941989; /* Colore di sfondo quando il mouse passa sopra */
+}
+
+/* Stile per gli eventi */
+.event-item {
+  background-color: #a3ccf1; /* Rosso chiaro */
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.event-item:hover {
+  background-color: #6cb3f1; /* Rosso più scuro al passaggio del mouse */
+   cursor: pointer; /* Cambia il cursore in una manina */
+  transition: background-color 0.3s ease-in-out; /* Effetto fluido */
 }
 
 .appointment-time {
@@ -180,9 +201,6 @@ html, body {
   transition: background-color 0.3s ease-in-out; /* Effetto fluido */
 }
 
-.appointment-hover:hover {
-  background-color: #76d0f0; /* Colore di sfondo quando il mouse passa sopra */
-}
 
 
 /* Wrapper per la navigazione del calendario */
@@ -245,4 +263,37 @@ html, body {
 
 .row.mb-4{
   margin-left: 120px; /* Sposta il contenitore a destra */
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.appointments-section, .events-section {
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: #f8f9fa;
+}
+
+.divider {
+  border: 0;
+  height: 2px;
+  background: #ccc;
+  margin: 15px 0;
+}
+
+.today {
+  background-color: #328e2a !important; /* Giallo */
+  border: 2px solid #fbc02d !important;
+  border-radius: 5px;
+  box-shadow: 0px 0px 8px rgba(255, 193, 7, 0.7);
+}
+
+.today .cal-day-number {
+  font-weight: bold;
+  color: #333;
 }

@@ -1,5 +1,19 @@
+<!-- Bottone per creare un piano di trattamento se non esiste nessun piano attivo -->
+<div *ngIf="showCreateButton" class="alert alert-warning">
+  <button class="btn btn-success" (click)="creaPianoDefault()">Crea Piano di Trattamento</button>
+</div>
 
- <div *ngIf="treatmentPlans && treatmentPlans.length > 0;">
+<div class="form-group">
+  <label for="trattamentoSelect">Seleziona Piano di Trattamento</label>
+  <select id="trattamentoSelect" class="form-select" [(ngModel)]="trattamentoSelezionato" (change)="selezionaTrattamento(trattamentoSelezionato)">
+    <option *ngFor="let trattamento of treatmentPlans" [ngValue]="trattamento">
+      {{ trattamento.nomePiano }} <!-- Assumendo che il piano abbia un nome -->
+    </option>
+  </select>
+</div>
+
+<!-- Mostra il resto della UI solo se un trattamento è selezionato -->
+<div *ngIf="trattamentoSelezionato">
   <!-- Colonna sinistra: Appuntamenti -->
   <div class="row d-flex">
     <div class="col-md-6 d-flex flex-column">
@@ -228,7 +242,7 @@
               id="dataAppuntamento"
               name="dataAppuntamento"
               class="form-control"
-              [(ngModel)]="newAppointment.dataEOrario"
+              [(ngModel)]="newAppointmentDate"
               required
             />
           </div>
@@ -239,7 +253,7 @@
     id="orarioAppuntamento"
     name="orarioAppuntamento"
     class="form-select"
-    [(ngModel)]="selectedHour"
+    [(ngModel)]="newAppointmentHour"
     required
   >
     <option *ngFor="let ora of orariDisponibili" [value]="ora">{{ ora }}</option>
@@ -363,4 +377,10 @@
       </div>
     </div>
   </div>
+</div>
+<!-- Bottone per disattivare il piano -->
+<div *ngIf="trattamentoSelezionato && trattamentoSelezionato.attivo" class="container-disattiva">
+  <button mat-raised-button color="warn" class="btn-disattiva" (click)="openConfirmationModal(trattamentoSelezionato.id)">
+    <mat-icon>warning</mat-icon> Disattiva Piano
+  </button>
 </div>
