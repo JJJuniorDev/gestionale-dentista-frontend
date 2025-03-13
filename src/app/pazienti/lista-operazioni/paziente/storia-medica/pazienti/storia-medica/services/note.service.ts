@@ -3,12 +3,13 @@ import { Injectable } from "@angular/core";
 import { Nota } from "../models/nota.model";
 import { Observable } from "rxjs";
 import { NotaDTO } from "../models/notaDTO.model";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: 'root',
 })
 export class NoteService {
-  private apiUrl = 'http://localhost:8080/api/nota';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
   getNotesByIds(ids: string[]): Observable<NotaDTO[]> {
