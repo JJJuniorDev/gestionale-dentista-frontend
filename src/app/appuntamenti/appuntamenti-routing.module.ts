@@ -17,7 +17,6 @@ const routes: Routes = [
       { path: '', component: ListaAppuntamentiComponent },
       { path: 'new', component: AppuntamentiModificaComponent },
       { path: ':id', component: DettagliAppuntamentoComponent },
-      { path: 'eventi/:id', component: DettagliEventoComponent },
       { path: ':id/edit', component: AppuntamentiModificaComponent },
       { path: 'dottore/:id', component: ListaAppuntamentiComponent },
       { path: 'fatturazione/:index', component: FatturazioneComponent },

@@ -42,6 +42,7 @@ import { FarmacoInUsoComponent } from './lista-operazioni/paziente/storia-medica
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { AppuntamentoService } from '../appuntamenti/appuntamento.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -83,7 +84,8 @@ import { AppuntamentoService } from '../appuntamenti/appuntamento.service';
     MatIconModule,
     MatPaginatorModule,
     MatSortModule,
-    CommonModule
+    CommonModule,
+    NgSelectModule,
   ],
 
   providers: [

@@ -1,16 +1,49 @@
 <!-- Bottone per creare un piano di trattamento se non esiste nessun piano attivo -->
-<div *ngIf="showCreateButton" class="alert alert-warning">
+<!-- <div *ngIf="showCreateButton" class="alert alert-warning">
   <button class="btn btn-success" (click)="creaPianoDefault()">Crea Piano di Trattamento</button>
-</div>
+</div> -->
 
-<div class="form-group">
+<!-- <div class="form-group">
   <label for="trattamentoSelect">Seleziona Piano di Trattamento</label>
   <select id="trattamentoSelect" class="form-select" [(ngModel)]="trattamentoSelezionato" (change)="selezionaTrattamento(trattamentoSelezionato)">
-    <option *ngFor="let trattamento of treatmentPlans" [ngValue]="trattamento">
-      {{ trattamento.nomePiano }} <!-- Assumendo che il piano abbia un nome -->
+    <option 
+      *ngFor="let trattamento of treatmentPlans" 
+      [ngValue]="trattamento"
+      [ngClass]="{
+        'bg-success text-white': trattamento.attivo,  
+        'bg-danger text-white': !trattamento.attivo   
+      }">
+      {{ trattamento.nomePiano }} - 
+      {{ trattamento.attivo ? 'ATTIVO' : 'NON ATTIVO' }}
     </option>
   </select>
+</div> -->
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPlanModal">
+  Crea Nuovo Piano di Trattamento
+</button>
+<div class="form-group">
+  <label for="trattamentoSelect">Seleziona Piano di Trattamento</label>
+  <ng-select 
+    id="trattamentoSelect"
+    [items]="treatmentPlans"        
+    bindLabel="nomePiano"           
+    [(ngModel)]="trattamentoSelezionato" 
+    (change)="selezionaTrattamento(trattamentoSelezionato)"> <!-- Evento per la selezione -->
+    
+    <!-- Personalizzazione delle opzioni nel dropdown -->
+    <ng-template let-item="item" ng-option-tmp>
+      <div class="p-2 rounded" 
+           [ngClass]="{
+           'active-plan': item.attivo,
+             'inactive-plan': !item.attivo
+           }">
+        {{ item.nomePiano }} - 
+        {{ item.attivo ? 'ATTIVO' : 'NON ATTIVO' }} <!-- Mostra "ATTIVO" o "NON ATTIVO" -->
+      </div>
+    </ng-template>
+  </ng-select>
 </div>
+
 
 <!-- Mostra il resto della UI solo se un trattamento è selezionato -->
 <div *ngIf="trattamentoSelezionato">
@@ -79,7 +112,7 @@
               <td mat-cell *matCellDef="let appointment" >{{ appointment.stato }}</td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="['dataEOrario', 'stato']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['dataEOrario', 'stato']" (click)="vaiAiDettagli(row)" class="clickable-row"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['dataEOrario', 'stato']" (click)="vaiAiDettagliAppuntamento(row)" class="clickable-row"></tr>
           </table>
           <mat-paginator [pageSize]="5" showFirstLastButtons></mat-paginator>
         </div>
@@ -149,12 +182,15 @@
               <th mat-header-cell *matHeaderCellDef>Data Scadenza</th>
               <td mat-cell *matCellDef="let event">{{ event.dataScade }}</td>
             </ng-container>
-            <ng-container matColumnDef="completata">
-              <th mat-header-cell *matHeaderCellDef>Completata</th>
-              <td mat-cell *matCellDef="let event">{{ event.completata ? 'Sì' : 'No' }}</td>
+            <ng-container matColumnDef="deleted">
+              <th mat-header-cell *matHeaderCellDef>Deleted</th>
+              <td mat-cell *matCellDef="let event">{{ event.deleted ? 'Sì' : 'No' }}</td>
             </ng-container>
-            <tr mat-header-row *matHeaderRowDef="['descrizione', 'tipologia', 'dataScade', 'completata']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['descrizione', 'tipologia', 'dataScade', 'completata']"></tr>
+            <tr mat-header-row *matHeaderRowDef="['descrizione', 'tipologia', 'dataScade', 'deleted']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['descrizione', 'tipologia', 'dataScade', 'deleted']" 
+             [ngClass]="{'deleted-event': row.deleted}" 
+            (click)="!row.deleted && vaiAiDettagliEvento(row)" 
+             class="clickable-row"></tr>
           </table>
           <mat-paginator [pageSize]="5" showFirstLastButtons></mat-paginator>
         </div>
@@ -358,10 +394,10 @@
             >
             <input
               type="text"
-              id="completata"
-              name="completata"
+              id="deleted"
+              name="deleted"
               class="form-control"
-              [(ngModel)]="newEvent.completata"
+              [(ngModel)]="newEvent.deleted"
               required
             />
           </div>
@@ -383,4 +419,43 @@
   <button mat-raised-button color="warn" class="btn-disattiva" (click)="openConfirmationModal(trattamentoSelezionato.id)">
     <mat-icon>warning</mat-icon> Disattiva Piano
   </button>
+</div>
+
+
+<div class="modal fade" id="createPlanModal" tabindex="-1" aria-labelledby="createPlanModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createPlanModalLabel">Crea Nuovo Piano</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="planName">Nome del Piano:</label>
+        <input type="text" id="planName" class="form-control" [(ngModel)]="newPlanName" placeholder="Inserisci il nome">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+         <button type="button" class="btn btn-success" (click)="checkAndCreatePlan()">Avanti</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modale di Conferma -->
+<div class="modal fade" id="confirmDeactivateModal" tabindex="-1" aria-labelledby="confirmDeactivateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeactivateModalLabel">Conferma Disattivazione</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Esiste già un piano attivo. Vuoi disattivarlo per creare un nuovo piano?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+        <button type="button" class="btn btn-danger"  data-bs-dismiss="modal" (click)="deactivateAndCreatePlan()">Sì, disattiva e crea</button>
+      </div>
+    </div>
+  </div>
 </div>

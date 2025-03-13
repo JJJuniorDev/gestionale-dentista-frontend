@@ -108,6 +108,7 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
       // Recupera gli eventi (qui dovresti chiamare un servizio simile per gli eventi)
       this.eventoService.getEventiPerDottore(this.dottoreId).subscribe(
         (eventi: EventoDTO[]) => {
+          console.log('Eventi ricevuti:', eventi); // Mostra i dati ricevuti
           this.eventi = eventi;
           this.updateCalendarEvents(); // Rivedi anche il codice per la gestione eventi
         },

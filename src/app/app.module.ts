@@ -44,6 +44,7 @@ import { AllegatiComponent } from './allegati/allegati/allegati.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
 
@@ -88,6 +89,7 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
     MatPaginatorModule, // Importa il modulo per il paginator
     MatButtonModule, // Se utilizzi i bottoni Material
     MatIconModule, // Se utilizzi le icone Material
+    NgSelectModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'it' },

@@ -206,7 +206,7 @@ table tr:hover {
 }
 
 button[mat-button] {
-  color: #007bff;
+  color: #007bff; 
   font-size: 14px;
 }
 
@@ -318,4 +318,52 @@ input[matInput] {
 
 .btn-disattiva:hover {
   background-color: #b71c1c; /* Rosso più scuro al passaggio del mouse */
+}
+
+.deleted-event {
+    background-color: #d92828 !important; /* Rosso chiaro */
+    pointer-events: none; /* Disabilita i clic */
+    opacity: 0.7; /* Rende l'elemento semi-trasparente per evidenziare lo stato */
+}
+
+ng-select {
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+ng-select .ng-select-container {
+  cursor: pointer;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+ng-select .ng-select-container .ng-value {
+  display: flex;
+  align-items: center;
+}
+
+
+/* Separazione tra le voci */
+ng-select .ng-select-container .ng-dropdown-panel .ng-option {
+  padding: 10px;
+  border-bottom: 1px solid #ddd; /* Separatore tra le righe */
+}
+
+/* Colore per il piano attivo */
+.active-plan {
+  background-color: #c3e6cb;  /* Verde chiaro */
+  color: #155724; /* Colore del testo più scuro per contrasto */
+  padding: 10px;
+  border-bottom: 2px solid white;
+}
+
+/* Colore per il piano non attivo */
+.inactive-plan {
+  background-color: #f5c6cb; /* Rosso chiaro */
+  color: #721c24; /* Colore del testo più scuro per contrasto */
+  padding: 10px;
+  border-bottom: 2px solid white;
 }

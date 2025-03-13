@@ -21,9 +21,11 @@ export class ConfirmationModalComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-   if (this.confirmButton) {
-    this.confirmButton.nativeElement.focus();
-  }
+  setTimeout(() => {
+    if (this.confirmButton?.nativeElement) {
+      this.confirmButton.nativeElement.focus();
+    }
+  });
 }
 
   onConfirm(): void {

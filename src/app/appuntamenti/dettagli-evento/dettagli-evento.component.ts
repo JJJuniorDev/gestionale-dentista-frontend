@@ -29,14 +29,14 @@ export class DettagliEventoComponent implements OnInit {
       this.id = params['id'];
       if (this.id) {
         console.log('Caricamento dettagli evento con ID:', this.id);
-        // this.eventoService.getEvento(this.id).subscribe({
-        //   next: (evento: EventoDTO) => {
-        //     this.evento = evento;
-        //   },
-        //   error: (err) => {
-        //     console.error('Errore nel caricamento dell’evento:', err);
-        //   },
-        // });
+        this.eventoService.getEvento(this.id).subscribe({
+          next: (evento: EventoDTO) => {
+            this.evento = evento;
+          },
+          error: (err) => {
+            console.error('Errore nel caricamento dell’evento:', err);
+          },
+        });
       }
     });
   }
@@ -62,21 +62,21 @@ export class DettagliEventoComponent implements OnInit {
       },
     });
 
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   if (result) {
-    //     const dottoreId = this.authService.getUserId();
-    //     if (this.id) {
-    //      this.eventoService.deleteEvento(this.id).subscribe(() =>{
-    //         this.router.navigate([`/eventi/dottore/${dottoreId}`]);
-    //       });
-    //     }
-    //   } else {
-    //     console.log('Eliminazione annullata');
-    //    }
-    // });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const dottoreId = this.authService.getUserId();
+        if (this.id) {
+         this.eventoService.deleteEvento(this.id).subscribe(() =>{
+            this.router.navigate([`/eventi/dottore/${dottoreId}`]);
+          });
+        }
+      } else {
+        console.log('Eliminazione annullata');
+       }
+    });
   }
 
-   onChangeStato(nuovoStato: string) {
+  //  onChangeStato(nuovoStato: string) {
   //   if (this.evento) {
   //     this.evento.stato = nuovoStato;
 
@@ -90,7 +90,7 @@ export class DettagliEventoComponent implements OnInit {
   //       },
   //     });
   //   }
-   }
+   //}
 
   getBadgeClass(stato: string | undefined): string {
     if (!stato) return 'badge-secondary';

@@ -16,6 +16,9 @@ export class PazienteService {
 
   constructor(private http: HttpClient) {}
 
+  deactivatePlan(treatmentPlanId: string) {
+    return this.http.delete(`${this.apiUrl}/deactivatePlan/${treatmentPlanId}`);
+  }
 
   // Aggiorna il paziente aggiungendo l'ID dell'appuntamento
   updatePazienteAppuntamenti(pazienteId: string, appuntamentoId: string) {
@@ -119,16 +122,6 @@ export class PazienteService {
     );
   }
 
-  deleteStep(
-    pazienteId: string,
-    planId: string,
-    stepId: string
-  ): Observable<void> {
-    return this.http.delete<void>(
-      `${this.apiUrl}/${pazienteId}/piani/${planId}/steps/${stepId}`
-    );
-  }
-
   addAppointmentToPlan(
     pazienteId: string,
     planId: string,
@@ -150,7 +143,7 @@ export class PazienteService {
     newEvent: {
       descrizione: string;
       dataScade: string;
-      completata: boolean;
+      deleted: boolean;
       tipologia: string;
       dottoreId: string;
     }
@@ -165,6 +158,13 @@ export class PazienteService {
     return this.http.put<any>(
       `${this.apiUrl}/piani/${planId}/steps/${step.id}`,
       step
+    );
+  }
+
+  creaPianoTrattamento(nuovoPiano: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/piani`,
+      nuovoPiano
     );
   }
 

@@ -8,6 +8,7 @@ import { AppuntamentiPazienteComponent } from './pazienti/appuntamenti-paziente/
 import { PatientTreatmentPlansComponent } from './pazienti/patient-treatment-plans/patient-treatment-plans.component';
 import { FarmacoInUsoComponent } from './pazienti/lista-operazioni/paziente/storia-medica/pazienti/storia-medica/FarmacoInUso/farmaco-in-uso/farmaco-in-uso.component';
 import { AllegatiComponent } from './allegati/allegati/allegati.component';
+import { DettagliEventoComponent } from './appuntamenti/dettagli-evento/dettagli-evento.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -39,6 +40,9 @@ const routes: Routes = [
   {
     path: 'farmaci/:farmacoId',
     component: FarmacoInUsoComponent,
+  },
+  {
+  path: 'eventi/:id', component: DettagliEventoComponent
   },
   {
   path: 'allegati', component: AllegatiComponent

@@ -12,5 +12,10 @@
 </head>
 <body>
   <app-root></app-root>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelector('app-root')?.removeAttribute('aria-hidden');
+    });
+  </script>
 </body>
 </html>

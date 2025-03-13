@@ -26,7 +26,8 @@ import { Paziente } from '../paziente.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationModalComponent } from 'src/app/modali/confirmation-modal/confirmation-modal.component';
 import { AuthService } from 'src/app/auth/auth.service';
-import { take } from 'rxjs';
+import { forkJoin, take } from 'rxjs';
+import { EventoDTO } from 'src/app/appuntamenti/eventoDTO.model';
 
 @Component({
   selector: 'app-patient-treatment-plans',
@@ -62,9 +63,9 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
   newEvent = {
     descrizione: '',
     dataScade: '',
-    completata: false,
+    deleted: false,
     tipologia: '',
-    dottoreId: ''
+    dottoreId: '',
   };
   currentPlanId: string | null = null; // Tiene traccia del piano corrente
   storiaMedica: StoriaMedica | undefined;
@@ -100,6 +101,8 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
   dottoreId: string | undefined;
   newAppointmentDate: string = ''; // Oppure Date se vuoi gestire il valore come oggetto data
   newAppointmentHour: string = ''; // Formato orario, es: '14:30'
+  newPlanName: string = '';
+  pianoAttivo: any = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -115,14 +118,14 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
   ngOnInit(): void {
     this.authService.user$.pipe(take(1)).subscribe((user) => {
       this.dottoreId = user?.id!;
-      this.newEvent.dottoreId= this.dottoreId;
+      this.newEvent.dottoreId = this.dottoreId;
     });
     console.log('DOTTORE ID : ' + this.dottoreId);
     this.route.paramMap.subscribe((params) => {
       this.pazienteId = params.get('id')!;
       this.getPatientTreatmentPlans();
       // Dopo aver ottenuto i piani di trattamento, verifica se sono vuoti
-      this.checkAndCreateDefaultPlan();
+      //   this.checkAndCreateDefaultPlan();
     });
     this.storiaMedicaService
       .getStoriaMedica(this.pazienteId!)
@@ -137,40 +140,6 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     this.currentPlanId = trattamento.id; // Salva l'ID del piano attivo
     this.applyAppointmentsFilters(); // Filtra gli appuntamenti per questo trattamento
     this.applyEventsFilters(); // Filtra gli eventi per questo trattamento
-  }
-
-  private checkAndCreateDefaultPlan() {
-    this.pazienteService
-      .getPatientTreatmentPlansByPatientId(this.pazienteId!)
-      .subscribe((piani) => {
-        if (!this.treatmentPlans || this.treatmentPlans.length === 0) {
-          // Filtra i piani per verificare se esiste almeno un piano attivo
-          const pianoAttivo = piani.find((piano: any) => piano.attivo);
-          if (!pianoAttivo) {
-            // Nessun piano trovato, mostriamo il tasto per crearne uno
-            this.showCreateButton = true; // Variabile che controlla la visibilità del tastoo
-            this.creaPianoDefault();
-          }
-        } else {
-          // Se esiste già un piano attivo, assegna la lista dei piani esistenti
-          this.treatmentPlans = piani;
-          console.log('PIANI ATTIVI DEL PAZIENTE: ' + this.treatmentPlans);
-          this.selezionaTrattamento(this.treatmentPlans[0]);
-        }
-      });
-  }
-
-  creaPianoDefault() {
-    this.pazienteService.creaPianoDefault(this.pazienteId!).subscribe(
-      (newPlan) => {
-        this.treatmentPlans.push(newPlan);
-        this.showCreateButton = false; // Nascondi il bottone dopo la creazione
-        this.selezionaTrattamento(newPlan); // Seleziona il nuovo piano appena creato
-      },
-      (error) => {
-        console.error('Errore nella creazione del piano: ', error);
-      }
-    );
   }
 
   // Inizializza il paginator
@@ -382,13 +351,16 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
       });
   }
 
-  closeModal(): void {
-    const modalElement = this.addAppointmentModal.nativeElement;
-    const modalInstance =
-      bootstrap.Modal.getInstance(modalElement) ||
-      new bootstrap.Modal(modalElement);
+  closeModal(modalId?: string): void {
+    // Se è stato passato un ID, trova il modale con quell'ID, altrimenti usa addAppointmentModal
+    const modalElement = modalId
+      ? document.getElementById(modalId)
+      : this.addAppointmentModal.nativeElement;
 
-    if (modalInstance) {
+    if (modalElement) {
+      const modalInstance =
+        bootstrap.Modal.getInstance(modalElement) ||
+        new bootstrap.Modal(modalElement);
       modalInstance.hide();
     }
 
@@ -402,8 +374,11 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
 
       // Forza il reset dello scroll
       document.body.style.overflow = 'auto';
-      // **Forza l'aggiornamento della tabella dopo la chiusura**
-      this.dataSourceAppointments._updateChangeSubscription();
+
+      // **Forza l'aggiornamento della tabella solo se è il modale degli appuntamenti**
+      if (!modalId || modalId === 'addAppointmentModal') {
+        this.dataSourceAppointments._updateChangeSubscription();
+      }
     }, 300);
   }
 
@@ -619,9 +594,9 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     this.newEvent = {
       descrizione: '',
       dataScade: '',
-      completata: false,
+      deleted: false,
       tipologia: '',
-      dottoreId: ''
+      dottoreId: '',
     };
   }
 
@@ -709,11 +684,17 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     this.applyEventsFilters();
   }
 
-  vaiAiDettagli(appuntamento: AppuntamentoDTO) {
+  vaiAiDettagliAppuntamento(appuntamento: AppuntamentoDTO) {
     if (appuntamento.id) {
       this.router.navigate(['/appuntamenti', appuntamento.id]); // Naviga ai dettagli
     } else {
       console.error('ID appuntamento non valido');
+    }
+  }
+
+  vaiAiDettagliEvento(evento: EventoDTO) {
+    if (evento.id) {
+      this.router.navigate(['/eventi', evento.id]);
     }
   }
 
@@ -741,7 +722,101 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
   }
 
   deactivateTreatmentPlan(treatmentPlanId: string): void {
-    console.log(`Piano di trattamento ${treatmentPlanId} disattivato`);
-    // Qui puoi chiamare il servizio per aggiornare lo stato nel backend
+    this.pazienteService.deactivatePlan(treatmentPlanId).subscribe({
+      next: () => {
+        console.log('Piano di trattamento disattivato con successo');
+        // Qui puoi aggiornare la UI o ricaricare i dati
+      },
+      error: (err) => {
+        console.error('Errore durante la disattivazione:', err);
+      },
+    });
+  }
+
+  // Funzione per aprire/chiudere modali dinamicamente
+  toggleModal(modalId: string, action: 'show' | 'hide') {
+    const modalElement = document.getElementById(modalId);
+    if (modalElement) {
+      const modalInstance =
+        bootstrap.Modal.getInstance(modalElement) ||
+        new bootstrap.Modal(modalElement);
+      action === 'show' ? modalInstance.show() : modalInstance.hide();
+    }
+  }
+
+  checkAndCreatePlan() {
+    if (!this.newPlanName.trim()) {
+      alert('Inserisci un nome valido per il nuovo piano.');
+      return;
+    }
+
+    // Chiude il primo modale prima di eventuali altri step
+    this.toggleModal('createPlanModal', 'hide');
+
+    // Recupera i piani esistenti
+    this.pazienteService
+      .getPatientTreatmentPlansByPatientId(this.pazienteId!)
+      .subscribe((piani) => {
+        if (!piani || piani.length === 0) {
+          this.createPlan();
+          return;
+        }
+
+        // Se esiste almeno un piano attivo, apriamo il modale di conferma disattivazione
+        this.toggleModal('confirmDeactivateModal', 'show');
+      });
+  }
+
+  // Disattiva il piano attivo e crea il nuovo piano
+  deactivateAndCreatePlan() {
+    // Chiude il modale di conferma prima di procedere
+    this.toggleModal('confirmDeactivateModal', 'hide');
+    // Recupera tutti i piani attivi e li disattiva
+    this.pazienteService
+      .getPatientTreatmentPlansByPatientId(this.pazienteId!)
+      .subscribe((piani) => {
+        if (!piani || piani.length === 0) {
+          this.createPlan();
+          return;
+        }
+        // Disattiva tutti i piani attivi
+        const pianiAttivi = piani.filter((piano) => piano.attivo);
+
+        const disattivazioni = pianiAttivi.map((piano) =>
+          this.pazienteService.deactivatePlan(piano.id)
+        );
+
+        // Aspettiamo che tutti i piani siano disattivati prima di creare il nuovo
+        forkJoin(disattivazioni).subscribe(() => {
+          console.log('Tutti i piani precedenti sono stati disattivati.');
+          this.createPlan();
+        });
+      });
+  }
+  // Crea il nuovo piano
+  createPlan() {
+    const nuovoPiano = {
+      nomePiano: this.newPlanName,
+      attivo: true,
+      pazienteId: this.pazienteId,
+    };
+
+    this.pazienteService.creaPianoTrattamento(nuovoPiano).subscribe(
+      (newPlan) => {
+        this.treatmentPlans.push(newPlan);
+        this.trattamentoSelezionato = newPlan;
+        this.newPlanName = ''; // Reset input
+         console.log('Nuovo piano creato con successo.');
+
+         // Chiude tutti i modali
+         this.toggleModal('createPlanModal', 'hide');
+         this.toggleModal('confirmDeactivateModal', 'hide');
+      },
+      (error) => {
+        console.error('Errore nella creazione del piano:', error);
+      }
+    );
   }
 }
+  
+
