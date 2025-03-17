@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   QueryList,
@@ -112,7 +113,8 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     private storiaMedicaService: StoriaMedicaService,
     private appuntamentoService: AppuntamentoService,
     private snackBar: MatSnackBar,
-    private authService: AuthService
+    private authService: AuthService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -283,7 +285,9 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
 
     this.appuntamentoService
       .addAppuntamento(this.newAppointment, this.pazienteId!, this.dottoreId!)
-      .then((savedAppuntamento) => {
+      .then((savedAppuntamento) => 
+        {
+          
         this.newAppointment = {
           ...savedAppuntamento,
           paziente:
@@ -324,10 +328,47 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
                   panelClass: ['success-snackbar'], // Classe personalizzata opzionale
                 });
                 // **Chiudi il modale dopo un breve ritardo**
-                setTimeout(() => this.closeModal(), 100);
+                // setTimeout(() => this.closeModal(), 100);
                 setTimeout(() => {
+                  let modalElement = document.getElementById(
+                    'addAppointmentModal'
+                  );
+                  if (modalElement) {
+                    let modalBootstrap =
+                      bootstrap.Modal.getInstance(modalElement);
+                    if (modalBootstrap) {
+                      modalBootstrap.hide(); // Chiude il modale
+                      modalBootstrap.dispose(); // Dispose the instance after hiding it
+                    } 
+                  } 
+
+                  let backdrops = document.querySelectorAll('.modal-backdrop');
+                  if (backdrops.length > 0) {
+                    backdrops.forEach((backdrop) => {
+                      backdrop.remove();
+                    });
+                  }
+                  document.body.classList.remove('modal-open');
+                  document.body.style.overflow = 'auto';
+                  document.body.scrollTop = 0; // Imposta la posizione di scroll all'inizio
+                  document.documentElement.scrollTop = 0; // Imposta la posizione di scroll all'inizio
+                  let mainContent = document.getElementById('mainContent'); // Modifica con un ID valido nella tua pagina
+                  if (mainContent) {
+                    mainContent.focus(); // Imposta il focus sull'elemento principale
+                  }
+                  document.documentElement.style.scrollBehavior = 'auto';
+                  document.documentElement.style.overflow = 'visible';
+                  document.body.offsetHeight; // Trigger reflow
+                  this.appuntamenti.push(savedAppuntamento);
+                  this.cdRef.detectChanges();
                   this.resetNewAppointment(); //resetto dati form appunt.
-                }, 300);
+
+                  setTimeout(() => {
+                    document.body.style.overflow = 'auto'; // Reset overflow con ulteriore ritardo                
+                  }, 50);
+                }, 200);
+               
+               
               },
               (error) => {
                 console.error(
@@ -390,6 +431,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
 
     if (modalInstance) {
       modalInstance.hide();
+      modalInstance.dispose();
     }
 
     // **Rimuove la classe modal-open dal body e il backdrop se rimane bloccato**

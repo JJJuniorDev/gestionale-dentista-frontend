@@ -131,7 +131,7 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
 
     // Conta gli eventi per ogni giorno
     this.eventi.forEach((evento) => {
-      const data = new Date(evento.dataScade).toISOString().split('T')[0];
+      const data = new Date(evento.dataEOrario).toISOString().split('T')[0];
       eventiPerGiorno.set(data, (eventiPerGiorno.get(data) || 0) + 1);
     });
 
@@ -162,7 +162,7 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
 
     // Filtra gli eventi per il giorno selezionato
     this.eventiGiornalieri = this.eventi.filter((evento) => {
-      const dataEvento = new Date(evento.dataScade);
+      const dataEvento = new Date(evento.dataEOrario);
       return dataEvento.toDateString() === date.toDateString();
     });
 
@@ -229,6 +229,12 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
   onNewAppuntamento() {
     this.router.navigate(['/appuntamenti/new'], {
       state: { appuntamenti: this.appuntamenti }, // Passa gli appuntamenti esistenti
+    });
+  }
+
+  onNewEvento() {
+    this.router.navigate(['/events/new'], {
+      state: { eventi: this.eventi }, // Passa gli appuntamenti esistenti
     });
   }
 

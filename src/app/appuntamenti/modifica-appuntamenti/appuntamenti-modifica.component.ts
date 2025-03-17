@@ -126,6 +126,7 @@ export class AppuntamentiModificaComponent implements OnInit {
       this.appuntamentoService
         .getAppuntamento(this.id!)
         .subscribe((appuntamento) => {
+           if (appuntamento) {
           this.formAppuntamento.patchValue({
             data: appuntamento.dataEOrario,
             orario: `${appuntamento.dataEOrario.getHours()}:${
@@ -138,6 +139,7 @@ export class AppuntamentiModificaComponent implements OnInit {
             pazienteId: appuntamento.pazienteId,
             stato: appuntamento.stato,
           });
+        }
         });
     }
     this.formAppuntamento.updateValueAndValidity();

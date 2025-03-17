@@ -7,7 +7,7 @@
       <div class="date-time-container">
         <p class="date-time">
           <i class="bi bi-calendar"></i>
-          {{ evento?.dataScade | date:'EEEE d MMMM y, HH:mm':'it' }}
+          {{ evento?.dataEOrario | date:'EEEE d MMMM y, HH:mm':'it' }}
         </p>
       </div>
       <span class="status badge" [ngClass]="getBadgeClass(evento?.tipologia)">{{ evento?.tipologia }}</span>
@@ -53,7 +53,7 @@
         </div>
         <div class="detail-item">
           <i class="bi bi-person"></i>
-          <span>data:</span> <strong>{{ evento?.dataScade }}</strong>
+          <span>data:</span> <strong>{{ evento?.dataEOrario }}</strong>
         </div>
       </div>
     </div>

@@ -45,6 +45,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { EventiModificaComponent } from './appuntamenti/modifica-eventi/eventi-modifica/eventi-modifica.component';
 
 registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
 
@@ -55,6 +56,7 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
     StatisticsComponent,
     ConfirmationModalComponent,
     AllegatiComponent,
+    
   ],
   imports: [
     NgChartsModule,
@@ -89,7 +91,7 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
     MatPaginatorModule, // Importa il modulo per il paginator
     MatButtonModule, // Se utilizzi i bottoni Material
     MatIconModule, // Se utilizzi le icone Material
-    NgSelectModule
+    NgSelectModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'it' },

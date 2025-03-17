@@ -45,7 +45,7 @@ export class DettagliEventoComponent implements OnInit {
   onEventoEdit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.router.navigate([`/eventi/${id}/edit`], { relativeTo: this.route });
+      this.router.navigate([`/events/edit/${id}`], { relativeTo: this.route });
     } else {
       console.error('ID evento non trovato nei parametri della rotta');
     }
@@ -58,7 +58,7 @@ export class DettagliEventoComponent implements OnInit {
       panelClass: 'custom-confirmation-modal',
       data: {
         descrizione: this.evento?.descrizione,
-        data: this.evento?.dataScade,
+        data: this.evento?.dataEOrario,
       },
     });
 

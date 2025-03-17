@@ -3,7 +3,7 @@ export class EventoDTO {
   public id: string;
   public pianoTrattamentoId: string;
   public descrizione: string;
-  public dataScade: string;
+  public dataEOrario: Date;
   public deleted: boolean;
   public tipologia: string;
   public dottoreId: string;
@@ -12,7 +12,7 @@ export class EventoDTO {
     id: string,
     pianoTrattamentoId: string,
     descrizione: string,
-    dataScade: string,
+    dataEOrario: Date,
     deleted: boolean,
     tipologia: string,
     dottoreId: string
@@ -20,7 +20,7 @@ export class EventoDTO {
     this.id = id;
     this.pianoTrattamentoId = pianoTrattamentoId;
     this.descrizione = descrizione;
-    this.dataScade = dataScade;
+    this.dataEOrario = dataEOrario;
     this.deleted = deleted;
     this.tipologia = tipologia;
     this.dottoreId = dottoreId;

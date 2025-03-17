@@ -20,25 +20,34 @@ export class EventoService {
   }
 
   getEvento(id: string): Observable<EventoDTO> {
-    return this.http.get<EventoDTO>(`${this.apiUrl}/eventi/eventoSingolo/${id}`).pipe(
-      map((appuntamento: EventoDTO) => {
-        if (!appuntamento) {
-          throw new Error(`Appuntamento con ID ${id} non trovato.`);
-        }
-        return appuntamento;
-      }),
-      catchError((error) => {
-        console.error("Errore durante la richiesta dell'appuntamento:", error);
-        return throwError(
-          () =>
-            new Error("Impossibile ottenere l'appuntamento: " + error.message)
-        );
-      })
-    );
+    return this.http
+      .get<EventoDTO>(`${this.apiUrl}/eventi/eventoSingolo/${id}`)
+      .pipe(
+        map((appuntamento: EventoDTO) => {
+          if (!appuntamento) {
+            throw new Error(`Appuntamento con ID ${id} non trovato.`);
+          }
+          return appuntamento;
+        }),
+        catchError((error) => {
+          console.error(
+            "Errore durante la richiesta dell'appuntamento:",
+            error
+          );
+          return throwError(
+            () =>
+              new Error("Impossibile ottenere l'appuntamento: " + error.message)
+          );
+        })
+      );
   }
 
   deleteEvento(id: string): Observable<void> {
     // const id = this.appuntamenti[+index].id;
     return this.http.delete<void>(`${this.apiUrl}/eventi/delete/${id}`);
+  }
+
+  updateEvent(id: string, formData: any): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/eventi/update/${id}`, formData);
   }
 }

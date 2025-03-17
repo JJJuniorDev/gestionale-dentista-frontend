@@ -9,6 +9,7 @@ import { PatientTreatmentPlansComponent } from './pazienti/patient-treatment-pla
 import { FarmacoInUsoComponent } from './pazienti/lista-operazioni/paziente/storia-medica/pazienti/storia-medica/FarmacoInUso/farmaco-in-uso/farmaco-in-uso.component';
 import { AllegatiComponent } from './allegati/allegati/allegati.component';
 import { DettagliEventoComponent } from './appuntamenti/dettagli-evento/dettagli-evento.component';
+import { EventiModificaComponent } from './appuntamenti/modifica-eventi/eventi-modifica/eventi-modifica.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -42,10 +43,17 @@ const routes: Routes = [
     component: FarmacoInUsoComponent,
   },
   {
-  path: 'eventi/:id', component: DettagliEventoComponent
+    path: 'eventi/:id',
+    component: DettagliEventoComponent,
   },
   {
-  path: 'allegati', component: AllegatiComponent
+    path: 'events/new',
+    component: EventiModificaComponent,
+  },
+  { path: 'events/edit/:id', component: EventiModificaComponent },
+  {
+    path: 'allegati',
+    component: AllegatiComponent,
   },
   {
     path: '**',

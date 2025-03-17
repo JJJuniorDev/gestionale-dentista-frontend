@@ -32,15 +32,19 @@
 
 
 <div class="row mb-4 align-items-center">
-  <div class="col-md-4 d-flex justify-content-start">
+  <div class="col-md-3 d-flex justify-content-start">
     <button class="btn btn-success btn-lg" (click)="onNewAppuntamento()">Nuovo Appuntamento</button>
   </div>
+
+   <div class="col-md-3 d-flex justify-content-start">
+    <button class="btn btn-success btn-lg" (click)="onNewEvento()">Nuovo evento</button>
+  </div>
   
-  <div class="col-md-4 text-center">
+  <div class="col-md-3 d-flex  text-center">
     <h2 class="calendar-title">📅 Calendario Appuntamenti</h2>
   </div>
   
-  <div class="col-md-4 text-end">
+  <div class="col-md-3 d-flex  justify-content-end">
     <h3 class="calendar-date">{{ viewDate | date: "MMMM yyyy" }}</h3>
   </div>
 </div>
@@ -91,6 +95,10 @@
           *ngFor="let appuntamento of appuntamentiGiornalieri"
           class="appointment-item appointment-hover"
           (click)="onSelectAppuntamento(appuntamento.id)"
+            [ngStyle]="{
+    'background-color': appuntamento.stato === 'sospeso' ? '#ffcc80' : 
+                        appuntamento.stato === 'annullato' ? '#f28b82' : ''
+  }"
         >
           <div class="appointment-time">
             🕒 {{ appuntamento.dataEOrario | date : "HH:mm" }}
@@ -116,9 +124,12 @@
           *ngFor="let evento of eventiGiornalieri"
           class="event-item event-item:hover"
           (click)="onSelectEvento(evento.id)"
+            [ngStyle]="{
+    'background-color':                evento.deleted == true ? '#f28b82' : ''
+  }"
         >
           <div class="event-time">
-            📅 {{ evento.dataScade | date : "HH:mm" }}
+            📅 {{ evento.dataEOrario | date : "HH:mm" }}
           </div>
           <div class="event-details">
             📝 {{ evento.tipologia }}

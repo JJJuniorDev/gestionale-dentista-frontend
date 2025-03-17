@@ -43,6 +43,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { AppuntamentoService } from '../appuntamenti/appuntamento.service';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { EventiModificaComponent } from '../appuntamenti/modifica-eventi/eventi-modifica/eventi-modifica.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

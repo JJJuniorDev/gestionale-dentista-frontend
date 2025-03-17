@@ -133,8 +133,8 @@
 }
 
 .calendar-container {
-  margin-bottom: 50px;
-   padding-bottom: 50px; /* Assicura spazio sotto il calendario */
+  margin-bottom: 0px;
+   padding-bottom: 20px; /* Assicura spazio sotto il calendario */
 }
 html, body {
   height: 100%;

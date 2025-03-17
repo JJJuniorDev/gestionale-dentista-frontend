@@ -28,6 +28,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CalendarMonthViewComponent } from 'angular-calendar';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DettagliEventoComponent } from './dettagli-evento/dettagli-evento.component';
+import { EventiModificaComponent } from './modifica-eventi/eventi-modifica/eventi-modifica.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -40,6 +41,7 @@ import { DettagliEventoComponent } from './dettagli-evento/dettagli-evento.compo
     AppuntamentiModificaComponent,
     FatturazioneComponent,
     DettagliEventoComponent,
+    EventiModificaComponent,
   ],
   imports: [
     RouterModule,
