@@ -3,7 +3,9 @@ export interface NotaDTO {
   dataCreazione: Date;
   dataModifica: Date;
   contenuto: string;
-  farmacoInUsoId: string;
+  dottoreId: string;
+  pazienteId: string | null;
+  appuntamentoId: string | null;
   utente: string;
   tipoNota: string;
   priorita: string;

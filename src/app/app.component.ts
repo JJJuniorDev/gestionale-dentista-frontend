@@ -23,11 +23,10 @@ export class AppComponent {
     private authService: AuthService,
     private store: Store<fromApp.AppState>,
     private router: Router,
-    private location: Location,
-    private spinner: NgxSpinnerService
+    private location: Location
   ) {}
 
-  ngOnInit() { 
+  ngOnInit() {
     // Controlla se la rotta corrente è il login
     this.router.events
       .pipe(
@@ -47,13 +46,17 @@ export class AppComponent {
         this.isAuthenticated = !!user;
         this.isDoctor = this.authService.getUserRole() === 'dottore';
       });
-   
+
     // Aggiungere un ulteriore controllo in caso di cambiamenti dell'utente
     this.authService.userRole$.subscribe((role) => {
       this.isDoctor = role === 'dottore';
     });
   }
 
+  isLoginPage(): boolean {
+    return this.router.url.includes('/auth/login');
+  }
+  
   goBack(): void {
     this.location.back();
   }

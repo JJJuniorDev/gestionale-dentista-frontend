@@ -31,7 +31,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import {
@@ -80,7 +79,6 @@ import { EventiModificaComponent } from '../appuntamenti/modifica-eventi/eventi-
     MatListModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSnackBarModule,
     MatMenuModule,
     MatIconModule,
     MatPaginatorModule,

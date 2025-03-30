@@ -10,7 +10,6 @@ import { ConfirmationModalComponent } from 'src/app/modali/confirmation-modal/co
 import { Farmaco } from '../../models/farmaco.model';
 import { StoriaMedicaService } from '../../services/storia-medica.service';
 import { FarmacoService } from '../../services/farmaco.service';
-import { NoteService } from '../../services/note.service';
 import { Nota } from '../../models/nota.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotaDTO } from '../../models/notaDTO.model';
@@ -58,7 +57,7 @@ export class FarmacoInUsoComponent implements OnChanges {
     public dialog: MatDialog,
     private storiaMedicaService: StoriaMedicaService,
     private farmacoService: FarmacoService,
-    private noteService: NoteService
+    
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     throw new Error('Method not implemented.');
@@ -94,26 +93,7 @@ export class FarmacoInUsoComponent implements OnChanges {
         }
       );
     }
-    // Recupera le note e ordinale per data
-    this.noteService.getNotesByIds(this.farmacoInUso.note || []).subscribe({
-      next: (notes) => {
-        this.note = notes.map((nota) => ({
-          ...nota,
-          expanded: false, // Aggiungi una proprietà expanded inizialmente impostata su false
-        }));
-        this.note.sort(
-          (a, b) =>
-            new Date(b.dataCreazione).getTime() -
-            new Date(a.dataCreazione).getTime()
-        ); // Ordina per data decrescente
-        // Aggiorna la dataSource con tutte le note
-        this.tableDataSource.data = this.note;
-        this.tableDataSource.paginator = this.paginator!; // Associa il paginator
-      },
-      error: (err) => {
-        console.error('Errore durante il recupero delle note:', err);
-      },
-    });
+
   }
 
   aggiungiNota(farmacoInUsoId: string): void {

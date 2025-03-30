@@ -1,8 +1,9 @@
 <mat-card class="appuntamento-card">
-  <mat-card-title class="title">📅 Creazione Appuntamento</mat-card-title>
+  <mat-card-title class="title">  📅 {{ editMode ? 'Modifica Appuntamento' : 'Creazione Appuntamento' }}</mat-card-title>
   <mat-card-content>
     <form [formGroup]="formAppuntamento" (ngSubmit)="onSubmit()" class="appointment-form">
       
+      <ng-container *ngIf="!editMode">
       <mat-form-field appearance="fill" class="full-width">
   <mat-label>Seleziona campo di ricerca</mat-label>
   <mat-select [(value)]="searchField">
@@ -27,6 +28,7 @@
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
+</ng-container>
 
    <!-- Data -->
 <mat-form-field appearance="fill" class="full-width">

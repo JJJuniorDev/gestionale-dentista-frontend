@@ -1,0 +1,57 @@
+<div class="archivio-container">
+  <h2 class="title">Note Archiviate</h2>
+
+   <!-- Filtro per ordinare la data -->
+<div class="filter-container">
+  <label for="dateSort">📅 Ordina per data:</label>
+  <div class="custom-select-container">
+    <select id="dateSort" (change)="sortByDate($event)" class="custom-select">
+      <option value="desc" selected>Più recenti</option>
+      <option value="asc">Più vecchie</option>
+    </select>
+    <span class="select-arrow">▼</span>
+  </div>
+</div>
+
+
+  <table mat-table [dataSource]="noteArchiviate" class="notes-table mat-elevation-z8">
+
+    <!-- Tipo Nota -->
+    <ng-container matColumnDef="tipoNota">
+      <th mat-header-cell *matHeaderCellDef> Tipo </th>
+      <td mat-cell *matCellDef="let nota"> {{ nota.tipoNota }} </td>
+    </ng-container>
+
+    <!-- Contenuto -->
+    <ng-container matColumnDef="contenuto">
+      <th mat-header-cell *matHeaderCellDef> Contenuto </th>
+      <td mat-cell *matCellDef="let nota"> {{ nota.contenuto }} </td>
+    </ng-container>
+
+    <!-- Data Creazione -->
+    <ng-container matColumnDef="dataCreazione">
+      <th mat-header-cell *matHeaderCellDef> Data Creazione </th>
+      <td mat-cell *matCellDef="let nota"> {{ nota.dataCreazione | date:'dd/MM/yyyy HH:mm' }} </td>
+    </ng-container>
+
+    <!-- Priorità -->
+    <ng-container matColumnDef="priorita">
+      <th mat-header-cell *matHeaderCellDef> Priorità </th>
+      <td mat-cell *matCellDef="let nota"> {{ nota.priorita }} </td>
+    </ng-container>
+
+
+    <!-- Header e righe -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <!-- Paginazione -->
+  <mat-paginator 
+    [length]="totalFiles"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 15, 20]" 
+    (page)="pageChanged($event)">
+  </mat-paginator>
+</div>

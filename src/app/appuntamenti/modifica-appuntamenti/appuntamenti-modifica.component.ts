@@ -15,6 +15,7 @@ import { Paziente } from 'src/app/pazienti/paziente.model';
 import { PazienteService } from 'src/app/pazienti/paziente.service';
 import { map, Observable, startWith, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -47,20 +48,18 @@ export class AppuntamentiModificaComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private pazienteService: PazienteService,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
-    // Ottieni gli appuntamenti passati attraverso lo stato del router
-    const navigazioneState = history.state;
-    this.appuntamenti = navigazioneState ? navigazioneState.appuntamenti : [];
-    // Abbonati a user$ per ottenere l'ID dell'utente loggato
     this.authService.user$.subscribe((user) => {
       if (user) {
         this.dottoreId = user.id; // Ottieni l'ID dell'utente loggato
         console.log('ID Dottore: ', this.dottoreId);
       }
     });
+
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
       this.editMode = params['id'] != null; //se ha un id allora siamo in editMode
@@ -99,97 +98,93 @@ export class AppuntamentiModificaComponent implements OnInit {
 
   private initForm() {
     //inizializzo il form
-    let dataAppuntamento: Date = new Date();
-    let trattamentoAppuntamento = '';
-    let noteAppuntamento = '';
-    let codiceFiscalePaziente = '';
-    let dottoreId = this.dottoreId;
-    let pazienteId = '';
-    let stato = 'futuro';
-    let orario = '';
+    // let dataAppuntamento: Date = new Date();
+    // let trattamentoAppuntamento = '';
+    // let noteAppuntamento = '';
+    // let codiceFiscalePaziente = '';
+    // let dottoreId = this.dottoreId;
+    // let pazienteId = '';
+    // let stato = 'futuro';
+    // let orario = '';
 
     this.formAppuntamento = this.formBuilder.group({
-      data: [dataAppuntamento, Validators.required],
-      orario: [orario, Validators.required], // Nuovo campo per l'orario
-      note: [noteAppuntamento, Validators.required],
-      trattamento: [trattamentoAppuntamento, Validators.required],
-      codiceFiscalePaziente: [
-        { value: codiceFiscalePaziente },
-        Validators.required,
-      ], // Campo disabilitato
-      dottoreId: dottoreId,
-      pazienteId: [pazienteId, Validators.required],
-      stato: [stato, Validators.required],
+      data: [null, Validators.required],
+      orario: ['', Validators.required], // Nuovo campo per l'orario
+      note: [''],
+      trattamento: [''],
+      codiceFiscalePaziente: [''], // Campo disabilitato
+      stato: ['', Validators.required],
     });
     this.generaOrariDisponibili(); // Genera gli orari disponibili
     if (this.editMode) {
-      this.appuntamentoService
-        .getAppuntamento(this.id!)
-        .subscribe((appuntamento) => {
-           if (appuntamento) {
-          this.formAppuntamento.patchValue({
-            data: appuntamento.dataEOrario,
-            orario: `${appuntamento.dataEOrario.getHours()}:${
-              appuntamento.dataEOrario.getMinutes() === 0 ? '00' : '30'
-            }`,
-            trattamento: appuntamento.trattamento,
-            note: appuntamento.note,
-            codiceFiscalePaziente: appuntamento.codiceFiscalePaziente,
-            dottoreId: appuntamento.paziente!.dottoreId,
-            pazienteId: appuntamento.pazienteId,
-            stato: appuntamento.stato,
-          });
-        }
-        });
+      this.caricaAppuntamento();
     }
-    this.formAppuntamento.updateValueAndValidity();
-    console.log('Form valid?', this.formAppuntamento.valid);
   }
 
-  onSubmit() {
-   
+  caricaAppuntamento() {
+    if (!this.id) return;
+
+    this.appuntamentoService
+      .getAppuntamento(this.id!)
+      .subscribe((appuntamento) => {
+        if (appuntamento) {
+           const dataEOrario = new Date(appuntamento.dataEOrario);
+          this.formAppuntamento.patchValue({
+            data: this.formattaData(dataEOrario),
+            orario: this.formattaOrario(dataEOrario),
+            trattamento: appuntamento.trattamento || '',
+            note: appuntamento.note || '',
+            codiceFiscalePaziente: appuntamento.codiceFiscalePaziente || '',
+            stato: appuntamento.stato || '',
+          });
+        }
+      });
+  }
+
+  private formattaData(data: Date): string {
+    return data.toISOString().split('T')[0]; // "YYYY-MM-DD"
+  }
+
+  private formattaOrario(data: Date): string {
+    return `${data.getHours()}:${data.getMinutes() === 0 ? '00' : '30'}`;
+  }
+
+  async onSubmit() {
+     if (this.formAppuntamento.invalid) {
+       console.error('Form non valido!');
+       return;
+     }
+
+         let pazienteId: string | undefined;
+
+         if (!this.editMode) {
+           pazienteId = this.getPazienteId(
+             this.formAppuntamento.value.codiceFiscalePaziente
+           );
+           if (!pazienteId) {
+             console.error('Errore: paziente non trovato!');
+             return;
+           }
+         } else {
+           pazienteId = this.formAppuntamento.value.pazienteId; // Usa l'ID già presente in editMode
+         }
+
     this.formAppuntamento.patchValue({ dottoreId: this.dottoreId });
     console.log('Dottore ID:', this.dottoreId);
-    const pazienteId = this.getPazienteId(
-      //prendo i dati del paziente in base al codice fiscale scelto
-      this.formAppuntamento.value.codiceFiscalePaziente
-    );
-    if (!pazienteId) {
-      return;
-    }
+  
     const dataSelezionata: Date = this.formAppuntamento.value.data;
-     console.log('Data selezionata:', dataSelezionata.toISOString());
-    if (!dataSelezionata) {
-      console.error('Errore: Data non selezionata!');
-      return;
-    }
-    // Prendi l'orario dal form
-    const orarioSelezionato = this.formAppuntamento.value.orario;
-    if (!orarioSelezionato) {
-      console.error('Errore: Orario non selezionato!');
+     const orarioSelezionato = this.formAppuntamento.value.orario;
+    if (!dataSelezionata || !orarioSelezionato) {
+      console.error('Errore: Data o orario mancanti!');
       return;
     }
     // Suddividi l'orario (es. "10:30") in ore e minuti
     const [ora, minuti] = orarioSelezionato.split(':').map(Number);
-
     dataSelezionata.setHours(ora, minuti, 0); // Imposta ora e minuti sulla data
     // Controlla che la data sia valida
-    if (
-      !(dataSelezionata instanceof Date) ||
-      isNaN(dataSelezionata.getTime())
-    ) {
-      console.error('Errore: La data e orario selezionati non sono validi!');
-      return;
-    }
+  
     // Controllo se l'orario è già occupato
-    const appuntamentoEsistente = this.appuntamenti.find(
-      (app) => new Date(app.dataEOrario).getTime() === dataSelezionata.getTime()
-    );
-
-    if (appuntamentoEsistente) {
-      alert('Errore: Esiste già un appuntamento a questa data e ora!');
-      return;
-    }
+   
     const formData = {
       ...this.formAppuntamento.value,
       dataEOrario: dataSelezionata.toISOString(), // Ora `dataEOrario` esiste e non sarà undefined
@@ -200,19 +195,93 @@ export class AppuntamentiModificaComponent implements OnInit {
 
     console.log('Form Data:', formData);
 
-    if (this.editMode && this.id) {
+    if (this.editMode) {
       console.log('SIAMO IN UPDATE APPUNTAMENTO');
-      this.appuntamentoService.updateAppuntamento(this.id, formData);
+      this.appuntamentoService
+        .updateAppuntamento(this.id!, formData)
+        .subscribe({
+          next: () => {
+            this.toastr.success(
+              'Appuntamento modificato con successo',
+              'Successo',
+              {
+                timeOut: 3000, // Durata del messaggio
+                positionClass: 'toast-top-center', // Posizione del toast al centro in alto
+                progressBar: true, // Aggiungi una barra di progresso
+                closeButton: true, // Aggiungi un pulsante di chiusura
+              }
+            );
+            this.router.navigate([`/appuntamenti/dottore/${this.dottoreId}`]);
+          },
+          error: (err) => {
+            console.error('Errore durante la modifica dell’evento:', err);
+             this.toastr.error(
+               'Errore durante la modifica dell’evento, riprovare.',
+               'Errore',
+               {
+                 timeOut: 3000, // Durata del messaggio
+                 positionClass: 'toast-top-center', // Posizione del toast al centro in alto
+                 progressBar: true, // Aggiungi una barra di progresso
+                 closeButton: true, // Aggiungi un pulsante di chiusura
+               }
+             );
+          },
+        });
     } else {
-      console.log('SIAMO IN ADD APPUNTAMENTO');
-      // const pazienteId = selectedPaziente.id; // Prendiamo l'ID del paziente
-      //   this.appuntamentoService.addAppuntamento(formData, pazienteId);
-      this.appuntamentoService.addAppuntamento(formData, pazienteId, this.dottoreId!);
-    }
-
-    this.onCancel();
-    // this.router.navigate(['/dashboard']); // Ricarica la lista
+       // 1. Create appointment (await the Promise)
+  const nuovoAppuntamento = await this.appuntamentoService.addAppuntamento(formData, pazienteId!, this.dottoreId!);
+  
+  // 2. After appointment is created, get treatment plans
+  const piani = await this.pazienteService.getPatientTreatmentPlansByPatientId(pazienteId!).toPromise();
+  
+  const pianoAttivo = piani?.find((piano) => piano.attivo);
+              if (!pianoAttivo) {
+               this.toastr.error(
+                 "Appuntamento trovato, ma nessun piano di trattamento attivo, creane uno.",
+                 'Errore',
+                 {
+                   timeOut: 3000, // Durata del messaggio
+                   positionClass: 'toast-top-center', // Posizione del toast al centro in alto
+                   progressBar: true, // Aggiungi una barra di progresso
+                   closeButton: true, // Aggiungi un pulsante di chiusura
+                 }
+               );
+              }
+              
+            // 3. Add appointment to treatment plan
+  await this.pazienteService.addAppointmentToPlan(
+    pazienteId!,
+    pianoAttivo!.id,
+    nuovoAppuntamento.id // Pass just the ID string
+  ).toPromise();
+             this.toastr.success(
+               'Appuntamento creato e aggiunto al piano di trattamento con successo!',
+               'Successo',
+               {
+                 timeOut: 3000, // Durata del messaggio
+                 positionClass: 'toast-top-center', // Posizione del toast al centro in alto
+                 progressBar: true, // Aggiungi una barra di progresso
+                 closeButton: true, // Aggiungi un pulsante di chiusura
+               }
+             );
+                  this.router.navigate([`/appuntamenti/dottore/${this.dottoreId}`]);
+                }
+                error: (err: any) => {
+                  console.error('Errore durante l aggiunta al piano di trattamento:', err);
+                 this.toastr.error(
+                   "Appuntamento creato, ma errore nell'aggiunta al piano di trattamento.",
+                   'Errore',
+                   {
+                     timeOut: 3000, // Durata del messaggio
+                     positionClass: 'toast-top-center', // Posizione del toast al centro in alto
+                     progressBar: true, // Aggiungi una barra di progresso
+                     closeButton: true, // Aggiungi un pulsante di chiusura
+                   }
+                 );
   }
+}
+
+    // this.router.navigate(['/dashboard']); // Ricarica la lista
 
   // Metodo che gestisce la selezione del paziente
   onPazienteSelect(event: any) {
@@ -275,5 +344,4 @@ export class AppuntamentiModificaComponent implements OnInit {
       this.orariDisponibili.push(`${ora}:00`, `${ora}:30`);
     }
   }
-
 }

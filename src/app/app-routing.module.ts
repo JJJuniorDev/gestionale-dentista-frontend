@@ -10,6 +10,7 @@ import { FarmacoInUsoComponent } from './pazienti/lista-operazioni/paziente/stor
 import { AllegatiComponent } from './allegati/allegati/allegati.component';
 import { DettagliEventoComponent } from './appuntamenti/dettagli-evento/dettagli-evento.component';
 import { EventiModificaComponent } from './appuntamenti/modifica-eventi/eventi-modifica/eventi-modifica.component';
+import { ArchivioComponent } from './archivio/archivio/archivio.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -29,6 +30,10 @@ const routes: Routes = [
       import('./appuntamenti/appuntamenti.module').then(
         (m) => m.AppuntamentiModule
       ),
+  },
+  {
+    path: 'note',
+    loadChildren: () => import('./note/note.module').then((m) => m.NotesModule),
   },
   { path: 'users', component: UserSettingsComponent },
   { path: 'users/:id', component: UserItemComponent },
@@ -54,6 +59,10 @@ const routes: Routes = [
   {
     path: 'allegati',
     component: AllegatiComponent,
+  },
+  {
+    path: 'archivio',
+    component: ArchivioComponent,
   },
   {
     path: '**',

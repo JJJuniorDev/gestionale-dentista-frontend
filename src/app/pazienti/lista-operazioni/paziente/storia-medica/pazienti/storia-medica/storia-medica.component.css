@@ -40,28 +40,6 @@
   color: #424242; /* Per eventuali sottotitoli */
 }
 
-.custom-snackbar {
-  position: fixed !important;
-  top: 50% !important; /* Posiziona al centro verticalmente */
-  left: 50% !important; /* Posiziona al centro orizzontalmente */
-  transform: translate(-50%, -50%) !important; /* Centra esattamente */
-  width: 50%; /* Rendi la Snackbar più grande */
-  text-align: center; /* Centra il testo */
-  background-color: #f44336 !important; /* Colore rosso visibile */
-  color: white !important; /* Testo bianco */
-  font-size: 18px !important; /* Dimensione testo */
-  font-weight: bold !important; /* Testo in grassetto */
-  padding: 20px !important; /* Spaziatura interna */
-  border-radius: 10px !important; /* Arrotonda angoli */
-  z-index: 2000 !important; /* Assicurati che sia visibile sopra gli altri elementi */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Ombreggiatura */
-}
-
-/* Nascondi temporaneamente animazioni per centrare correttamente */
-.mat-snack-bar-container {
-  justify-content: center !important;
-}
-
 .anamnesi-container {
   margin-bottom: 16px;
   padding: 8px;
@@ -90,4 +68,12 @@
 
 .pointer {
   cursor: pointer;
+}
+
+.toast-center {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999; /* Assicurati che sia sopra altri elementi */
 }

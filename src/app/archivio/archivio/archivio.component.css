@@ -1,0 +1,128 @@
+.archivio-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #11a0ad;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+.notes-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Header della tabella */
+th {
+  color: #20798f;
+  padding: 15px;
+  text-align: left;
+  font-size: 16px;
+}
+
+/* Celle della tabella */
+td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+/* Alternanza di colori per le righe */
+tr:nth-child(even) {
+  background: #f2f2f2;
+}
+
+/* Hover sulle righe */
+tr:hover {
+  background: #d0d3d4;
+  transition: background 0.3s ease-in-out;
+}
+
+/* Stile della paginazione */
+mat-paginator {
+  margin-top: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  padding: 10px;
+}
+
+/* Stile per la riga dell'header */
+tr.mat-header-row {
+  background: white !important; /* Sfondo bianco */
+  color: black !important; /* Testo nero */
+  font-weight: bold;
+  font-size: 16px;
+  border-bottom: 2px solid #34495e; /* Bordo per separazione chiara */
+}
+
+/* Contenitore filtro */
+.filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+/* Label */
+label {
+  font-weight: bold;
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+/* Contenitore personalizzato del select */
+.custom-select-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Stile del select */
+.custom-select {
+  padding: 12px 40px 12px 15px;
+  font-size: 14px;
+  border: 2px solid #2c3e50;
+  border-radius: 8px;
+  background: white;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  appearance: none; /* Rimuove lo stile nativo */
+  width: 180px;
+}
+
+/* Icona ▼ a destra del select */
+.select-arrow {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+/* Hover effect */
+.custom-select:hover {
+  background: #ecf0f1;
+}
+
+/* Focus effect */
+.custom-select:focus {
+  border-color: #2980b9;
+  outline: none;
+  box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+}

@@ -29,18 +29,47 @@ h3 {
   font-weight: 500;
 }
 
-/* Form input file */
-input[type="file"] {
-  border-radius: 25px;
-  border: 2px solid #2980b9;
-  padding: 10px 20px;
-  font-size: 1rem;
-  color: #2980b9;
-  transition: 0.3s ease-in-out;
+/* Aggiungere uno stile tabellare per gli allegati */
+.table-responsive {
+  margin-top: 20px;
+  overflow-x: auto;
 }
 
-input[type="file"]:hover {
-  border-color: #3498db;
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+}
+
+.table th, .table td {
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 0.9rem; /* Piccole dimensioni per le righe */
+}
+
+.table th {
+  background-color: #34495e;
+  font-weight: bold;
+  color: #ecf0f1;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #34495e;
+}
+
+.table tbody tr:hover {
+  background-color: #34495e;
+  cursor: pointer;
+}
+
+/* Altezza delle righe più piccole */
+.table tbody tr {
+  height: 35px; /* Altezza righe ridotta */
+}
+
+.table td {
+  vertical-align: middle;
 }
 
 /* Pulsante di upload e download con stile */
@@ -82,7 +111,7 @@ input[type="file"]:hover {
   border: 1px solid #e74c3c;
 }
 
-/* Styling per la card */
+/* Styling per la card (optional, se vuoi mantenere le card) */
 .card {
   transition: transform 0.3s ease-in-out;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -127,13 +156,6 @@ input[type="file"]:hover {
 /* Paginatore */
 .mat-paginator {
   margin-top: 30px;
-}
-
-/* Card col-lg */
-@media (max-width: 1200px) {
-  .col-lg-2 {
-    max-width: 250px;
-  }
 }
 
 /* Titolo dei file, colorato e sottolineato */

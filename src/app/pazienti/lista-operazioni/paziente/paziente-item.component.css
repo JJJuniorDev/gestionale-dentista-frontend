@@ -139,3 +139,60 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Stile mobile - Trasforma la card in una riga */
+@media (max-width: 768px) {
+  .patient-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    box-shadow: none;
+    border-radius: 0;
+    border-bottom: 1px solid #ddd; /* Linea di separazione */
+    margin: 0;
+    background: none;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    flex: 1;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 5px;
+  }
+
+  .patient-details {
+    display: none; /* Nasconde i dettagli extra su mobile */
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+
+  /* Riduci dimensione pulsanti */
+  .card-actions .btn {
+    font-size: 12px;
+    padding: 5px 8px;
+    white-space: nowrap;
+  }
+
+  /* Separatore tra righe */
+  .patient-card:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+  }
+}

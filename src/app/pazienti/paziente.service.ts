@@ -142,7 +142,7 @@ export class PazienteService {
     planId: string,
     newEvent: {
       descrizione: string;
-      dataScade: string;
+      dataEOrario: Date;
       deleted: boolean;
       tipologia: string;
       dottoreId: string;

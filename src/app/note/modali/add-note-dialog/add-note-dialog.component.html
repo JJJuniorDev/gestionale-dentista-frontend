@@ -1,0 +1,38 @@
+<div class="modal-container">
+  <h2 class="modal-title"> Aggiungi Nota</h2>
+
+  <form [formGroup]="noteForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>✏️ Contenuto</mat-label>
+      <textarea matInput formControlName="contenuto" rows="5"></textarea> <!-- Aumentato rows -->
+      <mat-error *ngIf="noteForm.get('contenuto')?.invalid && noteForm.get('contenuto')?.touched">
+        ⚠️ Il contenuto è obbligatorio (min. 5 caratteri).
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label> Tipo Nota</mat-label>
+      <mat-select formControlName="tipoNota">
+        <mat-option value="medica"> Medica</mat-option>
+        <mat-option value="amministrativa"> Osservazione</mat-option>
+        <mat-option value="osservazione"> Sociale</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>⚡ Priorità</mat-label>
+      <mat-select formControlName="priorita">
+        <mat-option value="alta"> Alta</mat-option>
+        <mat-option value="media"> Media</mat-option>
+        <mat-option value="bassa"> Bassa</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="button-container">
+      <button mat-button type="button" (click)="onCancel()">❌ Annulla</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="noteForm.invalid">
+        💾 Salva
+      </button>
+    </div>
+  </form>
+</div>

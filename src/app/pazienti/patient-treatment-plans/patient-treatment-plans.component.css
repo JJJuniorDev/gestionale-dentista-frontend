@@ -283,11 +283,6 @@ input[matInput] {
   font-weight: bold; /* L'ora in grassetto */
   color: #007acc;    /* Cambia colore dell'ora */
 }
-.success-snackbar {
-  background-color: #4caf50; /* Verde */
-  color: white;
-  font-weight: bold;
-}
 
 ::ng-deep .clickable-row {
   cursor: pointer;
@@ -366,4 +361,175 @@ ng-select .ng-select-container .ng-dropdown-panel .ng-option {
   color: #721c24; /* Colore del testo più scuro per contrasto */
   padding: 10px;
   border-bottom: 2px solid white;
+}
+
+.toast-success {
+  background-color: #28a745 !important; 
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+
+
+
+.custom-no-plan-alert {
+  border-left: 6px solid #FFA726; /* Leggermente più spesso per enfatizzare */
+  background-color: #FFF8E1;
+  color: #5D4037;
+  border-radius: 12px;
+  padding: 40px 30px; /* Più padding per riempire meglio il contenitore */
+  margin: 40px auto;   /* Margine più equilibrato */
+  position: relative;
+  width: 100%;
+  height: 400px;        /* Altezza fissa */
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrare il contenuto verticalmente */
+  align-items: center;     /* Centrare orizzontalmente */
+  text-align: center;      /* Centrare il testo */
+}
+
+/* Miglioramento del titolo */
+.custom-no-plan-alert .alert-heading {
+  color: #E65100;
+  font-weight: 700;
+  font-size: 1.8rem;  /* Più grande per adattarsi al container */
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Roboto Slab', serif;
+  border-bottom: 2px solid #E65100;
+  padding-bottom: 8px;
+  width: 100%;
+}
+
+/* Miglioramento del testo */
+.custom-no-plan-alert p {
+  font-size: 1.2rem;  /* Più grande per riempire meglio */
+  line-height: 1.6;
+  margin-bottom: 20px;
+  max-width: 600px;  /* Evita che il testo si allarghi troppo */
+}
+
+/* Stile migliorato per l'icona */
+.custom-no-plan-alert .bi-exclamation-triangle-fill {
+  min-width: 40px; /* Più grande */
+  height: 40px;
+  color: #E65100;
+  margin-bottom: 15px;
+}
+
+/* Miglioramento del pulsante */
+.custom-no-plan-alert .btn-primary {
+  background-color: #FF9800;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.custom-no-plan-alert .btn-primary:hover {
+  background-color: #F57C00;
+}
+
+/* Miglioramento del bottone di chiusura */
+.custom-no-plan-alert .btn-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  opacity: 0.7;
+  transform: scale(1.2); /* Leggermente più grande */
+}
+
+
+
+
+
+
+
+/* Stile generale del dropdown */
+.custom-dropdown {
+  max-width: 350px; /* Limita la larghezza per non renderla troppo grande */
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Stile del menu delle opzioni */
+.ng-dropdown-panel {
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+/* Contenitore delle opzioni */
+.option-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* Opzione attiva */
+.active-plan {
+  background-color: #c3e6cb !important; /* Verde chiaro */
+  color: #155724 !important;
+}
+
+.active-plan:hover {
+  background-color: #a5d6a7 !important;
+  transform: scale(1.02);
+}
+
+/* Opzione inattiva */
+.inactive-plan {
+  background-color: #f5c6cb !important; /* Rosso chiaro */
+  color: #721c24 !important;
+}
+
+.inactive-plan:hover {
+  background-color: #e57373 !important;
+  transform: scale(1.02);
+}
+
+/* Icone */
+.option-container i {
+  font-size: 1.2rem;
+}
+
+/* Testo dello stato */
+.status-text {
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-left: 6px;
+}
+
+/* Stile della label */
+.form-label {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  display: block;
+  color: #333;
+}
+
+/* Scrollbar migliorata */
+.ng-dropdown-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ng-dropdown-panel::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 4px;
+}
+
+.ng-dropdown-panel::-webkit-scrollbar-thumb:hover {
+  background: #999;
 }

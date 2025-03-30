@@ -137,21 +137,20 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
 
     // Crea eventi con il numero di appuntamenti
     this.calendarEvents = Array.from(eventiPerGiorno.entries()).map(
-      ([date, count]) => ({
+      ([date, totale]) => ({
         start: new Date(date),
-        title: `${count} eventi/appuntamenti`,
+        title: `${totale}`,
         color: { primary: '#007bff', secondary: '#cce5ff' },
         allDay: true, // Importante per evitare errori nella visualizzazione del numero
-        meta: {
-          customTitle: count.toString(), // Salva il numero come metadato (se serve per la visualizzazione)
-        },
       })
     );
   }
 
   // Metodo chiamato quando si clicca un giorno sul calendario
-  onDayClicked(event: any) {
-    const date = event.day.date; // Giorno cliccato
+  onDayClicked(event: { day: { date: Date; badgeTotal: number } }) {
+    if (!event || !event.day) return;
+
+    const date = event.day.date;
     this.selectedDay = date;
 
     this.appuntamentiGiornalieri = this.appuntamenti.filter(
@@ -160,18 +159,12 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
         date.toDateString()
     );
 
-    // Filtra gli eventi per il giorno selezionato
     this.eventiGiornalieri = this.eventi.filter((evento) => {
       const dataEvento = new Date(evento.dataEOrario);
       return dataEvento.toDateString() === date.toDateString();
     });
 
-    if (
-      this.appuntamentiGiornalieri.length > 0 ||
-      this.eventiGiornalieri.length > 0
-    ) {
-      this.showAppointmentsModal = true;
-    }
+    this.showAppointmentsModal = true;
   }
 
   onSearch() {
@@ -228,13 +221,13 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
 
   onNewAppuntamento() {
     this.router.navigate(['/appuntamenti/new'], {
-      state: { appuntamenti: this.appuntamenti }, // Passa gli appuntamenti esistenti
+      // state: { appuntamenti: this.appuntamenti }, // Passa gli appuntamenti esistenti
     });
   }
 
   onNewEvento() {
     this.router.navigate(['/events/new'], {
-      state: { eventi: this.eventi }, // Passa gli appuntamenti esistenti
+      // state: { eventi: this.eventi }, // Passa gli appuntamenti esistenti
     });
   }
 

@@ -1,25 +1,30 @@
-<nav *ngIf="isDoctor" class="navbar navbar-default py-3">
+<nav *ngIf="isDoctor" class="navbar navbar-expand-lg navbar-dark py-3">
   <div class="container-fluid">
-    <div class="navbar-header d-flex justify-content-between align-items-center w-100">
-      <h1 class="navbar-brand mb-0">STUDIO</h1>
-      <div class="d-flex">
-         <!-- Nuovo pulsante per le Statistiche -->
-        <!-- <button *ngIf="currentRoute !== '/statistics'" class="btn btn-warning btn-lg me-2" (click)="onGoToStatistics()">Statistiche <i class="bi bi-bar-chart-line-fill"></i></button> -->
-
-        <!-- <button *ngIf="currentRoute !== '/dashboard'" class="btn btn-light btn-lg me-2" (click)="onGoToDashboard()">Torna alla Dashboard</button> -->
-        <!-- <button *ngIf="currentRoute !== '/appuntamenti'" class="btn btn-info btn-lg me-2" (click)="onGoToAppointments()">Appuntamenti Della Clinica</button> -->
-        <button class="btn btn-success btn-lg me-2" (click)="onGoToDoctorAppointments()">I miei appuntamenti <i class="bi bi-clipboard2-pulse-fill"></i></button>
-        <button class="btn btn-primary btn-lg me-2" (click)="onGoToPatients()">Pazienti <i class="bi bi-person-vcard-fill"></i></button>
-        <!-- <button *ngIf="currentRoute !== '/pazienti'" class="btn btn-primary btn-lg me-2" (click)="onGoToPatients()">Pazienti <i class="bi bi-person-vcard-fill"></i></button>
-       -->
-        <!-- <button *ngIf="currentRoute !== '/users'" class="btn btn-light btn-lg me-2" (click)="onGoToSettings()">Impostazioni</button>  -->
-        <button class="btn btn-light btn-lg me-2" (click)="onLogout()">Logout <i class="bi bi-door-open-fill"></i></button>
-     <button *ngIf="currentRoute !== '/allegati'" class="btn btn-info btn-lg me-2" (click)="onGoToAllegati()">
-  Allegati <i class="bi bi-paperclip"></i>
-</button>
-      </div>
+    <a class="navbar-brand" href="#">Mentis Vigor</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto"> <!-- Aggiungi 'mx-auto' per centrare i pulsanti -->
+        <li class="nav-item">
+          <button class="btn btn-warning btn-lg" (click)="onGoToDoctorAppointments(); closeNavbar()">I miei appuntamenti <i class="bi bi-clipboard2-pulse-fill"></i></button>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-success btn-lg" (click)="onGoToPatients(); closeNavbar()">Pazienti <i class="bi bi-person-vcard-fill"></i></button>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-primary btn-lg" (click)="onGoToNotes(); closeNavbar()">Note <i class="bi bi-card-list"></i></button>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-info btn-lg" (click)="onGoToArchivio(); closeNavbar()">Archivio <i class="bi bi-archive"></i></button>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-secondary btn-lg" (click)="onGoToAllegati(); closeNavbar()">Allegati <i class="bi bi-paperclip"></i></button>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-light btn-lg" (click)="onLogout(); closeNavbar()">Logout <i class="bi bi-door-open-fill"></i></button>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
-     
-    

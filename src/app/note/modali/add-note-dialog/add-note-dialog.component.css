@@ -1,0 +1,95 @@
+.modal-container {
+   width: 600px;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out;
+  position: relative;
+   overflow: hidden; /* Nascondi lo scroll orizzontale */
+}
+
+/* Assicura che il contenuto non venga tagliato */
+.modal-container * {
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  border-bottom: 3px solid #007bff;
+  padding-bottom: 10px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+mat-form-field.mat-form-field-appearance-outline {
+  border-radius: 8px;
+}
+
+mat-form-field:hover, mat-form-field:focus-within {
+  border-color: #007bff;
+}
+
+mat-label {
+  font-weight: bold;
+  color: #333;
+}
+
+textarea {
+ min-height: 100px; /* Aumenta l'altezza del campo */
+  border-radius: 6px !important;
+   width: 100%; 
+  padding: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+button {
+  min-width: 120px;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button[mat-button] {
+  background: #dc3545;
+  color: white;
+}
+
+button[mat-raised-button] {
+  background: #007bff;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

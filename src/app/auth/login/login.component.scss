@@ -1,138 +1,336 @@
-/* Container */
-.container {
-    max-width: 450px;
-    margin: auto;
-    padding: 40px;
-    border: 1px solid #e2e2e2;
-    border-radius: 12px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    margin-top: 100px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: linear-gradient(135deg, #b8d3d3, #f0f9f9);
-    color: #333;
+/* Palette colori moderna e professionale */
+:root {
+  --primary-color: #006f5f;  /* Verde Acqua scuro */
+  --secondary-color: #028a6e;  /* Verde Acqua chiaro */
+  --accent-color: #d4f1e4;  /* Azzurro chiaro per sfondi */
+  --text-color: #333333;  /* Grigio scuro per testo */
+  --background-color: #f8f9fa;  /* Sfondo chiaro */
+  --button-hover-color: #017a56;  /* Verde scuro per hover */
+  --card-hover-color: #f1fef8;  /* Colore di hover per card */
+}
+/* Hero Section */
+.hero-section {
+  background-color: #F1E0C6;
+  color: rgb(47, 169, 120);
+  padding: 42px 0;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
-/* Heading */
+.hero-content h3 {
+  font-size: 1.6em;
+  font-weight: 500;
+  color: #005f73;
+  //margin-top: 10px;
+  font-family: 'Arial', sans-serif;
+}
+
+.hero-buttons .btn {
+  padding: 12px 24px;
+  font-size: 1.1em;
+  margin: 15px 10px;
+  border-radius: 50px; /* Rounded corners for a more modern look */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+}
+
+.hero-buttons .btn-primary {
+  background-color: #005f73;
+  color: white;
+}
+
+.hero-buttons .btn-secondary {
+  background-color: #258471;
+  color: white;
+}
+
+.hero-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.hero-buttons .btn:focus {
+  outline: none;
+}
+
+.hero-buttons .btn {
+  width: auto; /* Garantisce che la larghezza si adatti al contenuto */
+  max-width: 250px; /* Imposta una larghezza massima per non farli diventare troppo larghi */
+}
+
+/* Hero title card */
+.hero-title-card {
+  background-color: #005f73;
+  //padding: 10px;
+  border-radius: 15px;
+  display: inline-block;
+  max-width: 900px;
+  margin: 0 auto;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transform: translateY(-40px);
+  background: linear-gradient(145deg, #005f73, #258471); /* Soft gradient effect */
+}
+
+.hero-title-card h1 {
+  font-family: 'Georgia', serif;
+  font-size: 4.2em;
+  color: white;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Light shadow for more depth */
+  line-height: 1.3;
+}
+
+
+
+
+
+
+/* --- Login card (centrato) --- */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+ min-height: 80vh; /* Ridotta altezza per non spingere troppo in basso */
+    position: relative;
+}
+
+.login-card {
+  background: rgba(80, 141, 109, 0.885);
+  backdrop-filter: blur(15px);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 380px;
+  width: 100%;
+  max-height: 420px;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+  margin-top: -230px; 
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Titolo login --- */
 h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 26px;
-    font-weight: 700;
-    color: #4b4b4b;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Form Group */
-.form-group {
+    font-size: 28px;
+    font-weight: bold;
+     color: #064635;
     margin-bottom: 20px;
 }
 
+/* --- Input fields --- */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
 label {
-    display: block;
     font-weight: 600;
-    margin-bottom: 8px;
-    color: #4b4b4b;
     font-size: 14px;
+    color: #005f73;
 }
 
 input {
     width: 100%;
-    padding: 14px;
+    padding: 12px;
     font-size: 16px;
     border: 2px solid #ccc;
     border-radius: 8px;
     background-color: #f8f9fa;
-    box-sizing: border-box;
-    transition: border-color 0.3s, box-shadow 0.3s ease-in-out;
-    font-weight: 500;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-input::placeholder {
-    color: #bbb;
-}
-
-/* Focus state */
 input:focus {
-    border-color: #5b9bbf;
+    border-color: #0a9396;
     outline: none;
-    box-shadow: 0 0 10px rgba(91, 155, 191, 0.3);
+    box-shadow: 0 0 10px rgba(10, 147, 150, 0.2);
+}
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 8px;
+  background: #088F8F;
+  border: none;
+  color: white;
+  transition: all 0.3s ease-in-out;
 }
 
-/* Error message */
-.text-danger {
-    color: #e74c3c;
-    font-size: 13px;
-    margin-top: 5px;
+.btn-primary:hover {
+  background: #064635;
+  transform: scale(1.05);
 }
 
-/* Submit Button */
+/* --- Pulsante login --- */
 button {
     width: 100%;
-    padding: 14px;
+    padding: 12px;
     font-size: 16px;
+    font-weight: bold;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-weight: 700;
+    background-color: #005f73;
     color: white;
-    background-color: #5b9bbf;
-    transition: background-color 0.3s, transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
-/* Button hover and active states */
-.btn-primary:hover {
-    background-color: #4a88b3;
-    transform: translateY(-4px);
-    box-shadow: 0 5px 15px rgba(74, 136, 179, 0.2);
-}
-
-.btn-primary:active {
-    transform: translateY(2px);
-    background-color: #3f7a99;
-}
-
-.btn-primary:disabled,
-.btn-primary.disabled {
-    background-color: #b3d7ff;
-    cursor: not-allowed;
-}
-
-/* Register link */
-.mt-3 {
-    margin-top: 30px;
-    text-align: center;
+button:hover {
+    background-color: #0a9396;
+    transform: translateY(-3px);
+    box-shadow: 0px 5px 15px rgba(10, 147, 150, 0.3);
 }
 
 .btn-link {
     background: none;
     border: none;
-    color: #5b9bbf;
+    color: #0a9396;
     font-size: 14px;
     text-decoration: underline;
     cursor: pointer;
 }
 
 .btn-link:hover {
-    color: #4a88b3;
+    color: #005f73;
 }
 
-/* Responsive Design */
-@media (max-width: 576px) {
-    .container {
-        padding: 20px;
-    }
 
-    h2 {
-        font-size: 22px;
-    }
 
-    .form-group {
-        margin-bottom: 16px;
-    }
 
-    button {
-        padding: 12px;
-    }
-}
+
+
+
+
+
+// /* Funzionalità principali */
+// .features-section {
+//   padding: 60px 20px;
+//   background-color: var(--background-color);
+//   text-align: center;
+// }
+
+// .features-section .section-title {
+//   font-size: 2.4em;
+//   color: var(--primary-color);
+//   margin-bottom: 20px;
+//   font-weight: bold;
+// }
+
+// .features-section .section-description {
+//   font-size: 1.1em;
+//   color: #666;
+//   margin-bottom: 40px;
+//   max-width: 800px;
+//   margin-left: auto;
+//   margin-right: auto;
+// }
+
+// /* Contenitore delle card */
+// .cards-container {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 30px;
+//   justify-content: center;
+//   max-width: 1200px;
+//   margin: 0 auto;
+// }
+
+// /* Stile della singola card */
+// .card {
+//   display: flex;
+//   flex-direction: column;
+//   background-color:#005f73; /* Verde acqua più raffinato */
+//   border-radius: 12px;
+//   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+//   overflow: hidden;
+//   transition: transform 0.3s ease, box-shadow 0.3s ease;
+//   padding: 20px;
+//   cursor: pointer;
+//   background-image: linear-gradient(135deg, #4CB9B2, #005f73); /* Sfondo con gradiente che mescola verde acqua e arancione caldo */
+// }
+
+// .card:hover {
+//   transform: translateY(-5px);
+//   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+// }
+
+// /* Header della card */
+// .card-header {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   margin-bottom: 15px;
+// }
+
+// .card-title {
+//   font-size: 1.9em;
+//   color: var(--primary-color);
+//   margin: 0;
+//   font-weight: bold;
+// }
+
+// .card-price {
+//   background-color: var(--secondary-color);
+//   color: white;
+//   padding: 8px 15px;
+//   border-radius: 8px;
+//   font-weight: bold;
+//   font-size: 1.1em;
+// }
+
+// /* Contenuto della card */
+// .card-body {
+//   display: flex;
+//   flex-direction: row;
+//   gap: 20px;
+//   align-items: center;
+// }
+
+// .card-image img {
+//   max-width: 100%;
+//   border-radius: 8px;
+//   object-fit: cover;
+//   max-height: 450px;
+// }
+
+// .card-text {
+//   flex: 1;
+// }
+
+// .card-description {
+//   font-size: 1.1em;
+//   color: #444;
+//   margin-bottom: 15px;
+// }
+
+// .card .btn-info {
+//   background-color: var(--secondary-color);
+//   color: white;
+//   padding: 12px 20px;
+//   font-size: 1.1em;
+//   border: none;
+//   border-radius: 8px;
+//   cursor: pointer;
+//   transition: background-color 0.3s ease;
+// }
+
+// .card .btn-info:hover {
+//   background-color: var(--button-hover-color);
+// }

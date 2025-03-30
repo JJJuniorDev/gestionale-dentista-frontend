@@ -15,16 +15,19 @@
   color="#006400"
   type="ball-atom">
   <p style="color: white; font-size: 18px; text-align: center;">
-   Guarigione in corso...
+   Caricamento in corso...
   </p>
 </ngx-spinner>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 <app-header *ngIf="showHeader && isAuthenticated && isDoctor"></app-header>
-  <button class="btn btn-secondary" (click)="goBack()">Indietro</button>
-  <button class="btn btn-primary" (click)="goForward()">Avanti</button>
+  
+<div *ngIf="!isLoginPage()">
+<button class="btn btn-secondary d-none d-md-inline" (click)="goBack()">Indietro</button>
+  <button class="btn btn-primary d-none d-md-inline" (click)="goForward()">Avanti</button>
+</div>
+  
 <div class="container">
-
   <!-- <div class="row">
     <div class="col-md-12"> -->
       <router-outlet></router-outlet>

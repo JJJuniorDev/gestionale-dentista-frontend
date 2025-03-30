@@ -32,30 +32,24 @@
 
 
 <div class="row mb-4 align-items-center">
-  <div class="col-md-3 d-flex justify-content-start">
-    <button class="btn btn-success btn-lg" (click)="onNewAppuntamento()">Nuovo Appuntamento</button>
+  <div class="col-6 col-lg-3 d-flex justify-content-start">
+    <button class="btn btn-success  btn-sm btn-block" (click)="onNewAppuntamento()">Nuovo Appuntamento</button>
   </div>
 
-   <div class="col-md-3 d-flex justify-content-start">
-    <button class="btn btn-success btn-lg" (click)="onNewEvento()">Nuovo evento</button>
+   <div class="col-6 col-lg-3 d-flex justify-content-start">
+    <button class="btn btn-success  btn-sm btn-block" (click)="onNewEvento()">Nuovo evento</button>
   </div>
   
-  <div class="col-md-3 d-flex  text-center">
+  <div class="col-12 col-md-3 d-flex  text-center d-none d-md-flex">
     <h2 class="calendar-title">📅 Calendario Appuntamenti</h2>
   </div>
   
-  <div class="col-md-3 d-flex  justify-content-end">
-    <h3 class="calendar-date">{{ viewDate | date: "MMMM yyyy" }}</h3>
+  <div class="col-12 col-md-3 d-flex justify-content-center d-none justify-content-md-end">
+    <h3 class="calendar-date text-center text-sm">{{ viewDate | date: "MMMM yyyy" }}</h3>
   </div>
 </div>
 
-<div class="calendar-container-wrapper">
-  <!-- Contenitore sinistro per il tasto "Previous" -->
-  <div class="calendar-nav-left">
-    <button class="btn btn-primary" (click)="onPreviousMonth()">
-      <i class="material-icons">chevron_left</i> Precedente
-    </button>
-  </div>
+
   
   <!-- Calendario centrale -->
   <div class="calendar-container">
@@ -67,15 +61,17 @@
     </mwl-calendar-month-view>
   </div>
   
-  <!-- Contenitore destro per il tasto "Next" -->
-  <div class="calendar-nav-right">
-    <button class="btn btn-primary" (click)="onNextMonth()">
-      Successivo
-      <i class="material-icons">chevron_right</i>
-    </button>
-  </div>
+  <div class="calendar-nav">
+  <button class="btn btn-primary" (click)="onPreviousMonth()">
+    <i class="material-icons">chevron_left</i> Precedente
+  </button>
+  <button class="btn btn-primary" (click)="onNextMonth()">
+    Successivo
+    <i class="material-icons">chevron_right</i>
+  </button>
 </div>
 
+  
 <!-- Modal per visualizzare gli appuntamenti del giorno -->
 <div *ngIf="showAppointmentsModal" class="modal-overlay">
   <div class="modal-content">

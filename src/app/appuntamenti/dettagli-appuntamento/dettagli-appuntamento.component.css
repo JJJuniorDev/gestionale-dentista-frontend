@@ -1,340 +1,207 @@
-/* Layout Generale */
+/* Contenitore principale */
 .container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #91bae2 0%, #000000 100%);
   padding: 20px;
 }
 
+/* Card principale */
 .appointment-card {
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 30px;
-  max-width: 1100px;
-  transition: all 0.3s ease-in-out;
+  max-width: 600px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+  padding: 25px;
+  border: 1px solid #e0e0e0;
+  transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
+/* Effetto hover per maggiore dinamicità */
 .appointment-card:hover {
-  box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.2);
 }
 
+/* Intestazione appuntamento */
 .appointment-header {
-  text-align: center;
-  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
 }
 
 .appointment-header h2 {
-  color: #2c3e50;
-  font-size: 28px;
-  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #1565c0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.appointment-header p {
+/* Data e ora */
+.date-time-container {
+  text-align: right;
+}
+
+.date-time {
   font-size: 16px;
-  color: #7f8c8d;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
+/* Badge stato */
+.status.badge {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+/* Stili dinamici per lo stato */
+.status.badge.stato-futuro {
+  background: #007bff;
+}
+.status.badge.stato-in_esecuzione {
+  background: #ffc107;
+}
+.status.badge.stato-eseguito {
+  background: #28a745;
+}
+.status.badge.stato-sospeso {
+  background: #ff5722;
+}
+.status.badge.stato-annullato {
+  background: #dc3545;
+}
+
+/* Pulsanti */
 .buttons-container {
   display: flex;
-  gap: 12px; /* Distanza tra i pulsanti */
-  justify-content: center;
-  align-items: center;
-  margin-top: 15px;
-  flex-wrap: wrap; /* Se lo schermo è piccolo, i pulsanti vanno a capo */
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.btn {
-  font-size: 16px;
-  font-weight: 500;
-  padding: 10px 18px;
+/* Dropdown */
+.dropdown button {
+  font-weight: 600;
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Spazio tra icona e testo */
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1); /* Ombra leggera */
-  transition: all 0.3s ease;
+  padding: 8px 15px;
+  transition: all 0.2s ease-in-out;
 }
-/* Effetto hover */
-.btn:hover {
+
+.dropdown button:hover {
   transform: translateY(-2px);
 }
-.btn-primary {
-  background-color: #3498db;
-  color: #fff;
-}
 
-
-/* Icone più grandi e leggibili nei pulsanti */
-.btn i {
-  font-size: 18px;
-}
-
-.btn-primary:hover {
-  background-color: #2980b9;
-  transform: scale(1.05);
-}
-
-.btn-warning {
-  background-color: #f39c12;
-  color: #fff;
-}
-
-.btn-warning:hover {
-  background-color: #e67e22;
-  transform: scale(1.05);
-}
-
-.btn-success {
-  background-color: #2ecc71;
-  color: #fff;
-}
-
-.btn-success:hover {
-  background-color: #27ae60;
-  transform: scale(1.05);
-}
-
-/* Stile del menu dropdown */
+/* Lista dropdown */
 .dropdown-menu {
   border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Ombra leggera */
-  background-color: #f8f9fa; /* Grigio chiaro per eleganza */
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Stile degli elementi nel menu */
+/* Stile voci del dropdown */
 .dropdown-item {
-  font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  color: #333; /* Testo scuro per leggibilità */
-  padding: 10px 15px;
   display: flex;
   align-items: center;
-  gap: 10px; /* Spazio tra icona e testo */
-  transition: background 0.3s ease-in-out;
+  gap: 8px;
+  padding: 10px 15px;
 }
 
-/* Icone con un colore più soft */
-.dropdown-item i {
-  color: #007bff;
-  font-size: 18px;
-}
-
-/* Effetto hover elegante */
 .dropdown-item:hover {
-  background-color: #e9ecef; /* Grigio chiaro al passaggio */
-  color: #0056b3; /* Testo leggermente più scuro */
+  background: #f1f1f1;
 }
 
+/* Stile per Elimina */
+.dropdown-item.text-danger {
+  color: #dc3545;
+}
+
+/* Dettagli appuntamento */
 .appointment-details {
-  background: #ffffff; /* Sfondo pulito */
+  margin-top: 20px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  color: #555;
+  padding: 10px;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.detail-item i {
+  font-size: 18px;
+  color: #1565c0;
+}
+
+/* Lista appuntamenti */
+.appointments-list {
+  margin-top: 20px;
+  background: #fff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Ombra leggera */
-  margin-top: 20px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.appointment-details ul {
-  padding-left: 20px;
-}
-
-.appointment-details li {
-  margin-bottom: 15px;
-  font-size: 16px;
-  color: #34495e;
-}
-
-.appointment-details strong {
-  color: #2980b9;
-}
-
-/* Lista Appuntamenti */
-.appointments-list {
-  margin-top: 30px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .appointments-list h3 {
-  font-size: 24px;
-  color: #2c3e50;
-  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .appointment-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  margin-bottom: 10px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
 }
 
-.appointment-item:hover {
-  background-color: #ecf0f1;
+.appointment-item:last-child {
+  border-bottom: none;
 }
 
 .item-content {
-  width: 80%;
+  flex: 1;
 }
 
-.item-actions {
-  display: flex;
-  align-items: center;
-}
-
-.item-actions .btn {
+.item-actions button {
   font-size: 14px;
-  padding: 8px 16px;
-  background-color: #3498db;
-  color: #fff;
-}
-
-.item-actions .btn:hover {
-  background-color: #2980b9;
-}
-.date-time-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 15px; /* Distanza tra la data e il resto dei contenuti */
-}
-
-.date-time {
-  font-size: 36px; /* Dimensione più grande */
-  font-weight: bold; /* Più evidente */
-  color: #333; /* Un grigio scuro, elegante e leggibile */
-  text-align: center; /* Allinea al centro */
-  padding: 10px 20px; /* Aggiungi un po' di padding */
-  background-color: #f4f4f4; /* Sfondo chiaro per il contrasto */
-  border-radius: 8px; /* Bordo arrotondato per un look più morbido */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombra leggera per dare profondità */
-  width: 100%;
-  max-width: 500px; /* Massima larghezza */
-}
-
-.date-time i {
-  font-size: 32px; /* Icona ancora più grande per armonizzarsi con il testo */
-  margin-right: 10px; /* Distanza tra l'icona e il testo */
-  color: #007bff; /* Colore blu professionale per l'icona */
-}
-
-.status.badge {
-  font-size: 18px; /* Rende il testo più grande */
-  padding: 8px 15px; /* Più spazio interno per miglior leggibilità */
-  border-radius: 12px; /* Angoli più arrotondati */
-  font-weight: 600; /* Testo più evidente */
-  display: inline-block;
-  margin-top: 5px; /* Distanza dalla data */
-}
-.details-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 15px; /* Distanza tra gli elementi */
-}
-
-.detail-item {
-  display: flex;
-  align-items: center;
-  font-size: 18px; /* Testo più grande */
-  font-weight: 500;
-  color: #333;
-  background: #f8f9fa; /* Sfondo chiaro */
-  padding: 12px 16px;
-  border-radius: 8px;
-  box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.detail-item:hover {
-  background: #e9ecef;
-}
-
-.detail-item i {
-  font-size: 24px;
-  margin-right: 12px;
-  color: #007bff;
-}
-.dropdown-menu a {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.badge {
-  display: inline-block;
   padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-  text-transform: capitalize;
+  border-radius: 6px;
 }
 
-.badge-primary {
-  background-color: #007bff;
-  color: white;
-}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .appointment-card {
+    max-width: 90%;
+    padding: 20px;
+  }
 
-.badge-warning {
-  background-color: #ffc107;
-  color: black;
-}
-
-.badge-success {
-  background-color: #28a745;
-  color: white;
-}
-
-.badge-info {
-  background-color: #17a2b8;
-  color: white;
-}
-
-.badge-danger {
-  background-color: #dc3545;
-  color: white;
-}
-
-.badge-secondary {
-  background-color: #6c757d;
-  color: white;
-}
-
-/* Stile per le etichette */
-.detail-item span {
-  color: #000; /* Testo nero */
-  font-weight: 600;
-  flex-shrink: 0; /* Mantiene le etichette allineate */
-  min-width: 120px;
-}
-
-.details-grid .detail-item span {
-  color: black;
-  font-weight: bold;
-}
-
-/* Stile per i valori */
-.detail-item strong {
-  font-size: 18px;
-  font-weight: 500;
-  color: #555;
-}
-
-.appointment-header h2 {
-  font-family: "Poppins", sans-serif; /* Font pulito e professionale */
-  color: #007bff; /* Blu sanitario */
-  font-size: 24px; /* Più grande ed elegante */
-  font-weight: 600; /* Semi-bold per dare struttura */
-  text-transform: uppercase; /* Testo in maiuscolo per maggiore impatto */
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Distanza tra icona e testo */
-}
-
-.appointment-header h2 i {
-  color: #0056b3; /* Un blu più scuro per contrasto */
-  font-size: 28px;
+  .buttons-container {
+    flex-direction: column;
+    gap: 10px;
+  }
 }

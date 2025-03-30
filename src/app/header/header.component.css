@@ -1,50 +1,134 @@
+/* Navbar principale */
 .navbar {
-background-color: #13678A; /* Colore di sfondo verde */
-  border: 1px solid #e2e8f0; /* Colore del bordo bianco chiaro */
-  /* border-radius: 10px; Bordi stondati */
-overflow: auto; /* Aggiunto overflow: auto per evitare problemi di layout */
-margin-left: 30px;
-margin-right: 30px;
+  background-color: #2C3E50; /* Blu scuro con un tocco più elegante */
+  border-radius: 8px; /* Angoli più sottili per un look più moderno */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Ombra più intensa per un effetto di profondità */
+  padding: 10px 30px; /* Distanziamento più ampio */
 }
 
-.navbar-header {
-  float: left; /* Forza l'elemento a sinistra */
-  padding-left: 20px;
-}
-
-.navbar-collapse {
-  float: right; /* Forza l'elemento a destra */
-}
-
-.navbar-nav > li {
-  display: inline-block;
-  margin-bottom: 0;
-}
-
-.nav-item-box {
-  display: inline-block;
-  border: 1px solid #e2e8f0; /* Bordo bianco chiaro */
-  border-radius: 10px; /* Bordi stondati */
-  padding: 5px 10px;
-  margin-right: 10px;
-  background-color: #ffffff; /* Colore di sfondo bianco */
-}
-
-.nav-item-box a {
-  text-decoration: none;
- color: #2c7a7b; /* Colore del testo verde */
-}
-
-.nav-item-box a:hover {
-    color: #ffffff; /* Colore del testo bianco al passaggio del mouse */
-  background-color: #2c7a7b; /* Colore di sfondo verde al passaggio del mouse */
-  border-radius: 10px; /* Mantiene i bordi stondati al passaggio del mouse */
-}
-
-/*titolo */
 .navbar-brand {
-  font-size: 20px;
-  font-weight: bold;
-  color: #ffffff; /* Colore del testo bianco */
-  margin-top: 10px;
+  font-size: 40px; /* Aumenta la dimensione per un impatto maggiore */
+  font-family: 'Playfair Display', serif; /* Font serif elegante, molto sofisticato */
+  font-weight: 700; /* Font deciso per un forte impatto visivo */
+  color: #ffffff; /* Colore bianco per un contrasto netto e pulito */
+  letter-spacing: 4px; /* Maggiore spaziatura tra le lettere per un look elegante e arioso */
+  text-transform: uppercase; /* Mantiene il testo in maiuscolo per un aspetto deciso e formale */
+  margin-top: 0;
+  transition: all 0.3s ease-in-out; /* Transizione fluida e raffinata */
+  text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.1), 0 0 25px rgba(255, 255, 255, 0.3); /* Ombra più morbida e misteriosa con un'illuminazione morbida */
+  background-image: linear-gradient(45deg, #07e3f7, #f1f1f1); /* Aggiungi un gradiente elegante per il testo */
+  -webkit-background-clip: text; /* Applica il gradiente solo al testo */
+  color: transparent; /* Rende il colore del testo trasparente, mostrando solo il gradiente */
+  display: inline-block; /* Allinea il testo in linea per un posizionamento preciso */
+  padding: 0 5px; /* Aggiungi un piccolo padding per migliorare la visibilità del gradiente */
+}
+
+/* Effetto al passaggio del mouse */
+.navbar-brand:hover {
+  color: #3498db; /* Cambia il colore del testo al passaggio del mouse per un effetto vibrante */
+  text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2), 0 0 30px rgba(255, 255, 255, 0.4); /* Ombra più pronunciata al passaggio del mouse per un effetto visivo impressionante */
+  transform: translateY(-5px); /* Effetto di sollevamento più pronunciato per un aspetto più dinamico */
+  letter-spacing: 6px; /* Aumenta la spaziatura tra le lettere per una sensazione di "allargamento" */
+}
+
+
+
+/* Menu di navigazione */
+.navbar-nav {
+  display: flex;
+  justify-content: center; /* Centra i pulsanti nella navbar */
+  align-items: center;
+  width: 100%;
+}
+
+/* Pulsanti nella navbar */
+.nav-item {
+  margin: 10px 0;
+}
+
+.nav-item .btn {
+  font-size: 18px; /* Font dimensionato per maggiore leggibilità */
+  padding: 12px 25px; /* Padding ampio per pulsanti più grandi */
+  border-radius: 50px; /* Bordi più stondati per un aspetto più elegante */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font pulito e moderno */
+  transition: all 0.3s ease-in-out; /* Transizione fluida per hover */
+  text-transform: capitalize; /* Testo con la prima lettera maiuscola */
+  font-weight: 500; /* Font leggermente più spesso per maggiore visibilità */
+}
+
+/* Effetto hover sui pulsanti */
+.nav-item .btn:hover {
+  transform: scale(1.1); /* Aumenta il pulsante al passaggio del mouse */
+  background-color: #fff; /* Colore di sfondo bianco al passaggio del mouse */
+  color: #2C3E50; /* Colore del testo cambia per contrasto */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Aggiungi una leggera ombra */
+}
+
+/* Pulsanti con colore specifico */
+.nav-item .btn-warning:hover {
+  background-color: #F39C12; /* Colore dorato al passaggio del mouse */
+  color: #fff;
+}
+
+.nav-item .btn-success:hover {
+  background-color: #27AE60; /* Colore verde brillante */
+  color: #fff;
+}
+
+.nav-item .btn-primary:hover {
+  background-color: #2980B9; /* Colore blu brillante */
+  color: #fff;
+}
+
+.nav-item .btn-info:hover {
+  background-color: #1ABC9C; /* Colore turchese */
+  color: #fff;
+}
+
+.nav-item .btn-secondary:hover {
+  background-color: #8E44AD; /* Colore viola brillante */
+  color: #fff;
+}
+
+.nav-item .btn-light:hover {
+  background-color: #ECF0F1; /* Colore chiaro */
+  color: #2C3E50;
+}
+
+/* Navbar-toggler per mobile */
+.navbar-toggler {
+  border: none;
+  background-color: #ECF0F1; /* Bottone del menu in alto chiaro */
+}
+
+.navbar-toggler-icon {
+  background-color: #2C3E50; /* Icona del menu in blu scuro */
+}
+
+/* Media queries per la versione mobile */
+@media (max-width: 992px) {
+  .navbar-nav {
+    flex-direction: column; /* Dispone i pulsanti in colonna sui dispositivi più piccoli */
+    align-items: center;
+    width: 100%;
+  }
+
+  .navbar-brand {
+    font-size: 24px; /* Riduce leggermente la dimensione del titolo per mobile */
+  }
+
+  .nav-item {
+    margin: 10px 0; /* Spaziatura verticale sui dispositivi mobili */
+  }
+
+  .nav-item .btn {
+    font-size: 16px; /* Font ridotto sui dispositivi mobili */
+    padding: 10px 20px; /* Riduce il padding per pulsanti più stretti */
+  }
+}
+/* Opzionale: Se il menu non si richiude correttamente su mobile, aggiungi questa regola */
+@media (max-width: 768px) {
+  .navbar-collapse {
+    background-color: #343a40; /* Aggiunge un colore di sfondo al menu mobile */
+  }
 }

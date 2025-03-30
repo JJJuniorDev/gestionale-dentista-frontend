@@ -96,3 +96,57 @@ app-paziente-item {
   margin: 150px 0; /* Distanza tra gli item */
   border-bottom: 1px solid #ddd; /* Una sottile linea per separare gli elementi */
 }
+
+@media (max-width: 768px) {
+  .row-cols-1 .col {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd; /* Linea di separazione tra le "righe" */
+    padding: 10px;
+    background: #ffffff;
+  }
+
+  app-paziente-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+  }
+
+  /* Nascondi lo stile della card originale */
+  .col.mb-4 {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* Riduci al minimo lo spazio tra gli elementi */
+  .g-4 {
+    gap: 0 !important;
+  }
+
+  /* Separa visivamente le righe */
+  .row-cols-1 .col:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+  }
+
+  /* Nascondi qualsiasi margine interno della card */
+  app-paziente-item > div {
+    flex: 1;
+    padding: 5px;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  /* Nascondi l'ombra e il padding extra */
+  .separator {
+    display: none;
+  }
+}
+

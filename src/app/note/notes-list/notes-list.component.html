@@ -1,0 +1,84 @@
+<div class="container">
+  <button class="add-note-btn" (click)="openAddNoteDialog()"> Aggiungi Nota</button>
+
+  <!-- Contenitore delle colonne -->
+  <div class="notes-container">
+    <!-- Contenitore per il bottone di ricerca -->
+    <div class="patient-search-container">
+      <button class="search-patient-btn" (click)="openPatientSelectionDialog()">🔍 Cerca note per paziente</button>
+    </div>
+
+    <!-- Sezione che mostra il paziente selezionato -->
+    <div *ngIf="selectedPatient">
+      <div class="patient-notes-container">
+        <h3 class="notes-title">📌 Note di {{ selectedPatient.nome + ' ' + selectedPatient.cognome }}</h3>
+
+        <div class="patient-notes-card">
+          <!-- Lista delle note del paziente -->
+          <div class="notes-group patient-notes">
+            <div *ngFor="let note of paginatedPatientNotes" class="note-card" cdkDrag>
+              <div class="note-header">
+                <h4 class="note-type">{{ note.tipoNota | uppercase }} ({{ note.priorita }})</h4>
+                <small class="note-date">🗓 Data: {{ note.dataCreazione | date: 'short' }}</small>
+              </div>
+              <p class="note-content">{{ note.contenuto | slice: 0:100 }}<span *ngIf="note.contenuto.length > 100">... </span></p>
+              <button *ngIf="note.contenuto.length > 100" class="expand-btn" (click)="openModal(note)">Leggi tutto</button>
+            </div>
+          </div>
+        </div>
+        
+        <button class="remove-patient-btn" (click)="clearPatientSelection()">❌ Rimuovi</button>
+
+        <!-- Paginatore per le note del paziente -->
+        <mat-paginator
+          [length]="patientNotes.length"
+          [pageSize]="patientPageSize"
+          [pageSizeOptions]="[2, 3, 4, 8]"
+          (page)="onPatientPageChange($event)">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtri per le note -->
+  <div class="filters">
+    <button (click)="filterNotes('')" class="filter-all">Tutte</button>
+    <button (click)="filterNotes('alta')" class="filter-high">Priorità Alta</button>
+    <button (click)="filterNotes('media')" class="filter-medium">Priorità Media</button>
+    <button (click)="filterNotes('bassa')" class="filter-low">Priorità Bassa</button>
+  </div>
+
+  <!-- Colonna Note Non Assegnate -->
+  <div class="notes-group unassigned">
+    <h3> Note Non Assegnate</h3>
+    <div *ngFor="let note of paginatedUnassignedNotes" class="note-card" cdkDrag>
+      <h4>{{ note.tipoNota | uppercase }} ({{ note.priorita }})</h4>
+      <p>{{ note.contenuto | slice: 0:100 }}<span *ngIf="note.contenuto.length > 100">... </span></p>
+      <button *ngIf="note.contenuto.length > 100" (click)="openModal(note)">Leggi tutto</button>
+      <button (click)="assignNote(note)">Assegna</button>
+      <small class="small-descr">🗓 Data: {{ note.dataCreazione | date:'short' }}</small>
+      <button class="archive-btn" (click)="archiviaNota(note.id)">
+        🗃 Archivia
+      </button>
+      <button class="btn-danger">Elimina</button>
+    </div>
+
+    <!-- Paginatore per Note Non Assegnate -->
+    <mat-paginator
+      [length]="unassignedNotes.length"
+      [pageSize]="unassignedPageSize"
+      [pageSizeOptions]="[2, 3, 4, 8]"
+      (page)="onUnassignedPageChange($event)">
+    </mat-paginator>
+  </div>
+</div>
+
+
+<!-- Finestra modale per mostrare la nota completa -->
+<div  [ngClass]="{'modal': true, 'ng-tns-c3-0': isModalOpen}" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <span class="close" (click)="closeModal()">×</span>
+    <h3>Nota Completa</h3>
+    <p>{{ selectedNote?.contenuto }}</p>
+  </div>
+</div>

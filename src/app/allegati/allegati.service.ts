@@ -28,19 +28,19 @@ export class AllegatiService {
     if (dottoreId) {
       formData.append('dottoreId', dottoreId);
     } 
-    return this.http.post(`${this.baseUrl}/upload`, formData);
+    return this.http.post(`${this.baseUrl}/allegati/upload`, formData);
   }
 
   getAllegatiPerPaziente(pazienteId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/paziente/${pazienteId}`);
+    return this.http.get(`${this.baseUrl}/allegati/paziente/${pazienteId}`);
   }
 
   getAllegatiPerDottore(dottoreId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/dottore/${dottoreId}`);
+    return this.http.get(`${this.baseUrl}/allegati/dottore/${dottoreId}`);
   }
 
   downloadAllegato(id: string): Observable<Blob> {
-    return this.http.get(`${this.baseUrl}/${id}/download`, {
+    return this.http.get(`${this.baseUrl}/allegati/${id}/download`, {
       responseType: 'blob',
     });
   }

@@ -141,8 +141,24 @@ html, body {
   overflow: auto; /* Permette lo scrolling se necessario */
 }
 
+/* Effetto hover per i giorni */
+::ng-deep .cal-month-view .cal-cell:hover {
+  background-color: #f5f5f5 !important;
+}
+
+/* Allineamento del contenuto delle celle */
+::ng-deep .cal-month-view .cal-cell-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  position: relative;
+}
 
 ::ng-deep .mwl-calendar-month-view .cal-day-number {
+   pointer-events: auto !important;
+  cursor: pointer !important;
   font-size: 2rem !important;  /* Aumenta la dimensione */
   font-weight: bold !important;  /* Rendi il testo più visibile */
   color: black !important;  /* Colore del testo */
@@ -210,44 +226,7 @@ html, body {
   align-items: center;
 }
 
-/* Allineamento dei tasti */
-.calendar-nav-left{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 110px;  /* Impostiamo la larghezza dei tasti */
-}
 
-.calendar-nav-right {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 110px;  /* Impostiamo la larghezza dei tasti */
-}
-
-
-/* Tasti con frecce dinamiche */
-.calendar-nav-left button, .calendar-nav-right button {
-  width: 100%;
-  padding: 12px 0;  /* Padding verticale */
-  font-size: 16px;
-  height: 50px;  /* Altezza del bottone */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 25px;  /* Bordo arrotondato */
-  background-color: #007bff;  /* Colore di sfondo */
-  color: white;  /* Colore del testo */
-  border: none;  /* Rimuove i bordi di default */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Ombra leggera */
-  transition: all 0.3s ease;  /* Transizione per animazioni fluide */
-}
-
-.calendar-nav-left button:hover, .calendar-nav-right button:hover {
-  background-color: #0056b3;  /* Colore più scuro al passaggio del mouse */
-  transform: translateY(-3px);  /* Effetto di "sollevamento" */
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);  /* Ombra più intensa */
-}
 
 /* Frecce per navigazione */
 .calendar-nav-left button i, .calendar-nav-right button i {
@@ -291,9 +270,175 @@ html, body {
   border: 2px solid #fbc02d !important;
   border-radius: 5px;
   box-shadow: 0px 0px 8px rgba(255, 193, 7, 0.7);
+    pointer-events: auto !important;
 }
 
 .today .cal-day-number {
   font-weight: bold;
   color: #333;
 }
+
+.cal-cell-top {
+  cursor: pointer; 
+}
+
+.cal-day-badge {
+ background-color: #007bff !important;
+  color: white !important;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 10px !important;
+  min-width: 18px;
+  height: 18px;
+  line-height: 18px;
+  border-radius: 9px !important;
+  z-index: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Aggiungi stile per i pulsanti accanto sotto il calendario */
+.calendar-nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Distanza tra i pulsanti */
+  margin-top: 20px; /* Aggiungi un po' di spazio sopra */
+}
+
+.calendar-nav button {
+  font-size: 16px;
+  padding: 10px 20px;
+}
+.calendar-container-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+}
+
+/* .calendar-nav-left,
+.calendar-nav-right {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+} */
+
+.calendar-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Bottoni adattivi */
+button {
+  font-size: 1rem;
+  padding: 8px 12px;
+}
+
+/* Stili per il titolo e la data del calendario */
+.calendar-title {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.calendar-date {
+  font-size: 1.2rem;
+}
+
+/* Stili per la modal adattata ai dispositivi mobili */
+.modal-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 500px;
+  overflow-y: auto;
+  max-height: 80vh;
+  padding: 15px;
+}
+
+/* Stili per la lista appuntamenti ed eventi */
+.appointment-list, .event-list {
+  padding: 0;
+  list-style: none;
+}
+
+.appointment-item, .event-item {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+@media (max-width: 768px) {
+  .calendar-container-wrapper {
+    flex-direction: column;
+  }
+
+  .calendar-title {
+    font-size: 1.3rem;
+  }
+
+  .calendar-date {
+    font-size: 1rem;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-title {
+    font-size: 1.2rem;
+  }
+
+  .calendar-date {
+    font-size: 0.9rem;
+  }
+
+  .modal-content {
+    width: 95%;
+  }
+
+  .appointment-item, .event-item {
+    font-size: 0.8rem;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

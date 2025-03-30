@@ -24,11 +24,11 @@ import * as bootstrap from 'bootstrap';
 import { MatSort } from '@angular/material/sort';
 import { EditAppointmentModalComponent } from 'src/app/modali/edit-appointment-modal/edit-appointment-modal.component';
 import { Paziente } from '../paziente.model';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationModalComponent } from 'src/app/modali/confirmation-modal/confirmation-modal.component';
 import { AuthService } from 'src/app/auth/auth.service';
 import { forkJoin, take } from 'rxjs';
 import { EventoDTO } from 'src/app/appuntamenti/eventoDTO.model';
+import { Toast, ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-patient-treatment-plans',
@@ -63,7 +63,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
   };
   newEvent = {
     descrizione: '',
-    dataScade: '',
+    dataEOrario: new Date(),
     deleted: false,
     tipologia: '',
     dottoreId: '',
@@ -74,7 +74,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
 
   tabellaVisibile: boolean = false;
   appointmentsFilters = { stato: '', dataEOrario: null as Date | null };
-  eventsFilters = { tipologia: '', dataScade: '' };
+  eventsFilters = { tipologia: '', dataEOrario: '' };
   filteredAppointments: AppuntamentoDTO[] = []; // Tappe filtrate
   filteredEvents: TreatmentEvent[] = []; // Eventi filtrati
   showAppointmentModal = false;
@@ -102,8 +102,20 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
   dottoreId: string | undefined;
   newAppointmentDate: string = ''; // Oppure Date se vuoi gestire il valore come oggetto data
   newAppointmentHour: string = ''; // Formato orario, es: '14:30'
+  newEventDate: string = '';
   newPlanName: string = '';
-  pianoAttivo: any = null;
+  pianoAttivo: boolean = false;
+
+  showNoPlanAlert = false;
+  loadingTreatmentPlans = true;
+
+  showNoActivePlanAlert() {
+    this.showNoPlanAlert = true;
+  }
+
+  dismissAlert() {
+    this.showNoPlanAlert = false;
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -112,9 +124,9 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     private dialog: MatDialog,
     private storiaMedicaService: StoriaMedicaService,
     private appuntamentoService: AppuntamentoService,
-    private snackBar: MatSnackBar,
     private authService: AuthService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private toastR: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -125,6 +137,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     console.log('DOTTORE ID : ' + this.dottoreId);
     this.route.paramMap.subscribe((params) => {
       this.pazienteId = params.get('id')!;
+      this.dismissAlert();
       this.getPatientTreatmentPlans();
       // Dopo aver ottenuto i piani di trattamento, verifica se sono vuoti
       //   this.checkAndCreateDefaultPlan();
@@ -285,9 +298,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
 
     this.appuntamentoService
       .addAppuntamento(this.newAppointment, this.pazienteId!, this.dottoreId!)
-      .then((savedAppuntamento) => 
-        {
-          
+      .then((savedAppuntamento) => {
         this.newAppointment = {
           ...savedAppuntamento,
           paziente:
@@ -323,10 +334,16 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
                 if (index !== -1) {
                   this.treatmentPlans[index] = updatedPlan;
                 }
-                this.snackBar.open('Appuntamento creato con successo!', 'OK', {
-                  duration: 3000, // Durata in millisecondi
-                  panelClass: ['success-snackbar'], // Classe personalizzata opzionale
-                });
+                this.toastR.success(
+                  'Appuntamento creato con successo!',
+                  'Successo',
+                  {
+                    timeOut: 3000, // Durata 3 secondi
+                    positionClass: 'toast-top-center', // Posizione nell'angolo in basso a destra
+                    progressBar: true, // Barra di progresso
+                    closeButton: true, // Bottone per chiudere
+                  }
+                );
                 // **Chiudi il modale dopo un breve ritardo**
                 // setTimeout(() => this.closeModal(), 100);
                 setTimeout(() => {
@@ -339,8 +356,8 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
                     if (modalBootstrap) {
                       modalBootstrap.hide(); // Chiude il modale
                       modalBootstrap.dispose(); // Dispose the instance after hiding it
-                    } 
-                  } 
+                    }
+                  }
 
                   let backdrops = document.querySelectorAll('.modal-backdrop');
                   if (backdrops.length > 0) {
@@ -364,11 +381,9 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
                   this.resetNewAppointment(); //resetto dati form appunt.
 
                   setTimeout(() => {
-                    document.body.style.overflow = 'auto'; // Reset overflow con ulteriore ritardo                
+                    document.body.style.overflow = 'auto'; // Reset overflow con ulteriore ritardo
                   }, 50);
                 }, 200);
-               
-               
               },
               (error) => {
                 console.error(
@@ -381,12 +396,14 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
       })
       .catch((error) => {
         console.error('Errore nella creazione:', error);
-        this.snackBar.open(
+        this.toastR.error(
           "Errore nella creazione dell'appuntamento",
-          'Chiudi',
+          'Errore',
           {
-            duration: 3000,
-            panelClass: ['error-snackbar'],
+            timeOut: 3000,
+            positionClass: 'toast-top-center',
+            progressBar: true,
+            closeButton: true,
           }
         );
       });
@@ -499,7 +516,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
 
   updateEventsFilters(type: string, date?: string): void {
     this.eventsFilters.tipologia = type;
-    if (date) this.eventsFilters.dataScade = date;
+    if (date) this.eventsFilters.dataEOrario = date;
     // this.applyFilters();
   }
 
@@ -534,26 +551,34 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
   }
 
   getPatientTreatmentPlans(): void {
+    this.loadingTreatmentPlans = true;
     this.pazienteService
       .getPatientTreatmentPlansByPatientId(this.pazienteId!)
       .subscribe(
         (treatmentPlans: PatientTreatmentPlan[]) => {
           // Assicurati che questo sia un array di treatmentPlans
           this.treatmentPlans = treatmentPlans;
+          this.loadingTreatmentPlans = false; // Fine caricamento
           console.log('Piani trovati: ', this.treatmentPlans); // Array dei treatment plans
 
           // Identifica il trattamento attivo e imposta il currentPlanId
           const activePlan = this.treatmentPlans.find((plan) => plan.attivo);
           if (activePlan) {
+            this.pianoAttivo= true;
             this.currentPlanId = activePlan.id;
             this.trattamentoSelezionato = activePlan; // Seleziona automaticamente il piano attivo
             // Applica i filtri SOLO dopo aver ricevuto i dati
             this.applyAppointmentsFilters();
             this.applyEventsFilters();
           }
+          else {
+            this.showNoActivePlanAlert();
+            this.pianoAttivo= false;
+          }
         },
         (error) => {
           console.error('Errore durante il caricamento dei piani: ', error);
+         this.loadingTreatmentPlans = false;
         }
       );
   }
@@ -602,6 +627,8 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
 
   submitNewEvent(): void {
     if (this.currentPlanId) {
+      const selectedDateTime = new Date(this.newEventDate);
+      this.newEvent.dataEOrario = selectedDateTime;
       // Chiamata al servizio per aggiungere una nuova tappa
       this.pazienteService
         .addEventToPlan(this.pazienteId!, this.currentPlanId, this.newEvent)
@@ -614,9 +641,11 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
             if (index !== -1) {
               this.treatmentPlans[index] = updatedPlan;
             }
-            this.snackBar.open('Evento creato con successo!', 'OK', {
-              duration: 3000, // Durata in millisecondi
-              panelClass: ['success-snackbar'], // Classe personalizzata opzionale
+            this.toastR.success('Evento creato con successo!', 'Successo', {
+              timeOut: 3000,
+              positionClass: 'toast-top-center',
+              progressBar: true,
+              closeButton: true,
             });
             // **Chiudi il modale dopo un breve ritardo**
             setTimeout(() => this.closeEventModal(), 100);
@@ -635,7 +664,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     // Resetta i dati del form
     this.newEvent = {
       descrizione: '',
-      dataScade: '',
+      dataEOrario: new Date(),
       deleted: false,
       tipologia: '',
       dottoreId: '',
@@ -644,17 +673,6 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
 
   // Applica filtri eventi
   applyEventsFilters(): void {
-    // this.filteredEvents = this.treatmentPlans
-    //   .flatMap((plan) => plan.eventi)
-    //   .filter((event) => {
-    //     const matchesType =
-    //       !this.eventsFilters.tipologia ||
-    //       event.tipologia === this.eventsFilters.tipologia;
-    //     const matchesDate =
-    //       !this.eventsFilters.dataScade ||
-    //       event.dataScade === this.eventsFilters.dataScade;
-    //     return matchesType && matchesDate;
-    //   });
     if (!this.trattamentoSelezionato) return; // Se nessun trattamento è selezionato, esci
 
     this.filteredEvents = this.trattamentoSelezionato.eventi.filter((event) => {
@@ -662,8 +680,8 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
         !this.eventsFilters.tipologia ||
         event.tipologia === this.eventsFilters.tipologia;
       const matchesDate =
-        !this.eventsFilters.dataScade ||
-        event.dataScade === this.eventsFilters.dataScade;
+        !this.eventsFilters.dataEOrario ||
+        event.dataEOrario === this.eventsFilters.dataEOrario;
       return matchesType && matchesDate;
     });
     // Aggiorna il data source e forza il refresh
@@ -722,7 +740,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
 
   // Resetta filtri eventi
   resetEventsFilters(): void {
-    this.eventsFilters = { tipologia: '', dataScade: '' };
+    this.eventsFilters = { tipologia: '', dataEOrario: '' };
     this.applyEventsFilters();
   }
 
@@ -773,6 +791,8 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
         console.error('Errore durante la disattivazione:', err);
       },
     });
+    console.log("Piano attivo passa da: "+this.pianoAttivo+" a false.")
+    this.pianoAttivo= false;
   }
 
   // Funzione per aprire/chiudere modali dinamicamente
@@ -803,9 +823,14 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
           this.createPlan();
           return;
         }
-
+      console.log("PIANO ATTIVO RESULT: "+this.pianoAttivo);
         // Se esiste almeno un piano attivo, apriamo il modale di conferma disattivazione
-        this.toggleModal('confirmDeactivateModal', 'show');
+        if (this.pianoAttivo === true) {
+          this.toggleModal('confirmDeactivateModal', 'show');
+          console.log('DOPO IL =TRUE SIAMO QUI: ' + this.pianoAttivo);
+        } else {
+          this.createPlan();
+        }
       });
   }
 
@@ -848,11 +873,11 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
         this.treatmentPlans.push(newPlan);
         this.trattamentoSelezionato = newPlan;
         this.newPlanName = ''; // Reset input
-         console.log('Nuovo piano creato con successo.');
+        console.log('Nuovo piano creato con successo.');
 
-         // Chiude tutti i modali
-         this.toggleModal('createPlanModal', 'hide');
-         this.toggleModal('confirmDeactivateModal', 'hide');
+        // Chiude tutti i modali
+        this.toggleModal('createPlanModal', 'hide');
+        this.toggleModal('confirmDeactivateModal', 'hide');
       },
       (error) => {
         console.error('Errore nella creazione del piano:', error);

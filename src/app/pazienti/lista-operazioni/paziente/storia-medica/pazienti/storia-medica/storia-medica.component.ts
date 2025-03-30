@@ -2,7 +2,6 @@ import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angul
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FarmacoDialogComponent } from './Dialogs/farmaco-dialog/farmaco-dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationModalComponent } from 'src/app/modali/confirmation-modal/confirmation-modal.component';
 import { StoriaMedica } from './models/storia-medica.model';
 import { AppuntamentoService } from 'src/app/appuntamenti/appuntamento.service';
@@ -10,6 +9,7 @@ import { AppuntamentoDTO } from 'src/app/appuntamenti/appuntamentoDTO.model';
 import { StoriaMedicaService } from './services/storia-medica.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-storia-medica',
@@ -44,7 +44,7 @@ export class StoriaMedicaComponent implements OnInit {
     private route: ActivatedRoute,
     private storiaMedicaService: StoriaMedicaService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private toastr: ToastrService,
     private router: Router
   ) {}
 
@@ -179,13 +179,14 @@ export class StoriaMedicaComponent implements OnInit {
     farmaco.mostraDatePicker = false;
   }
 
-  //SEZIONE SNACKBAR ERRORI
+  
   mostraErroreData(messaggio: string): void {
-    this.snackBar.open(messaggio, 'Chiudi', {
-      duration: 50000, // Durata in millisecondi
-      panelClass: ['custom-snackbar'],
-      verticalPosition: 'top',
-    });
+     this.toastr.info(messaggio, 'Errore', {
+       timeOut: 5000, // Durata ridotta per evitare toast troppo lunghi
+       positionClass: 'toast-top-center',
+       progressBar: true,
+       closeButton: true,
+     });
   }
 
   aggiungiFarmacoInUso(): void {
@@ -210,18 +211,22 @@ export class StoriaMedicaComponent implements OnInit {
             }
             this.storiaMedica!.farmaciInUso.push(response);
             //   this.filtraFarmaci(this.showAttivi); // Aggiorna la lista filtrata
-            // Mostra una snackbar di successo
-            this.snackBar.open('Farmaco aggiunto con successo!', 'Chiudi', {
-              duration: 3000,
-              panelClass: ['success-snackbar'], // Classe per stile personalizzato
-            });
+         
+         this.toastr.success('Farmaco aggiunto con successo!', 'Successo', {
+           timeOut: 3000,
+           positionClass: 'toast-top-center',
+           progressBar: true,
+           closeButton: true,
+         });
           },
           (error) => {
             console.error('Errore nel salvataggio del farmaco in uso:', error);
-            this.snackBar.open('Errore nel salvataggio del farmaco', 'Chiudi', {
-              duration: 3000,
-              panelClass: ['error-snackbar'], // Classe per stile personalizzato
-            });
+       this.toastr.error('Errore nel salvataggio del farmaco', 'Errore', {
+         timeOut: 3000,
+         positionClass: 'toast-top-center',
+         progressBar: true,
+         closeButton: true,
+       });
           }
         );
       }

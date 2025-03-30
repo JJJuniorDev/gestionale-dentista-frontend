@@ -1,4 +1,21 @@
-<div class="container">
+<!-- Hero Section -->
+<div class="hero-section">
+  <div class="hero-content">
+    <div class="hero-title-card">
+      <h1>Mentis Vigor</h1>
+    </div>
+    <br>
+    <h3>La soluzione per i professionisti della salute mentale.</h3>
+    <div class="hero-buttons">
+      <button class="btn btn-primary" (click)="showLogin = true">Accedi</button>
+      <button class="btn btn-secondary" (click)="navigateToRegister()">Registrati</button>
+    </div>
+  </div>
+</div>
+ 
+
+<div  class="login-wrapper" *ngIf="showLogin">
+       <div class="login-card">
     <h2>Login</h2>
     <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
         <div class="form-group">
@@ -36,7 +53,87 @@
         <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
     </form>
 
-    <div class="mt-3">
+   <div class="register-link">
         <p>Non hai un account? <button class="btn btn-link" (click)="navigateToRegister()">Registrati</button></p>
     </div>
 </div>
+</div>
+
+
+
+<!--
+<section class="features-section">
+  <h2 class="section-title">Le Funzionalità di PsicoGest</h2>
+  <p class="section-description">Scopri tutte le potenti funzionalità pensate per semplificare e ottimizzare la gestione della tua attività psichiatrica. Ogni strumento è stato progettato per garantire un'esperienza utente fluida e sicura.</p>
+  
+  <div class="cards-container">
+   
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Gestione Appuntamenti</h3>
+        <p class="card-price">Gratis</p>
+      </div>
+      <div class="card-body">
+        <div class="card-image">
+          <img src="assets/piano1.png" alt="Gestione Appuntamenti">
+        </div>
+        <div class="card-text">
+          <p class="card-description">Organizza e pianifica gli appuntamenti con i pazienti in modo semplice ed efficiente. Ottieni promemoria automatici e sincronizza con il tuo calendario.</p>
+          <button class="btn btn-info" (click)="openImage('assets/piano1.png')">Visualizza Immagine</button>
+        </div>
+      </div>
+    </div>
+
+   
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Gestione Pazienti</h3>
+        <p class="card-price">Gratis</p>
+      </div>
+      <div class="card-body">
+        <div class="card-image">
+          <img src="assets/paz1.png" alt="Gestione Pazienti">
+        </div>
+        <div class="card-text">
+          <p class="card-description">Accedi a una vista completa delle informazioni dei pazienti, traccia il loro progresso e gestisci le note e i documenti in modo sicuro e centralizzato.</p>
+          <button class="btn btn-info" (click)="openImage('assets/paz1.png')">Visualizza Immagine</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Trattamenti e Terapie</h3>
+        <p class="card-price">Gratis</p>
+      </div>
+      <div class="card-body">
+        <div class="card-image">
+          <img src="assets/nota1.png" alt="Trattamenti e Terapie">
+        </div>
+        <div class="card-text">
+          <p class="card-description">Gestisci i piani terapeutici e monitora i trattamenti dei pazienti. Personalizza le schede terapeutiche per ogni paziente, con note, farmaci e progressi documentati.</p>
+          <button class="btn btn-info" (click)="openImage('assets/nota1.png')">Visualizza Immagine</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Gestione Farmaci</h3>
+        <p class="card-price">Gratis</p>
+      </div>
+      <div class="card-body">
+        <div class="card-image">
+          <img src="assets/farmaci1.png" alt="Gestione Farmaci">
+        </div>
+        <div class="card-text">
+          <p class="card-description">Tieni traccia dei farmaci prescritti ai tuoi pazienti e dei loro effetti collaterali. Monitora l'aderenza al trattamento con strumenti facili da usare.</p>
+          <button class="btn btn-info" (click)="openImage('assets/farmaci1.png')">Visualizza Immagine</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ -->

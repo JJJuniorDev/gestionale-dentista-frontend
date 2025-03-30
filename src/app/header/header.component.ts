@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -7,6 +7,7 @@ import { map, filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserRoleAndCalendarService } from '../userRoleAndCalendar.service';
 import { AppuntamentoService } from '../appuntamenti/appuntamento.service';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-header',
@@ -26,28 +27,35 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private userRoleService: UserRoleAndCalendarService,
     private appuntamentoService: AppuntamentoService
   ) {
-  //   this.userSub = this.store
-  //     .select('auth')
-  //     .pipe(
-  //       map((authState) => authState.user),
-  // ).subscribe((user) => {
-  //       this.isDoctor = authService.getUserRole() === 'dottore';
-  //       this.userRoleService.setIsDoctor(this.isDoctor); // Imposta lo stato dell'utente
-  //       console.log('Header.ts->Is isDoctor:', this.isDoctor);
-  //     });
+    //   this.userSub = this.store
+    //     .select('auth')
+    //     .pipe(
+    //       map((authState) => authState.user),
+    // ).subscribe((user) => {
+    //       this.isDoctor = authService.getUserRole() === 'dottore';
+    //       this.userRoleService.setIsDoctor(this.isDoctor); // Imposta lo stato dell'utente
+    //       console.log('Header.ts->Is isDoctor:', this.isDoctor);
+    //     });
   }
 
+  closeNavbar() {
+    const navbar = document.getElementById('navbarNav');
+    if (navbar) {
+      new bootstrap.Collapse(navbar, { toggle: false }).hide();
+    }
+  }
+  
   ngOnDestroy() {
     this.userSub.unsubscribe();
   }
 
   ngOnInit() {
     // Sottoscrizione al ruolo dell'utente
-   this.userSub = this.authService.userRole$.subscribe((role) => {
-     this.isDoctor = role === 'dottore';
-     this.userRoleService.setIsDoctor(this.isDoctor);
-     console.log('Header.ts -> Is Doctor:', this.isDoctor);
-   });
+    this.userSub = this.authService.userRole$.subscribe((role) => {
+      this.isDoctor = role === 'dottore';
+      this.userRoleService.setIsDoctor(this.isDoctor);
+      console.log('Header.ts -> Is Doctor:', this.isDoctor);
+    });
     // Traccia la route corrente
     this.userSub.add(
       this.router.events
@@ -69,13 +77,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onGoToAllegati() {
     this.router.navigate(['/allegati']);
   }
-  
+
+  onGoToArchivio() {
+    this.router.navigate(['/archivio']);
+  }
+
   onGoToAppointments() {
     this.router.navigate(['/appuntamenti']);
   }
 
   onGoToPatients() {
     this.router.navigate(['/pazienti']);
+  }
+
+  onGoToNotes() {
+    this.router.navigate(['/note']);
   }
 
   onGoToStatistics() {

@@ -46,6 +46,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EventiModificaComponent } from './appuntamenti/modifica-eventi/eventi-modifica/eventi-modifica.component';
+import { NotesModule } from './note/note.module';
+import { ArchivioComponent } from './archivio/archivio/archivio.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
 
 registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
 
@@ -56,6 +61,7 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
     StatisticsComponent,
     ConfirmationModalComponent,
     AllegatiComponent,
+    ArchivioComponent
     
   ],
   imports: [
@@ -92,6 +98,11 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
     MatButtonModule, // Se utilizzi i bottoni Material
     MatIconModule, // Se utilizzi le icone Material
     NgSelectModule,
+    NotesModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSelectModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'it' },
