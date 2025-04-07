@@ -10,7 +10,7 @@
           {{ evento?.dataEOrario | date:'EEEE d MMMM y, HH:mm':'it' }}
         </p>
       </div>
-      <span class="status badge" [ngClass]="getBadgeClass(evento?.tipologia)">{{ evento?.tipologia }}</span>
+      <span class="status badge" [ngClass]="getBadgeClass(evento.tipologia)">{{ evento.tipologia }}</span>
     </div>
 
     <div class="buttons-container">
@@ -33,15 +33,15 @@
       <div class="details-grid">
         <div class="detail-item">
           <i class="bi bi-clipboard-check"></i>
-          <span>tipologia:</span> <strong>{{ evento?.tipologia }}</strong>
+          <span>tipologia:</span> <strong>{{ evento.tipologia }}</strong>
         </div>
         <div class="detail-item">
           <i class="bi bi-chat-left-text"></i>
-          <span>Descrizione:</span> <strong>{{ evento?.descrizione || 'Nessuna descrizione' }}</strong>
+          <span>Descrizione:</span> <strong>{{ evento.descrizione || 'Nessuna descrizione' }}</strong>
         </div>
         <div class="detail-item">
           <i class="bi bi-person"></i>
-          <span>data:</span> <strong>{{ evento?.dataEOrario }}</strong>
+          <span>data:</span> <strong>{{ evento.dataEOrario }}</strong>
         </div>
       </div>
     </div>

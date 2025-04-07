@@ -26,7 +26,7 @@ import { EditAppointmentModalComponent } from 'src/app/modali/edit-appointment-m
 import { Paziente } from '../paziente.model';
 import { ConfirmationModalComponent } from 'src/app/modali/confirmation-modal/confirmation-modal.component';
 import { AuthService } from 'src/app/auth/auth.service';
-import { forkJoin, take } from 'rxjs';
+import { forkJoin, switchMap, take } from 'rxjs';
 import { EventoDTO } from 'src/app/appuntamenti/eventoDTO.model';
 import { Toast, ToastrService } from 'ngx-toastr';
 
@@ -583,6 +583,8 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
           } else {
             this.showNoActivePlanAlert();
             this.pianoAttivo = false;
+             this.currentPlanId = null;
+             this.trattamentoSelezionato = null;
           }
         },
         (error) => {
@@ -839,7 +841,21 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
       const modalInstance =
         bootstrap.Modal.getInstance(modalElement) ||
         new bootstrap.Modal(modalElement);
-      action === 'show' ? modalInstance.show() : modalInstance.hide();
+      if (action === 'show') {
+        modalInstance.show();
+      } else {
+        modalInstance.hide();
+      }
+      // 🔥 Rimuove manualmente eventuale backdrop residuo
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove();
+      }
+
+      // 🔥 Rimuove classe di blocco scroll su body
+      document.body.classList.remove('modal-open');
+      document.body.style.removeProperty('padding-right'); // se Bootstrap aveva aggiunto padding
+   document.querySelectorAll('.modal-backdrop').forEach((el) => el.remove());
     }
   }
 
@@ -905,21 +921,45 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
       pazienteId: this.pazienteId,
     };
 
-    this.pazienteService.creaPianoTrattamento(nuovoPiano).subscribe(
-      (newPlan) => {
-        this.treatmentPlans.push(newPlan);
-        this.trattamentoSelezionato = newPlan;
-        this.newPlanName = ''; // Reset input
-        console.log('Nuovo piano creato con successo.');
+    this.pazienteService
+      .creaPianoTrattamento(nuovoPiano)
+      .pipe(
+        switchMap(() => {
+          // Dopo la creazione, fetch dei piani aggiornati
+          return this.pazienteService.getPatientTreatmentPlansByPatientId(
+            this.pazienteId!
+          );
+        })
+      )
+      .subscribe({
+        next: (updatedPlans) => {
+          this.treatmentPlans = updatedPlans;
+          this.newPlanName = '';
+          this.trattamentoSelezionato =
+            updatedPlans.find((p) => p.attivo) || null;
+          this.pianoAttivo = !!this.trattamentoSelezionato;
 
-        // Chiude tutti i modali
-        this.toggleModal('createPlanModal', 'hide');
-        this.toggleModal('confirmDeactivateModal', 'hide');
-      },
-      (error) => {
-        console.error('Errore nella creazione del piano:', error);
-      }
-    );
+          // Chiude i modali
+          this.toggleModal('createPlanModal', 'hide');
+          this.toggleModal('confirmDeactivateModal', 'hide');
+
+          // Mostra toast
+          this.toastR.success('Piano creato con successo.', 'Successo', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center',
+            progressBar: true,
+            closeButton: true,
+          });
+
+          // Applica i filtri
+          this.applyAppointmentsFilters();
+          this.applyEventsFilters();
+        },
+        error: (error) => {
+          console.error('Errore nella creazione o nel fetch:', error);
+          this.toastR.error('Errore nella creazione del piano', 'Errore');
+        },
+      });
   }
 }
   

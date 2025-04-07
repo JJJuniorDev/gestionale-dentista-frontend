@@ -5,10 +5,10 @@
      <h2><i class="bi bi-clipboard-pulse"></i> Dettagli  Appuntamento</h2>
     <div class="date-time-container">
   <p class="date-time">
-    <i class="bi bi-calendar-check"></i> {{ appuntamento?.dataEOrario | date:'EEEE d MMMM y, HH:mm':'it' }}
+    <i class="bi bi-calendar-check"></i> {{ appuntamento.dataEOrario | date:'EEEE d MMMM y, HH:mm':'it' }}
   </p>
 </div>
- <span class="status badge" [ngClass]="getBadgeClass(appuntamento?.stato)">{{ appuntamento?.stato }}</span>
+ <span class="status badge" [ngClass]="getBadgeClass(appuntamento.stato)">{{ appuntamento.stato }}</span>
     </div>
 
     <div class="buttons-container">
@@ -42,19 +42,19 @@
       <div class="details-grid">
         <div class="detail-item">
           <i class="bi bi-clipboard-check"></i>
-          <span>Stato:</span> <strong>{{ appuntamento?.stato }}</strong>
+          <span>Stato:</span> <strong>{{ appuntamento.stato }}</strong>
         </div>
         <div class="detail-item">
           <i class="bi bi-chat-left-text"></i>
-          <span>Note:</span> <strong>{{ appuntamento?.note || 'Nessuna nota' }}</strong>
+          <span>Note:</span> <strong>{{ appuntamento.note || 'Nessuna nota' }}</strong>
         </div>
         <div class="detail-item">
           <i class="bi bi-heart-pulse"></i>
-          <span>Trattamento:</span> <strong>{{ appuntamento?.trattamento }}</strong>
+          <span>Trattamento:</span> <strong>{{ appuntamento.trattamento }}</strong>
         </div>
         <div class="detail-item">
           <i class="bi bi-person-badge"></i>
-          <span>CF Paziente:</span> <strong>{{ appuntamento?.codiceFiscalePaziente }}</strong>
+          <span>CF Paziente:</span> <strong>{{ appuntamento.codiceFiscalePaziente }}</strong>
         </div>
       </div>
     </div>
