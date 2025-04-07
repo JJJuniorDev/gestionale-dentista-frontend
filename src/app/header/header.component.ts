@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       new bootstrap.Collapse(navbar, { toggle: false }).hide();
     }
   }
-  
+
   ngOnDestroy() {
     this.userSub.unsubscribe();
   }
@@ -84,6 +84,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onGoToAppointments() {
     this.router.navigate(['/appuntamenti']);
+  }
+
+  onGoToVideocall(){
+    this.router.navigate(['/videochiamata']);
   }
 
   onGoToPatients() {

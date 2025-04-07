@@ -129,6 +129,16 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     private toastR: ToastrService
   ) {}
 
+  aggiungiDueOre(data: any): string {
+    const dataObj = new Date(data); // Converte stringa in Date
+    const nuovaData = new Date(dataObj.getTime() + 2 * 60 * 60 * 1000);
+    return nuovaData.toLocaleTimeString('it-IT', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+  }
+
   ngOnInit(): void {
     this.authService.user$.pipe(take(1)).subscribe((user) => {
       this.dottoreId = user?.id!;
@@ -564,21 +574,20 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
           // Identifica il trattamento attivo e imposta il currentPlanId
           const activePlan = this.treatmentPlans.find((plan) => plan.attivo);
           if (activePlan) {
-            this.pianoAttivo= true;
+            this.pianoAttivo = true;
             this.currentPlanId = activePlan.id;
             this.trattamentoSelezionato = activePlan; // Seleziona automaticamente il piano attivo
             // Applica i filtri SOLO dopo aver ricevuto i dati
             this.applyAppointmentsFilters();
             this.applyEventsFilters();
-          }
-          else {
+          } else {
             this.showNoActivePlanAlert();
-            this.pianoAttivo= false;
+            this.pianoAttivo = false;
           }
         },
         (error) => {
           console.error('Errore durante il caricamento dei piani: ', error);
-         this.loadingTreatmentPlans = false;
+          this.loadingTreatmentPlans = false;
         }
       );
   }
@@ -785,14 +794,42 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     this.pazienteService.deactivatePlan(treatmentPlanId).subscribe({
       next: () => {
         console.log('Piano di trattamento disattivato con successo');
-        // Qui puoi aggiornare la UI o ricaricare i dati
+        this.pianoAttivo = false;
+
+        // ✅ Mostra toast di successo con Toastr
+        this.toastR.success(
+          'Piano di trattamento disattivato con successo.',
+          'Successo',
+          {
+            timeOut: 3000, // Durata del messaggio
+            positionClass: 'toast-top-center', // Posizione del toast al centro in alto
+            progressBar: true, // Aggiungi una barra di progresso
+            closeButton: true, // Aggiungi un pulsante di chiusura
+          }
+        );
+
+        // ✅ Ricarica dati (es. refresh della lista)
+        this.refreshTreatmentPlans();
       },
       error: (err) => {
         console.error('Errore durante la disattivazione:', err);
+
+        // ❌ Mostra toast di errore con Toastr
+        this.toastR.error(
+          'Si è verificato un errore durante la disattivazione',
+          'Errore',{
+            timeOut: 3000, // Durata del messaggio
+            positionClass: 'toast-top-center', 
+          }
+        );
       },
     });
-    console.log("Piano attivo passa da: "+this.pianoAttivo+" a false.")
-    this.pianoAttivo= false;
+
+    console.log('Piano attivo passa da: ' + this.pianoAttivo + ' a false.');
+  }
+
+  refreshTreatmentPlans(): void {
+    this.getPatientTreatmentPlans(); 
   }
 
   // Funzione per aprire/chiudere modali dinamicamente
@@ -823,7 +860,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
           this.createPlan();
           return;
         }
-      console.log("PIANO ATTIVO RESULT: "+this.pianoAttivo);
+        console.log('PIANO ATTIVO RESULT: ' + this.pianoAttivo);
         // Se esiste almeno un piano attivo, apriamo il modale di conferma disattivazione
         if (this.pianoAttivo === true) {
           this.toggleModal('confirmDeactivateModal', 'show');

@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 // import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { Observable, Subject, map } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Paziente } from './paziente.model';
 import { PatientTreatmentPlan } from './patient-treatment-plans/PatientTreatmentPlan.model';
 import { AppuntamentoDTO } from '../appuntamenti/appuntamentoDTO.model';
@@ -28,7 +28,11 @@ export class PazienteService {
         `${this.apiUrl}/${pazienteId}/aggiungi-appuntamento`,
         appuntamentoId,
         {
-          headers: { 'Content-Type': 'text/plain' }, // 🔹 Specifica il tipo di contenuto
+          headers: new HttpHeaders({
+            'Content-Type': 'text/plain',
+            // NON aggiungere Authorization qui, ci pensa l'interceptor!
+          }),
+          // oppure rimuovi proprio 'headers' se non serve specificarlo
         }
       )
       .subscribe(() => {

@@ -1,4 +1,33 @@
+<ng-template #customWeekCellTemplate let-day="day" let-locale="locale">
+  <div *ngFor="let hour of hours">
+    <!-- Nascondi le ore tra 12 AM - 7 AM e 10 PM - 11 PM -->
+    <div  
+      class="cal-cell-top" 
+      (click)="onDayClicked({ day: day, hour: hour })"
+      [ngClass]="{'today': isToday(day.date)}">
+        
+      <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
+      
+      <!-- Visualizza l'ora, ma solo se non è esclusa -->
+      <span class="cal-hour-number">
+        {{ hour }}:00
+      </span>
+   <!-- Contenitore per gli eventi di questa ora -->
+      <div class="events-list">
+        <ng-container *ngFor="let event of weeklyCalendarEvents">
+          <div *ngIf="event.start.getHours() === hour && isSameDay(event.start, day.date)"
+               class="eventList-item"
+               [style]="'--current:' + event.color!.primary + ';--current-contrast:' + event.color!.secondary">
+            <p class="event-title">{{ event.title }}
+               <span class="event-time">🕒 {{ event.start | date:'HH:mm' }}</span>
+            </p>
+          </div>
+        </ng-container>
+      </div>
 
+    </div>
+  </div>
+</ng-template>
 <ng-template #customMonthCellTemplate let-day="day" let-locale="locale">
   <div class="cal-cell-top" (click)="onDayClicked({ day: day })"
   [ngClass]="{'today': isToday(day.date)}">
@@ -49,10 +78,24 @@
   </div>
 </div>
 
-
+<div class="text-center my-3">
+  <button 
+    class="btn btn-outline-primary me-2"
+    [class.active]="viewMode === 'month'"
+    (click)="toggleViewMode('month')">
+    Vista Mensile
+  </button>
+  
+  <button 
+    class="btn btn-outline-primary"
+    [class.active]="viewMode === 'week'"
+    (click)="toggleViewMode('week')">
+    Vista Settimanale
+  </button>
+</div>
   
   <!-- Calendario centrale -->
-  <div class="calendar-container">
+   <div class="calendar-container " *ngIf="viewMode === 'month'">
     <mwl-calendar-month-view
       [viewDate]="viewDate"
       [events]="calendarEvents"
@@ -60,6 +103,20 @@
       [cellTemplate]="customMonthCellTemplate">
     </mwl-calendar-month-view>
   </div>
+
+  <!-- Calendario Mobile -->
+<div class="" *ngIf="viewMode === 'week'">
+  <mwl-calendar-week-view
+    [viewDate]="viewDate"
+    [events]="weeklyCalendarEvents.slice()"
+    (dayClicked)="onDayClicked($event)"
+     [hourSegments]="1"
+  [dayStartHour]="9" 
+  [dayEndHour]="21"
+   [cellTemplate]="customWeekCellTemplate"
+   >
+  </mwl-calendar-week-view>
+</div>
   
   <div class="calendar-nav">
   <button class="btn btn-primary" (click)="onPreviousMonth()">
@@ -96,9 +153,9 @@
                         appuntamento.stato === 'annullato' ? '#f28b82' : ''
   }"
         >
-          <div class="appointment-time">
-            🕒 {{ appuntamento.dataEOrario | date : "HH:mm" }}
-          </div>
+         <div class="appointment-time">
+  🕒 {{ formatDateWithTimeZone(appuntamento.dataEOrario, 'HH:mm') }}
+</div>
           <div class="appointment-details">
            👤 {{ appuntamento.paziente?.nome }} {{ appuntamento.paziente?.cognome }}
           </div>
@@ -125,7 +182,7 @@
   }"
         >
           <div class="event-time">
-            📅 {{ evento.dataEOrario | date : "HH:mm" }}
+            📅 {{ evento.dataEOrario | date : 'dd/MM/yyyy' }}
           </div>
           <div class="event-details">
             📝 {{ evento.tipologia }}
@@ -140,5 +197,4 @@
     </div>
   </div>
 </div>
- 
-        <!-- <div class="btn btn-outline-secondary" (click)="onToday()">Today</div>-->
+ <!-- <div class="btn btn-outline-secondary" (click)="onToday()">Today</div>-->

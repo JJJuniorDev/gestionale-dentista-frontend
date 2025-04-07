@@ -6,24 +6,29 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mx-auto"> <!-- Aggiungi 'mx-auto' per centrare i pulsanti -->
-        <li class="nav-item">
-          <button class="btn btn-warning btn-lg" (click)="onGoToDoctorAppointments(); closeNavbar()">I miei appuntamenti <i class="bi bi-clipboard2-pulse-fill"></i></button>
-        </li>
-        <li class="nav-item">
-          <button class="btn btn-success btn-lg" (click)="onGoToPatients(); closeNavbar()">Pazienti <i class="bi bi-person-vcard-fill"></i></button>
-        </li>
-        <li class="nav-item">
-          <button class="btn btn-primary btn-lg" (click)="onGoToNotes(); closeNavbar()">Note <i class="bi bi-card-list"></i></button>
-        </li>
-        <li class="nav-item">
-          <button class="btn btn-info btn-lg" (click)="onGoToArchivio(); closeNavbar()">Archivio <i class="bi bi-archive"></i></button>
-        </li>
-        <li class="nav-item">
-          <button class="btn btn-secondary btn-lg" (click)="onGoToAllegati(); closeNavbar()">Allegati <i class="bi bi-paperclip"></i></button>
-        </li>
-        <li class="nav-item">
-          <button class="btn btn-light btn-lg" (click)="onLogout(); closeNavbar()">Logout <i class="bi bi-door-open-fill"></i></button>
-        </li>
+     <li class="nav-item">
+  <button class="btn btn-lg" style="background: linear-gradient(45deg, #E74C3C, #C0392B); color: white;" (click)="onGoToDoctorAppointments(); closeNavbar()">I miei appuntamenti <i class="bi bi-clipboard2-pulse-fill"></i></button>
+</li>
+<li class="nav-item">
+  <button class="btn btn-lg" style="background: linear-gradient(45deg, #3498DB, #2980B9); color: white;" (click)="onGoToPatients(); closeNavbar()">Pazienti <i class="bi bi-person-vcard-fill"></i></button>
+</li>
+<li class="nav-item">
+  <button class="btn btn-lg" style="background: linear-gradient(45deg, #F1C40F, #F39C12); color: white;" (click)="onGoToNotes(); closeNavbar()">Note <i class="bi bi-card-list"></i></button>
+</li>
+<li class="nav-item">
+  <button class="btn btn-lg" style="background: linear-gradient(45deg, #1ABC9C, #16A085); color: white;" (click)="onGoToArchivio(); closeNavbar()">Archivio <i class="bi bi-archive"></i></button>
+</li>
+<li class="nav-item">
+  <button class="btn btn-lg" style="background: linear-gradient(45deg, #9B59B6, #8E44AD); color: white;" (click)="onGoToAllegati(); closeNavbar()">Allegati <i class="bi bi-paperclip"></i></button>
+</li>
+<li class="nav-item">
+  <button class="btn btn-lg" style="background: linear-gradient(45deg, #E67E22, #D35400); color: white;" (click)="onGoToVideocall(); closeNavbar()">Videochiamata <i class="bi bi-camera-video-fill"></i></button>
+</li>
+<li class="nav-item">
+  <button class="btn btn-lg" style="background: linear-gradient(45deg, #95A5A6, #7F8C8D); color: white;" (click)="onLogout(); closeNavbar()">Logout <i class="bi bi-door-open-fill"></i></button>
+</li>
+
+
       </ul>
     </div>
   </div>

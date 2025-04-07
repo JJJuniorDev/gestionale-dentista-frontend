@@ -36,6 +36,7 @@ export class AuthInterceptorService implements HttpInterceptor {
         headers: req.headers.set('Authorization', 'Bearer ' + jwtToken),
       });
     }
+    console.log('📦 Request Headers:', clonedRequest.headers.keys());
 
     return next.handle(clonedRequest).pipe(
       catchError((error: HttpErrorResponse) => {

@@ -1,0 +1,29 @@
+<div class="videochiamata-container">
+  <div class="form-container">
+    <h2>Crea Videochiamata</h2>
+    <input [(ngModel)]="dataChiamata" type="datetime-local" class="input-field" />
+    <button (click)="creaVideochiamata()" class="btn-primary">Crea Videochiamata</button>
+
+   <div *ngIf="linkVideochiamata" class="link-container">
+  <h3>Link della Videochiamata:</h3>
+  <input type="text" class="input-field" [value]="linkVideochiamata" readonly />
+  <button (click)="copyLink()" class="btn-info">Copia link</button>
+</div>
+
+  <div *ngIf="videoCallActive" class="call-container">
+    <h2>Videochiamata con il paziente</h2>
+
+    <p><strong>Link videochiamata:</strong> {{ videoCall.link }}</p>
+    <p><strong>Data e ora:</strong> {{ videoCall.dataChiamata | date : "medium" }}</p>
+
+    <div id="video-container">
+      <button (click)="initializePeer()" class="btn-secondary">Avvia Videochiamata</button>
+    </div>
+
+    <button (click)="endVideoCall()" class="btn-danger">Termina Videochiamata</button>
+  </div>
+
+  <div *ngIf="!videoCallActive" class="error-message">
+    <p>Stai tentando di accedere a una videochiamata non attiva o non valida.</p>
+  </div>
+</div>

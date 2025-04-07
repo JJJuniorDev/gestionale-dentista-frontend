@@ -11,6 +11,7 @@ import { AllegatiComponent } from './allegati/allegati/allegati.component';
 import { DettagliEventoComponent } from './appuntamenti/dettagli-evento/dettagli-evento.component';
 import { EventiModificaComponent } from './appuntamenti/modifica-eventi/eventi-modifica/eventi-modifica.component';
 import { ArchivioComponent } from './archivio/archivio/archivio.component';
+import { VideochiamataComponent } from './videochiamate/videochiamata/videochiamata.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -64,6 +65,8 @@ const routes: Routes = [
     path: 'archivio',
     component: ArchivioComponent,
   },
+  { path: 'videochiamata', component: VideochiamataComponent },
+  { path: 'videochiamata/:link', component: VideochiamataComponent },
   {
     path: '**',
     redirectTo: 'auth/login',

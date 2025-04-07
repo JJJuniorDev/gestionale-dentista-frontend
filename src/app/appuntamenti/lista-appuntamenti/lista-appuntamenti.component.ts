@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { PazienteService } from 'src/app/pazienti/paziente.service';
 import { EventoDTO } from '../eventoDTO.model';
 import { EventoService } from '../evento.service';
-
+import { isSameDay } from 'date-fns';
 
 @Component({
   selector: 'app-lista-appuntamenti',
@@ -26,7 +26,7 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
   @Output() viewDetails = new EventEmitter<void>();
   viewDate: Date = new Date(); // Data corrente
   calendarEvents: CalendarEvent[] = []; // Eventi del calendario
-
+  weeklyCalendarEvents: CalendarEvent[] = [];
   //PER GESTIONE APPUNTAMENTI GIORNALIERI
   // ****************************
   appuntamentiGiornalieri: AppuntamentoDTO[] = []; // Appuntamenti del giorno selezionato
@@ -34,6 +34,36 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
   selectedDay!: Date | null; // Giorno selezionato
   dottoreId!: string | null;
   showAppointmentsModal: boolean = false;
+
+  viewMode: 'month' | 'week' = 'month'; // Di default parte in modalità "month"
+  hours: number[] = Array.from({ length: 24 }, (_, i) => i).filter(
+    (hour) => !((hour >= 0 && hour < 7) || (hour >= 22 && hour < 23))
+  );
+  isSameDay = isSameDay;
+  toggleViewMode(mode: 'month' | 'week') {
+    this.viewMode = mode;
+  }
+
+  formatDateWithTimeZone(date: Date, format: string): string {
+    // Aggiungi 2 ore
+    const dateWithOffset = new Date(date.getTime() + 2 * 60 * 60 * 1000); // Aggiunge 2 ore (in millisecondi)
+
+    return dateWithOffset.toLocaleString('it-IT', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+  }
+
+  // aggiungiDueOre(data: any): string {
+  //   const dataObj = new Date(data); // Converte stringa in Date
+  //   const nuovaData = new Date(dataObj.getTime() + 2 * 60 * 60 * 1000);
+  //   return nuovaData.toLocaleTimeString('it-IT', {
+  //     hour: '2-digit',
+  //     minute: '2-digit',
+  //     hour12: false,
+  //   });
+  // }
 
   // Navigate to previous month
   onPreviousMonth() {
@@ -78,11 +108,22 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
             const richiestePazienti$ = appuntamenti.map((appuntamento) =>
               this.pazienteService.getPaziente(appuntamento.pazienteId).pipe(
                 // Creiamo un oggetto che contiene sia l'appuntamento che il paziente
-                map((paziente) => ({
-                  ...appuntamento,
-                  paziente: paziente, // Aggiungiamo il paziente all'appuntamento
-                  dataEOrario: new Date(appuntamento.dataEOrario), // Convertiamo la data
-                }))
+                map((paziente) => {
+                  let dataEOrario: Date;
+                  // Verifica se dataEOrario è già un oggetto Date o una stringa
+                  if (appuntamento.dataEOrario instanceof Date) {
+                    dataEOrario = appuntamento.dataEOrario; // È già un oggetto Date
+                  } else {
+                    dataEOrario = this.parseLocalDateTime(
+                      appuntamento.dataEOrario
+                    ); // Converte la stringa in un oggetto Date
+                  }
+                  return {
+                    ...appuntamento,
+                    paziente: paziente,
+                    dataEOrario: dataEOrario, // Aggiungiamo la data corretta
+                  };
+                })
               )
             );
             // Aspettiamo che tutte le richieste siano completate
@@ -111,12 +152,17 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
           console.log('Eventi ricevuti:', eventi); // Mostra i dati ricevuti
           this.eventi = eventi;
           this.updateCalendarEvents(); // Rivedi anche il codice per la gestione eventi
+          this.updateWeeklyCalendarEvents();
         },
         (error: any) => {
           console.error('Errore nel recupero degli eventi:', error);
         }
       );
     }
+  }
+
+  parseLocalDateTime(dateTimeString: string): Date {
+    return new Date(dateTimeString); // JavaScript fa il parsing e converte in ora locale
   }
 
   updateCalendarEvents() {
@@ -146,8 +192,27 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
     );
   }
 
+  updateWeeklyCalendarEvents() {
+    this.weeklyCalendarEvents = [
+      ...this.appuntamenti.map((appuntamento) => ({
+        title: 'TITOLO',
+        start: new Date(appuntamento.dataEOrario), // Data e ora precisa
+        color: { primary: '#007bff', secondary: '#cce5ff' },
+        meta: { type: 'appuntamento' }, // Aggiunto meta per il template
+      })),
+      ...this.eventi.map((evento) => ({
+        title: 'titolo evento',
+        start: new Date(evento.dataEOrario), // Data e ora precisa
+        color: { primary: '#28a745', secondary: '#d4edda' },
+        meta: { type: 'evento' }, // Aggiunto meta per il template
+      })),
+    ];
+    console.log('weeklyCalendarEvents:', this.weeklyCalendarEvents);
+  }
+
   // Metodo chiamato quando si clicca un giorno sul calendario
-  onDayClicked(event: { day: { date: Date; badgeTotal: number } }) {
+  //onDayClicked(event: { day: { date: Date; badgeTotal: number } }) {
+  onDayClicked(event: any) {
     if (!event || !event.day) return;
 
     const date = event.day.date;

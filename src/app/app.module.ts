@@ -51,6 +51,7 @@ import { ArchivioComponent } from './archivio/archivio/archivio.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
+import { VideochiamataComponent } from './videochiamate/videochiamata/videochiamata.component';
 
 registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
 
@@ -61,7 +62,8 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
     StatisticsComponent,
     ConfirmationModalComponent,
     AllegatiComponent,
-    ArchivioComponent
+    ArchivioComponent,
+    VideochiamataComponent
     
   ],
   imports: [

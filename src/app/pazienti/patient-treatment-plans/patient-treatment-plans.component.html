@@ -102,9 +102,9 @@
             <ng-container matColumnDef="dataEOrario">
               <th mat-header-cell *matHeaderCellDef>Data e Orario</th>
               <td mat-cell *matCellDef="let appointment">
-                <span>{{ appointment.dataEOrario | date: 'dd/MM/yyyy' }}</span>
+                <span>{{ aggiungiDueOre(appointment.dataEOrario) }}</span>
                 <span class="time-separator"> - </span>
-                <span class="time">{{ appointment.dataEOrario | date: 'HH:mm' }}</span>
+                <span class="time">{{aggiungiDueOre(appointment.dataEOrario) }}</span>
               </td>
             </ng-container>
             <ng-container matColumnDef="stato">
@@ -181,7 +181,7 @@
             </ng-container>
             <ng-container matColumnDef="dataEOrario">
               <th mat-header-cell *matHeaderCellDef>Data</th>
-              <td mat-cell *matCellDef="let event">{{ event.dataEOrario }}</td>
+              <td mat-cell *matCellDef="let event">{{ event.dataEOrario | date: 'dd/MM/yyyy' }}</td>
             </ng-container>
             <ng-container matColumnDef="deleted">
               <th mat-header-cell *matHeaderCellDef>Deleted</th>
@@ -322,7 +322,7 @@
           </button>
         </form>
       </div>
-    </div>
+    </div>h
   </div>
 </div>
 
