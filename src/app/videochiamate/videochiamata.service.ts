@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { VideochiamataDTO } from './videochiamataDTO.mode';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VideochiamataService {
-  private apiUrl = 'http://localhost:8080/videochiamate'; // URL del backend
+  private apiUrl = environment.apiUrl+'/videochiamate'; // URL del backend
 
   constructor(private http: HttpClient) {}
 
