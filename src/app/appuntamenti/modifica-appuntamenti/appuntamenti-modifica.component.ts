@@ -236,16 +236,21 @@ export class AppuntamentiModificaComponent implements OnInit {
   
   const pianoAttivo = piani?.find((piano) => piano.attivo);
               if (!pianoAttivo) {
-               this.toastr.error(
-                 "Appuntamento trovato, ma nessun piano di trattamento attivo, creane uno.",
-                 'Errore',
-                 {
-                   timeOut: 3000, // Durata del messaggio
-                   positionClass: 'toast-top-center', // Posizione del toast al centro in alto
-                   progressBar: true, // Aggiungi una barra di progresso
-                   closeButton: true, // Aggiungi un pulsante di chiusura
-                 }
-               );
+                this.toastr.warning(
+                  'Nessun piano attivo: appuntamento creato ma non aggiunto al piano.',
+                  'Attenzione',
+                  {
+                    timeOut: 3000, // Durata del messaggio
+                    positionClass: 'toast-top-center', // Posizione del toast al centro in alto
+                    progressBar: true, // Aggiungi una barra di progresso
+                    closeButton: true, // Aggiungi un pulsante di chiusura
+                  }
+                );
+                // 🔁 Redireziona comunque alla lista appuntamenti
+                this.router.navigate([
+                  `/appuntamenti/dottore/${this.dottoreId}`,
+                ]);
+                return; // ❗ Interrompi il flusso per evitare errori sul pianoAttivo null
               }
               
             // 3. Add appointment to treatment plan

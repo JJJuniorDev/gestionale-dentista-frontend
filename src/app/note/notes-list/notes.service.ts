@@ -46,4 +46,8 @@ export class NotesService {
   archiviaNota(id: string): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/nota/archivia/${id}`, {});
   }
+
+  deleteNota(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/nota/delete/${id}`, {});
+}
 }

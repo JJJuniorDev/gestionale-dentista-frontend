@@ -47,6 +47,6 @@ export class AllegatiService {
 
   // 📌 Elimina un allegato
   deleteAllegato(fileId: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/delete/${fileId}`);
+    return this.http.delete(`${this.baseUrl}/allegati/delete/${fileId}`);
   }
 }

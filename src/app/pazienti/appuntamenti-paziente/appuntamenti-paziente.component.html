@@ -15,22 +15,45 @@
     </button>
   </div>
 
-  <!-- Lista appuntamenti -->
+  <!-- Tabella appuntamenti -->
   <div class="card appointment-card" *ngIf="paginatedAppointments.length > 0; else noAppointments">
     <div class="card-body">
       <h4 class="card-title">🗓 Lista degli Appuntamenti</h4>
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let appuntamento of paginatedAppointments">
-          <strong>📅 Data e ora:</strong> {{ appuntamento.dataEOrario | date:'short' }}<br />
-        <strong>📝 Stato:</strong>
-  <span [innerHTML]="getStatoIcon(appuntamento.stato)"></span>
-  {{ appuntamento.stato || 'Nessuno Stato' }}
-  
-  <br />
-          <strong>💉 Trattamento:</strong> {{ appuntamento.trattamento }}<br />
-          <strong>📝 Note:</strong> {{ appuntamento.note || 'Nessuna nota' }}
-        </li>
-      </ul>
+      <table class="table table-striped table-hover table-bordered">
+        <thead>
+          <tr>
+            <th>📅 Data e ora</th>
+            <th>📝 Stato</th>
+            <th>💉 Trattamento</th>
+            <th>📝 Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let appuntamento of paginatedAppointments">
+            <td>{{ appuntamento.dataEOrario | date:'short' }}</td>
+            <td>
+              <span [innerHTML]="getStatoIcon(appuntamento.stato)"></span>
+              {{ appuntamento.stato || 'Nessuno Stato' }}
+            </td>
+            <td>{{ appuntamento.trattamento }}</td>
+             <td>
+      <span *ngIf="!expandedNotes[appuntamento.id]">
+        {{ appuntamento.note?.length > 20 ? (appuntamento.note | slice:0:20) + '...' : appuntamento.note || 'Nessuna nota' }}
+      </span>
+      <span *ngIf="expandedNotes[appuntamento.id]">
+        {{ appuntamento.note }}
+      </span>
+      <br />
+      <button
+        *ngIf="appuntamento.note?.length > 50"
+        class="btn btn-link p-0"
+        (click)="toggleNote(appuntamento.id)">
+        {{ expandedNotes[appuntamento.id] ? 'Nascondi' : 'Leggi tutto' }}
+      </button>
+    </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 

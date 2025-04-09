@@ -10,6 +10,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-notes-list',
@@ -38,17 +39,19 @@ export class NotesListComponent implements OnInit {
   isModalOpen = false;
   selectedNote: NotaDTO | null = null;
   dottoreId: string | undefined;
-  constructor(private notesService: NotesService, public dialog: MatDialog,
+  constructor(
+    private notesService: NotesService,
+    public dialog: MatDialog,
     private toastr: ToastrService,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-   this.authService.user$.subscribe((user) => {
+    this.authService.user$.subscribe((user) => {
       if (user) {
-        this.dottoreId! = user.id; 
+        this.dottoreId! = user.id;
       }
-  });
+    });
     this.loadNotes();
   }
 
@@ -137,9 +140,9 @@ export class NotesListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-       if (result) {
-         this.loadNotes(); // Aggiorna la lista dopo il salvataggio
-       }
+      if (result) {
+        this.loadNotes(); // Aggiorna la lista dopo il salvataggio
+      }
     });
   }
 
@@ -182,26 +185,65 @@ export class NotesListComponent implements OnInit {
   }
 
   archiviaNota(id: string): void {
-    console.log("ID NOTA: "+id);
+    console.log('ID NOTA: ' + id);
     this.notesService.archiviaNota(id).subscribe({
       next: () => {
-     this.toastr.success('Nota archiviata con successo!', 'Successo', {
-       timeOut: 3000, // Mostra il messaggio per 3 secondi
-       positionClass: 'toast-top-center', // Posizione: al centro dello schermo
-       progressBar: true, // Aggiunge una barra di progresso
-       closeButton: true, // Aggiungi il pulsante di chiusura
-     });
+        this.toastr.success('Nota archiviata con successo!', 'Successo', {
+          timeOut: 3000, // Mostra il messaggio per 3 secondi
+          positionClass: 'toast-top-center', // Posizione: al centro dello schermo
+          progressBar: true, // Aggiunge una barra di progresso
+          closeButton: true, // Aggiungi il pulsante di chiusura
+        });
         this.loadNotes(); // Ricarica le note per aggiornare la lista
       },
       error: (err) => {
         console.error(err);
-      this.toastr.error("Errore durante l'archiviazione della nota", 'Errore', {
-        timeOut: 3000, // Mostra il messaggio per 3 secondi
-        positionClass: 'toast-top-center', // Posizione: al centro dello schermo
-        progressBar: true, // Aggiunge una barra di progresso
-        closeButton: true, // Aggiungi il pulsante di chiusura
-      });
+        this.toastr.error(
+          "Errore durante l'archiviazione della nota",
+          'Errore',
+          {
+            timeOut: 3000, // Mostra il messaggio per 3 secondi
+            positionClass: 'toast-top-center', // Posizione: al centro dello schermo
+            progressBar: true, // Aggiunge una barra di progresso
+            closeButton: true, // Aggiungi il pulsante di chiusura
+          }
+        );
       },
+    });
+  }
+
+  eliminaNota(id: string) {
+    Swal.fire({
+      title: 'Sei sicuro?',
+      text: 'Questa azione eliminerà la nota definitivamente!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sì, elimina',
+      cancelButtonText: 'Annulla',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.notesService.deleteNota(id).subscribe({
+          next: () => {
+            this.toastr.success('Nota eliminata con successo!', 'Successo', {
+              positionClass: 'toast-top-center',
+              timeOut: 3000,
+            });
+            this.loadNotes(); // Ricarica elenco note
+          },
+          error: (error) => {
+            const msg =
+              error.status === 404
+                ? 'Nota non trovata.'
+                : "Errore durante l'eliminazione della nota.";
+            this.toastr.error(msg, 'Errore', {
+              positionClass: 'toast-top-center',
+              timeOut: 3000,
+            });
+          },
+        });
+      }
     });
   }
 }

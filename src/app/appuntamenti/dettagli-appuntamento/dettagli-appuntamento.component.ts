@@ -5,6 +5,7 @@ import { AppuntamentoDTO } from '../appuntamentoDTO.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from 'src/app/modali/confirmation-modal/confirmation-modal.component';
+import { AlertService } from 'src/app/modali/alertService.service';
 
 @Component({
   selector: 'app-dettagli-appuntamento',
@@ -21,7 +22,8 @@ export class DettagliAppuntamentoComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -62,28 +64,28 @@ export class DettagliAppuntamentoComponent implements OnInit {
     }
   }
 
-  // Metodo per la cancellazione dell'appuntamento
-  onDeleteAppuntamento() {
-    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-      width: '400px',
-      panelClass: 'custom-confirmation-modal', // Classe personalizzata
-      data: {
-        cf: this.appuntamento?.codiceFiscalePaziente,
-        data: this.appuntamento?.dataEOrario,
-      }, // Passa i dati al modale
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const dottoreId = this.authService.getUserId();
-        if (this.id) {
-          this.appuntamentoService.deleteAppuntamento(this.id).subscribe(() => {
-            this.router.navigate([`/appuntamenti/dottore/${dottoreId}`]);
-          });
+  onDeleteAppuntamento(): void {
+   // Usa SweetAlert2 per chiedere la conferma
+    this.alertService
+      .confirmDelete(
+        `Sei sicuro di voler eliminare l'appuntamento con il paziente? I dati andranno persi.`
+      )
+      .then((confirmed) => {
+        if (confirmed) {
+          const dottoreId = this.authService.getUserId();
+          if (this.id) {
+            // Se confermato, procedi con l'eliminazione
+            this.appuntamentoService
+              .deleteAppuntamento(this.id)
+              .subscribe(() => {
+                // Dopo l'eliminazione, naviga nella lista appuntamenti del dottore
+                this.router.navigate([`/appuntamenti/dottore/${dottoreId}`]);
+              });
+          }
+        } else {
+          console.log('Eliminazione annullata');
         }
-      } else {
-        console.log('Eliminazione annullata');
-      }
-    });
+      });
   }
 
   onChangeStato(nuovoStato: string) {

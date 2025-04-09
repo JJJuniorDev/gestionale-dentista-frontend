@@ -15,13 +15,14 @@ export class AppuntamentiPazienteComponent implements OnInit {
   appuntamentiIds: string[] = [];
 
   // Paginazione
-  itemsPerPage: number = 3;
+  itemsPerPage: number = 10;
   currentPage: number = 1;
   totalPages: number = 1;
 
   // Ordinamento
   sortCriteria: string = 'dataEOrario';
   sortAscending: boolean = false; // Default: dal più recente al meno recente
+  expandedNotes: { [key: string]: boolean } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +40,10 @@ export class AppuntamentiPazienteComponent implements OnInit {
     });
   }
 
+  toggleNote(id: string) {
+    this.expandedNotes[id] = !this.expandedNotes[id];
+  }
+  
   getAppuntamenti() {
     this.appuntamentoService
       .getAppuntamentiByIds(this.appuntamentiIds)
@@ -96,19 +101,19 @@ export class AppuntamentiPazienteComponent implements OnInit {
   }
 
   getStatoIcon(stato: string): string {
-  switch (stato?.toLowerCase()) {
-    case 'completato':
-      return '✅';
-    case 'in_corso':
-      return '⏳';
-    case 'pianificato':
-      return '✔️';
-    case 'annullato':
-      return '❌';
-    case 'sospeso':
-      return '🔄';
-    default:
-      return '❓'; // Per stati sconosciuti
+    switch (stato?.toLowerCase()) {
+      case 'completato':
+        return '✅';
+      case 'in_corso':
+        return '⏳';
+      case 'pianificato':
+        return '✔️';
+      case 'annullato':
+        return '❌';
+      case 'sospeso':
+        return '🔄';
+      default:
+        return '❓'; // Per stati sconosciuti
+    }
   }
-}
 }

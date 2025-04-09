@@ -52,6 +52,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { VideochiamataComponent } from './videochiamate/videochiamata/videochiamata.component';
+import { AlertService } from './modali/alertService.service';
 
 registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
 
@@ -113,6 +114,7 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
       useClass: LoadingInterceptor,
       multi: true,
     },
+    AlertService
   ],
   bootstrap: [AppComponent],
 })

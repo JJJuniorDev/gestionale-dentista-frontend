@@ -163,9 +163,9 @@ export class AppuntamentoService {
     // });
   }
 
-  deleteAppuntamento(index: string): Observable<void> {
+  deleteAppuntamento(id: string): Observable<void> {
     // const id = this.appuntamenti[+index].id;
-    return this.http.delete<void>(`${this.apiUrl}/${index}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
   deleteAppuntamentoLocally(index: number): void {

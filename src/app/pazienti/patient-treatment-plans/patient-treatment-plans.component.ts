@@ -29,6 +29,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { forkJoin, switchMap, take } from 'rxjs';
 import { EventoDTO } from 'src/app/appuntamenti/eventoDTO.model';
 import { Toast, ToastrService } from 'ngx-toastr';
+import { AlertService } from 'src/app/modali/alertService.service';
 
 @Component({
   selector: 'app-patient-treatment-plans',
@@ -126,7 +127,8 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
     private appuntamentoService: AppuntamentoService,
     private authService: AuthService,
     private cdRef: ChangeDetectorRef,
-    private toastR: ToastrService
+    private toastR: ToastrService,
+    private alertService: AlertService
   ) {}
 
   aggiungiDueOre(data: any): string {
@@ -777,19 +779,28 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
   }
 
   openConfirmationModal(treatmentPlanId: string): void {
-    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-      width: '400px',
-      data: {
-        content: 'Sei sicuro di voler disattivare questo piano di trattamento?',
-        isEditable: false,
-      },
-    });
+     this.alertService
+       .confirmDelete(
+         'Sei sicuro di voler disattivare questo piano di trattamento?'
+       )
+       .then((confirmed) => {
+         if (confirmed) {
+           this.deactivateTreatmentPlan(treatmentPlanId);
+         }
+       });
+    // const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+    //   width: '400px',
+    //   data: {
+    //     content: 'Sei sicuro di voler disattivare questo piano di trattamento?',
+    //     isEditable: false,
+    //   },
+    // });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === true) {
-        this.deactivateTreatmentPlan(treatmentPlanId);
-      }
-    });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   if (result === true) {
+    //     this.deactivateTreatmentPlan(treatmentPlanId);
+    //   }
+    // });
   }
 
   deactivateTreatmentPlan(treatmentPlanId: string): void {

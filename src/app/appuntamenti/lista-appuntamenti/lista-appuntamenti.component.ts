@@ -9,6 +9,7 @@ import { PazienteService } from 'src/app/pazienti/paziente.service';
 import { EventoDTO } from '../eventoDTO.model';
 import { EventoService } from '../evento.service';
 import { isSameDay } from 'date-fns';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-lista-appuntamenti',
@@ -90,7 +91,8 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private authService: AuthService,
     private pazienteService: PazienteService,
-    private eventoService: EventoService
+    private eventoService: EventoService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -304,6 +306,20 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
       date.getFullYear() === today.getFullYear()
     );
   }
+
+
+ segnaComeEseguito(appuntamento: AppuntamentoDTO) {
+  const updated = { ...appuntamento, stato: 'eseguito' };
+
+  this.appuntamentoService.updateAppuntamento(appuntamento.id, updated).subscribe({
+    next: () => {
+      appuntamento.stato = 'eseguito'; // Aggiorna localmente
+    },
+    error: () => {
+      this.toastr.error("Errore nel salvare lo stato dell'appuntamento", "Errore");
+    }
+  });
+}
 }
 
 

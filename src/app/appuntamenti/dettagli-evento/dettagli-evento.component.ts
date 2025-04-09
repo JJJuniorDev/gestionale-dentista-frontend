@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { EventoDTO } from '../eventoDTO.model';
 import { EventoService } from '../evento.service';
 import { ConfirmationModalComponent } from 'src/app/modali/confirmation-modal/confirmation-modal.component';
+import { AlertService } from 'src/app/modali/alertService.service';
 
 @Component({
   selector: 'app-dettagli-evento',
@@ -21,7 +22,8 @@ export class DettagliEventoComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -53,27 +55,23 @@ export class DettagliEventoComponent implements OnInit {
 
   // Metodo per eliminare un evento
   onDeleteEvento() {
-    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-      width: '400px',
-      panelClass: 'custom-confirmation-modal',
-      data: {
-        descrizione: this.evento?.descrizione,
-        data: this.evento?.dataEOrario,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const dottoreId = this.authService.getUserId();
-        if (this.id) {
-         this.eventoService.deleteEvento(this.id).subscribe(() =>{
-            this.router.navigate([`/eventi/dottore/${dottoreId}`]);
-          });
+    // Usa SweetAlert2 per chiedere la conferma
+    this.alertService
+      .confirmDelete(
+        `Sei sicuro di voler eliminare l'appuntamento con il paziente? I dati andranno persi.`
+      )
+      .then((confirmed) => {
+        if (confirmed) {
+          const dottoreId = this.authService.getUserId();
+          if (this.id) {
+            this.eventoService.deleteEvento(this.id).subscribe(() => {
+              this.router.navigate([`/appuntamenti/dottore/${dottoreId}`]);
+            });
+          }
+        } else {
+          console.log('Eliminazione annullata');
         }
-      } else {
-        console.log('Eliminazione annullata');
-       }
-    });
+      });
   }
 
   //  onChangeStato(nuovoStato: string) {

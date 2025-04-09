@@ -150,7 +150,9 @@
           (click)="onSelectAppuntamento(appuntamento.id)"
             [ngStyle]="{
     'background-color': appuntamento.stato === 'sospeso' ? '#ffcc80' : 
-                        appuntamento.stato === 'annullato' ? '#f28b82' : ''
+                        appuntamento.stato === 'annullato' ? '#f28b82' : 
+                         appuntamento.stato === 'eseguito' ? '#c8e6c9' : ''
+                        
   }"
         >
          <div class="appointment-time">
@@ -162,6 +164,17 @@
             <div class="appointment-cellphone">
           <span class="material-icons">phone</span> {{ appuntamento.paziente?.numeroDiCellulare }}
           </div>
+
+            <button
+      class="btn btn-outline-success btn-sm ms-2"
+   (click)="segnaComeEseguito(appuntamento); $event.stopPropagation()"
+    [disabled]="appuntamento.stato === 'eseguito'"
+    title="Segna come eseguito"
+  >
+      <i class="bi" [ngClass]="appuntamento.stato === 'eseguito' ? 'bi-check-circle-fill' : 'bi-check-circle'"></i>
+  </button>
+   <!-- Se già eseguito -->
+  <span *ngIf="appuntamento.stato === 'eseguito'" class="badge bg-success float-end">Completato</span>
         </li>
           </ul>
   </div>
