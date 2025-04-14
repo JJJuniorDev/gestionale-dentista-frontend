@@ -126,4 +126,14 @@ export class DettagliAppuntamentoComponent implements OnInit {
         return 'badge-secondary'; // Classe di fallback
     }
   }
+
+  onGoToTreatmentPlan(){
+    const id= this.appuntamento?.pazienteId;
+    this.router.navigate([`/pazienti/patientTreatmentPlans/${id}`]);
+  }
+
+  onGoToMedicalHistory(){
+    const id = this.appuntamento?.pazienteId;
+     this.router.navigate([`/pazienti/medical-history/${id}`]);
+  }
 }

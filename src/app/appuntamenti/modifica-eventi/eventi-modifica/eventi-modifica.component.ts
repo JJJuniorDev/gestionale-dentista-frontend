@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Paziente } from 'src/app/pazienti/paziente.model';
 import { map, Observable, startWith, Subscription } from 'rxjs';
+import { AlertService } from 'src/app/modali/alertService.service';
 
 @Component({
   selector: 'app-eventi-modifica',
@@ -38,7 +39,8 @@ export class EventiModificaComponent implements OnInit {
     private route: ActivatedRoute,
     private eventoService: EventoService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -115,7 +117,7 @@ export class EventiModificaComponent implements OnInit {
     //   }
     this.formEvento = this.formBuilder.group({
       dataEvento: [null, Validators.required],
-      orario: ['', Validators.required],
+      orario: [''],
       descrizione: [''],
       tipologia: ['', Validators.required],
       codiceFiscalePaziente: [''],
@@ -203,12 +205,12 @@ export class EventiModificaComponent implements OnInit {
       // **MODIFICA EVENTO**
       this.eventoService.updateEvent(this.id!, formData).subscribe({
         next: () => {
-          alert('Evento modificato con successo!');
+         this.alertService.success('Evento modificato con successo');
           this.router.navigate([`/appuntamenti/dottore/${this.dottoreId}`]);
         },
         error: (err) => {
           console.error('Errore durante la modifica dell’evento:', err);
-          alert('Errore durante la modifica dell’evento. Riprova.');
+         this.alertService.error('Errore durante la modifica dell’evento');
         },
       });
     } else {
@@ -218,9 +220,27 @@ export class EventiModificaComponent implements OnInit {
         const pianoAttivo = piani.find((piano) => piano.attivo);
 
         if (!pianoAttivo) {
-          alert(
-            'Errore: Nessun piano di trattamento attivo trovato! Creane uno prima di aggiungere un evento.'
-          );
+          // alert(
+          //   'Errore: Nessun piano di trattamento attivo trovato! Creane uno prima di aggiungere un evento.'
+          // );
+           this.eventoService.createEvent(formData).subscribe({
+             next: () => {
+               this.alertService.info(
+                 'Nessun piano trovato. Evento creato ma non associato'
+               );
+               setTimeout(() => {
+                 this.router.navigate([
+                   `/appuntamenti/dottore/${this.dottoreId}`,
+                 ]);
+               }, 2000); // attende 2 secondi per mostrare l'alert
+             },
+             error: (err) => {
+               console.error('Errore durante la creazione dell’evento:', err);
+               this.alertService.error(
+                 'Errore durante la creazione dell’evento. Riprova.'
+               );
+             },
+           });
           return;
         }
         this.pazienteService

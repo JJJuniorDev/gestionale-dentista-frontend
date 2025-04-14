@@ -98,69 +98,62 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.authService.user$.subscribe((user) => {
       if (user) {
-        this.dottoreId! = user.id; // Ottieni l'ID dell'utente loggato
-      }
-    });
-    if (this.dottoreId) {
-      this.subscription = this.appuntamentoService
-        .getAppuntamentiPerDottore(this.dottoreId)
-        .subscribe(
-          (appuntamenti: AppuntamentoDTO[]) => {
-            // Creiamo un array di richieste per ottenere i pazienti
-            const richiestePazienti$ = appuntamenti.map((appuntamento) =>
-              this.pazienteService.getPaziente(appuntamento.pazienteId).pipe(
-                // Creiamo un oggetto che contiene sia l'appuntamento che il paziente
-                map((paziente) => {
-                  let dataEOrario: Date;
-                  // Verifica se dataEOrario è già un oggetto Date o una stringa
-                  if (appuntamento.dataEOrario instanceof Date) {
-                    dataEOrario = appuntamento.dataEOrario; // È già un oggetto Date
-                  } else {
-                    dataEOrario = this.parseLocalDateTime(
-                      appuntamento.dataEOrario
-                    ); // Converte la stringa in un oggetto Date
-                  }
-                  return {
-                    ...appuntamento,
-                    paziente: paziente,
-                    dataEOrario: dataEOrario, // Aggiungiamo la data corretta
-                  };
-                })
-              )
-            );
-            // Aspettiamo che tutte le richieste siano completate
-            forkJoin(richiestePazienti$).subscribe(
-              (appuntamentiCompleti) => {
-                this.appuntamenti = appuntamentiCompleti; // Salviamo gli appuntamenti con i pazienti associati
-                this.filteredAppuntamenti = [...this.appuntamenti]; // Filtra inizialmente tutti gli appuntamenti
-                console.log(this.appuntamenti);
-                this.updateCalendarEvents();
-              },
-              (error) => {
-                console.error(
-                  'Errore nel recupero degli appuntamenti con pazienti:',
-                  error
-                );
-              }
-            );
+        this.dottoreId = user.id;
+
+        this.subscription = this.appuntamentoService
+          .getAppuntamentiPerDottore(this.dottoreId)
+          .subscribe(
+            (appuntamenti: AppuntamentoDTO[]) => {
+              const richiestePazienti$ = appuntamenti.map((appuntamento) =>
+                this.pazienteService.getPaziente(appuntamento.pazienteId).pipe(
+                  map((paziente) => {
+                    const dataEOrario =
+                      appuntamento.dataEOrario instanceof Date
+                        ? appuntamento.dataEOrario
+                        : this.parseLocalDateTime(appuntamento.dataEOrario);
+
+                    return {
+                      ...appuntamento,
+                      paziente,
+                      dataEOrario,
+                    };
+                  })
+                )
+              );
+
+              forkJoin(richiestePazienti$).subscribe(
+                (appuntamentiCompleti) => {
+                  this.appuntamenti = appuntamentiCompleti;
+                  this.filteredAppuntamenti = [...this.appuntamenti];
+                  this.updateCalendarEvents();
+                  this.updateWeeklyCalendarEvents();
+                },
+                (error) => {
+                  console.error(
+                    'Errore nel recupero degli appuntamenti con pazienti:',
+                    error
+                  );
+                }
+              );
+            },
+            (error) => {
+              console.error('Errore nel recupero degli appuntamenti:', error);
+            }
+          );
+
+        this.eventoService.getEventiPerDottore(this.dottoreId).subscribe(
+          (eventi: EventoDTO[]) => {
+            console.log('Eventi ricevuti:', eventi);
+            this.eventi = eventi;
+            this.updateCalendarEvents();
+            this.updateWeeklyCalendarEvents();
           },
-          (error) => {
-            console.error('Errore nel recupero degli appuntamenti:', error);
+          (error: any) => {
+            console.error('Errore nel recupero degli eventi:', error);
           }
         );
-      // Recupera gli eventi (qui dovresti chiamare un servizio simile per gli eventi)
-      this.eventoService.getEventiPerDottore(this.dottoreId).subscribe(
-        (eventi: EventoDTO[]) => {
-          console.log('Eventi ricevuti:', eventi); // Mostra i dati ricevuti
-          this.eventi = eventi;
-          this.updateCalendarEvents(); // Rivedi anche il codice per la gestione eventi
-          this.updateWeeklyCalendarEvents();
-        },
-        (error: any) => {
-          console.error('Errore nel recupero degli eventi:', error);
-        }
-      );
-    }
+      }
+    });
   }
 
   parseLocalDateTime(dateTimeString: string): Date {
@@ -193,23 +186,38 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
       })
     );
   }
-
+  // Modifica il metodo updateWeeklyCalendarEvents per normalizzare le date
   updateWeeklyCalendarEvents() {
     this.weeklyCalendarEvents = [
-      ...this.appuntamenti.map((appuntamento) => ({
-        title: 'TITOLO',
-        start: new Date(appuntamento.dataEOrario), // Data e ora precisa
-        color: { primary: '#007bff', secondary: '#cce5ff' },
-        meta: { type: 'appuntamento' }, // Aggiunto meta per il template
-      })),
-      ...this.eventi.map((evento) => ({
-        title: 'titolo evento',
-        start: new Date(evento.dataEOrario), // Data e ora precisa
-        color: { primary: '#28a745', secondary: '#d4edda' },
-        meta: { type: 'evento' }, // Aggiunto meta per il template
-      })),
+      ...this.appuntamenti.map((appuntamento) => {
+        // Normalizza la data rimuovendo l'offset del fuso orario
+        const start = new Date(appuntamento.dataEOrario);
+        start.setMinutes(start.getMinutes() - start.getTimezoneOffset());
+
+        const end = new Date(start.getTime() + 30 * 60 * 1000);
+        return {
+          title: `🧑‍⚕️ ${appuntamento.paziente?.nome} ${appuntamento.paziente?.cognome}`,
+          start,
+          end,
+          color: { primary: '#007bff', secondary: '#cce5ff' },
+          meta: { type: 'appuntamento', id: appuntamento.id },
+        };
+      }),
+      ...this.eventi.map((evento) => {
+        const start = new Date(evento.dataEOrario);
+        start.setMinutes(start.getMinutes() - start.getTimezoneOffset());
+
+        const end = new Date(start.getTime() + 60 * 60 * 1000);
+        return {
+          title: `🗓️ ${evento.tipologia}`,
+          start,
+          end,
+          color: { primary: '#28a745', secondary: '#d4edda' },
+          meta: { type: 'evento', id: evento.id },
+        };
+      }),
     ];
-    console.log('weeklyCalendarEvents:', this.weeklyCalendarEvents);
+    console.log('EVENTI NORMALIZZATI', this.weeklyCalendarEvents);
   }
 
   // Metodo chiamato quando si clicca un giorno sul calendario
@@ -307,19 +315,31 @@ export class ListaAppuntamentiComponent implements OnInit, OnDestroy {
     );
   }
 
+  segnaComeEseguito(appuntamento: AppuntamentoDTO) {
+    const updated = { ...appuntamento, stato: 'eseguito' };
 
- segnaComeEseguito(appuntamento: AppuntamentoDTO) {
-  const updated = { ...appuntamento, stato: 'eseguito' };
+    this.appuntamentoService
+      .updateAppuntamento(appuntamento.id, updated)
+      .subscribe({
+        next: () => {
+          appuntamento.stato = 'eseguito'; // Aggiorna localmente
+        },
+        error: () => {
+          this.toastr.error(
+            "Errore nel salvare lo stato dell'appuntamento",
+            'Errore'
+          );
+        },
+      });
+  }
 
-  this.appuntamentoService.updateAppuntamento(appuntamento.id, updated).subscribe({
-    next: () => {
-      appuntamento.stato = 'eseguito'; // Aggiorna localmente
-    },
-    error: () => {
-      this.toastr.error("Errore nel salvare lo stato dell'appuntamento", "Errore");
+  onEventClicked(event: CalendarEvent): void {
+    if (event.meta?.type === 'appuntamento') {
+      this.onSelectAppuntamento(event.meta.id);
+    } else if (event.meta?.type === 'evento') {
+      this.onSelectEvento(event.meta.id);
     }
-  });
-}
+  }
 }
 
 

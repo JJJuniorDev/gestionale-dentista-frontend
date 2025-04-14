@@ -36,8 +36,13 @@
         <div class="field-value">{{ paziente.numeroDiCellulare }}</div>
       </div>
     </div>
+     <div class="card-actions">
     <button class="btn btn-info" (click)="getCorrelatedAppointments()">
         <i class="bi bi-calendar-check"></i> Storico Appuntamenti
       </button>
+       <button class="btn btn-warning" (click)="onSelectPaziente(paziente.id)">
+        <i class="bi bi-calendar-check"></i> Dettagli
+      </button>
+      </div>
   </div>
 </div>

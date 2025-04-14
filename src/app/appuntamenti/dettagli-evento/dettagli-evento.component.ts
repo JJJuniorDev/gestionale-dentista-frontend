@@ -88,7 +88,7 @@ export class DettagliEventoComponent implements OnInit {
   //       },
   //     });
   //   }
-   //}
+  //}
 
   getBadgeClass(stato: string | undefined): string {
     if (!stato) return 'badge-secondary';
@@ -108,4 +108,6 @@ export class DettagliEventoComponent implements OnInit {
         return 'badge-secondary';
     }
   }
+
+
 }

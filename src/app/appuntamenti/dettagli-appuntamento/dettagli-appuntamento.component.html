@@ -14,7 +14,7 @@
     <div class="buttons-container">
       <!-- Pulsante "Modifica Stato" -->
       <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">
           <i class="bi bi-pencil-square"></i> Modifica Stato
         </button>
         <ul class="dropdown-menu">
@@ -28,7 +28,7 @@
 
    
      <div class="dropdown">
-        <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
          <i class="bi bi-gear"></i>  Gestisci Appuntamento
         </button>
         <ul class="dropdown-menu">
@@ -56,9 +56,12 @@
           <i class="bi bi-person-badge"></i>
           <span>CF Paziente:</span> <strong>{{ appuntamento.codiceFiscalePaziente }}</strong>
         </div>
+          <button class="btn btn-success" (click)="onGoToTreatmentPlan()">Vai al piano di trattamento</button>
+           <button class="btn btn-primary" (click)="onGoToMedicalHistory()">Storia Medica</button>
       </div>
     </div>
   </div>
+  
 </div>
 
   <!-- Lista appuntamenti se non selezionato uno specifico -->
@@ -74,10 +77,11 @@
             <p><strong>Note:</strong> {{ appuntamentoItem.note }}</p>
           </div>
           <div class="item-actions">
-            <button class="btn btn-primary">Modifica</button>
+            <button class="btn btn-success">Modifica</button>
           </div>
         </li>
       </ul>
     </div>
+    
   </ng-template>
 

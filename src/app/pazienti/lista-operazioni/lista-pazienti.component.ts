@@ -122,8 +122,4 @@ export class ListaPazientiComponent implements OnInit, OnDestroy {
     );
   }
 
-  onSelectPaziente(id: string) {
-  //  this.viewDetails.emit(); // Emesso l'evento quando un appuntamento viene selezionato
-    this.router.navigate(['/pazienti', id]);
-  }
 }

@@ -1,33 +1,46 @@
-<ng-template #customWeekCellTemplate let-day="day" let-locale="locale">
-  <div *ngFor="let hour of hours">
-    <!-- Nascondi le ore tra 12 AM - 7 AM e 10 PM - 11 PM -->
-    <div  
-      class="cal-cell-top" 
-      (click)="onDayClicked({ day: day, hour: hour })"
-      [ngClass]="{'today': isToday(day.date)}">
-        
-      <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
-      
-      <!-- Visualizza l'ora, ma solo se non è esclusa -->
-      <span class="cal-hour-number">
-        {{ hour }}:00
-      </span>
-   <!-- Contenitore per gli eventi di questa ora -->
-      <div class="events-list">
-        <ng-container *ngFor="let event of weeklyCalendarEvents">
-          <div *ngIf="event.start.getHours() === hour && isSameDay(event.start, day.date)"
-               class="eventList-item"
-               [style]="'--current:' + event.color!.primary + ';--current-contrast:' + event.color!.secondary">
-            <p class="event-title">{{ event.title }}
-               <span class="event-time">🕒 {{ event.start | date:'HH:mm' }}</span>
-            </p>
-          </div>
-        </ng-container>
+<!-- Template per le celle orarie -->
+<ng-template #customHourCellTemplate let-hour="hour" let-segments="segments" let-locale="locale">
+  <div class="cal-hour-segment" *ngFor="let segment of segments">
+    <div class="cal-event-container">
+      <div *ngFor="let event of segment.events" 
+           class="cal-event"
+           [style.backgroundColor]="event.color.primary"
+           [style.borderColor]="event.color.secondary"
+           (click)="onEventClicked(event); $event.stopPropagation()">
+        <div class="cal-event-title">
+          {{event.title}} ({{event.start | date:'HH:mm'}})
+        </div>
       </div>
-
     </div>
   </div>
 </ng-template>
+
+<!-- Template per la cella settimanale -->
+<ng-template #customWeekCellTemplate let-day="day" let-locale="locale">
+  <div class="cal-cell-top" [ngClass]="{'today': isToday(day.date)}">
+    <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
+    
+    <!-- Visualizza l'ora -->
+    <span class="cal-hour-number">
+      {{ day.date | date:'HH:mm' }}
+    </span>
+    
+    <!-- Contenitore per gli eventi di questa ora -->
+    <div class="events-list">
+      <ng-container *ngFor="let event of day.events">
+        <div class="eventList-item"
+             [style]="'--current:' + event.color!.primary + ';--current-contrast:' + event.color!.secondary"
+             (click)="onEventClicked(event); $event.stopPropagation()">
+          <p class="event-title">{{ event.title }}
+            <span class="event-time">🕒 {{ event.start | date:'HH:mm' }}</span>
+          </p>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+
+
 <ng-template #customMonthCellTemplate let-day="day" let-locale="locale">
   <div class="cal-cell-top" (click)="onDayClicked({ day: day })"
   [ngClass]="{'today': isToday(day.date)}">
@@ -38,7 +51,7 @@
       [ngClass]="{
         'custom-day-number': true, 
         'weekend-day': day.date.getDay() === 6 || day.date.getDay() === 0
-      }">
+      }" >
       {{ day.date | calendarDate:'monthViewDayNumber':locale }}
     </span>
   </div>
@@ -69,9 +82,12 @@
     <button class="btn btn-success  btn-sm btn-block" (click)="onNewEvento()">Nuovo evento</button>
   </div>
   
-  <div class="col-12 col-md-3 d-flex  text-center d-none d-md-flex">
-    <h2 class="calendar-title">📅 Calendario Appuntamenti</h2>
-  </div>
+  <div class="col-12 col-md-3 d-flex align-items-center justify-content-center text-center d-none d-md-flex">
+  <h2 class="calendar-title mb-0">
+    📅 <span class="calendar-text">Calendario Appuntamenti</span>
+    <span class="calendar-month ms-2">{{ viewDate | date: 'MMMM' }}</span>
+  </h2>
+</div>
   
   <div class="col-12 col-md-3 d-flex justify-content-center d-none justify-content-md-end">
     <h3 class="calendar-date text-center text-sm">{{ viewDate | date: "MMMM yyyy" }}</h3>
@@ -108,12 +124,12 @@
 <div class="" *ngIf="viewMode === 'week'">
   <mwl-calendar-week-view
     [viewDate]="viewDate"
-    [events]="weeklyCalendarEvents.slice()"
+    [events]="weeklyCalendarEvents"
     (dayClicked)="onDayClicked($event)"
-     [hourSegments]="1"
-  [dayStartHour]="9" 
-  [dayEndHour]="21"
-   [cellTemplate]="customWeekCellTemplate"
+     [hourSegments]="2"
+  [dayStartHour]="6" 
+  [dayEndHour]="22"
+   [cellTemplate]="customHourCellTemplate"
    >
   </mwl-calendar-week-view>
 </div>

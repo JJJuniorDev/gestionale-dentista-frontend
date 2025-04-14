@@ -102,7 +102,7 @@
             <ng-container matColumnDef="dataEOrario">
               <th mat-header-cell *matHeaderCellDef>Data e Orario</th>
               <td mat-cell *matCellDef="let appointment">
-                <span>{{ aggiungiDueOre(appointment.dataEOrario) }}</span>
+                <span>{{ appointment.dataEOrario | date:'dd/MM/yyyy'}}</span>
                 <span class="time-separator"> - </span>
                 <span class="time">{{aggiungiDueOre(appointment.dataEOrario) }}</span>
               </td>
@@ -297,8 +297,6 @@
   </select>
 </div>
 
-              <!-- Sezione Configurazione Appuntamento -->
-          <h6>Configura Appuntamento</h6>
           <div class="mb-3">
             <label for="note" class="form-label">Note</label>
             <input
@@ -307,7 +305,17 @@
               name="note"
               class="form-control"
               [(ngModel)]="newAppointment.note"
-              required
+            />
+          </div>
+
+            <div class="mb-3">
+            <label for="trattamento" class="form-label">Trattamento</label>
+            <input
+              type="text"
+              id="trattamento"
+              name="trattamento"
+              class="form-control"
+              [(ngModel)]="newAppointment.trattamento"
             />
           </div>
         

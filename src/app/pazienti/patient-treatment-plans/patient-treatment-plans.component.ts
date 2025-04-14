@@ -347,7 +347,7 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
                   this.treatmentPlans[index] = updatedPlan;
                 }
                 this.toastR.success(
-                  'Appuntamento creato con successo!',
+                  'Appuntamento creato con successo! Ricarica la pagina per visualizzarlo',
                   'Successo',
                   {
                     timeOut: 3000, // Durata 3 secondi
@@ -358,6 +358,8 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
                 );
                 // **Chiudi il modale dopo un breve ritardo**
                 // setTimeout(() => this.closeModal(), 100);
+                  this.appuntamenti.push(savedAppuntamento);
+                  this.cdRef.detectChanges();
                 setTimeout(() => {
                   let modalElement = document.getElementById(
                     'addAppointmentModal'
@@ -388,15 +390,18 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
                   document.documentElement.style.scrollBehavior = 'auto';
                   document.documentElement.style.overflow = 'visible';
                   document.body.offsetHeight; // Trigger reflow
-                  this.appuntamenti.push(savedAppuntamento);
-                  this.cdRef.detectChanges();
-                  this.resetNewAppointment(); //resetto dati form appunt.
+                  // this.appuntamenti.push(savedAppuntamento);
 
                   setTimeout(() => {
                     document.body.style.overflow = 'auto'; // Reset overflow con ulteriore ritardo
                   }, 50);
                 }, 200);
+              
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1000);
               },
+              
               (error) => {
                 console.error(
                   "Errore durante l'aggiunta dell' appuntamento al piano:",
@@ -654,17 +659,24 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
             if (index !== -1) {
               this.treatmentPlans[index] = updatedPlan;
             }
-            this.toastR.success('Evento creato con successo!', 'Successo', {
-              timeOut: 3000,
-              positionClass: 'toast-top-center',
-              progressBar: true,
-              closeButton: true,
-            });
+            this.toastR.success(
+              'Evento creato con successo! Ricarica la pagina per visualizzarlo',
+              'Successo',
+              {
+                timeOut: 3000,
+                positionClass: 'toast-top-center',
+                progressBar: true,
+                closeButton: true,
+              }
+            );
             // **Chiudi il modale dopo un breve ritardo**
             setTimeout(() => this.closeEventModal(), 100);
             setTimeout(() => {
               this.resetNewEvent(); //resetto dati form appunt.
             }, 300);
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
           },
           (error) => {
             console.error("Errore durante l'aggiunta della tappa:", error);
@@ -965,6 +977,10 @@ export class PatientTreatmentPlansComponent implements AfterViewInit {
           // Applica i filtri
           this.applyAppointmentsFilters();
           this.applyEventsFilters();
+          // Ricarica la pagina dopo 1 secondo (dopo aver mostrato il toast)
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         },
         error: (error) => {
           console.error('Errore nella creazione o nel fetch:', error);

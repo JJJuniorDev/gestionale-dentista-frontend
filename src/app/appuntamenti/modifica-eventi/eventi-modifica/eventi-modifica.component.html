@@ -41,20 +41,27 @@
       </mat-form-field>
 
       <!-- Orario -->
-      <mat-form-field appearance="outline" class="full-width">
+      <!-- <mat-form-field appearance="outline" class="full-width">
         <mat-label>Orario</mat-label>
         <mat-select formControlName="orario">
           <mat-option *ngFor="let ora of orariDisponibili" [value]="ora">
             {{ ora }}
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
 
       <!-- Tipologia -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Tipologia</mat-label>
-        <input matInput formControlName="tipologia" placeholder="Es. Follow-up Psichiatrico">
-      </mat-form-field>
+     <mat-form-field appearance="outline" class="full-width">
+  <mat-label>Tipologia</mat-label>
+  <mat-select formControlName="tipologia" placeholder="Seleziona tipologia">
+    <mat-option value="">Tutti</mat-option>
+    <mat-option value="modifica_terapia">Modifica terapia</mat-option>
+    <mat-option value="promemoria_trattamento">Promemoria trattamento</mat-option>
+    <mat-option value="follow_up_psichiatrico">Follow Up psichiatrico</mat-option>
+    <mat-option value="nota_clinica">Nota clinica</mat-option>
+    <mat-option value="comunicazione_con_familiari">Comunicazione con familiari</mat-option>
+  </mat-select>
+</mat-form-field>
 
       <!-- Descrizione -->
       <mat-form-field appearance="outline" class="full-width">

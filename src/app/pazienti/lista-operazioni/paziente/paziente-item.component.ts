@@ -37,8 +37,6 @@ export class PazienteItemComponent {
     });
   }
 
- 
-
   onViewDetailsPaziente() {
     console.log('indice app a cui navigare---->' + this.index);
     this.router.navigate(['/paziente', this.index]);
@@ -51,5 +49,10 @@ export class PazienteItemComponent {
 
   getPatientMedicalHistory() {
     this.router.navigate(['/pazienti/medical-history', this.paziente.id]);
+  }
+
+  onSelectPaziente(id: string) {
+    //  this.viewDetails.emit(); // Emesso l'evento quando un appuntamento viene selezionato
+    this.router.navigate(['/pazienti', id]);
   }
 }

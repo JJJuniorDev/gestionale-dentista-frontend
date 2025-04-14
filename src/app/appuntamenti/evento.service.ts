@@ -47,6 +47,9 @@ export class EventoService {
     return this.http.delete<void>(`${this.apiUrl}/eventi/delete/${id}`);
   }
 
+  createEvent(evento: EventoDTO): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/eventi/creaEvento`, evento);
+  }
   updateEvent(id: string, formData: any): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/eventi/update/${id}`, formData);
   }

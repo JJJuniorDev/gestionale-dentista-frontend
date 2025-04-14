@@ -44,7 +44,8 @@
     <div class="col mb-4" *ngFor="let pazienteElement of paginatedPazienti">
       <app-paziente-item
         [paziente]="pazienteElement"
-        (click)="onSelectPaziente(pazienteElement.id)">
+       
+        >  <!-- (click)="onSelectPaziente(pazienteElement.id)" -->
       </app-paziente-item>
           <div class="separator"></div>
     </div>

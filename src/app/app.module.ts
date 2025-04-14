@@ -53,8 +53,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { VideochiamataComponent } from './videochiamate/videochiamata/videochiamata.component';
 import { AlertService } from './modali/alertService.service';
-
+import { FullCalendarModule } from '@fullcalendar/angular'; 
 registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
+import './fullcalendar-plugins';
+
 
 @NgModule({
   declarations: [
@@ -64,8 +66,7 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
     ConfirmationModalComponent,
     AllegatiComponent,
     ArchivioComponent,
-    VideochiamataComponent
-    
+    VideochiamataComponent,
   ],
   imports: [
     NgChartsModule,
@@ -105,7 +106,8 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
     MatCardModule,
     MatPaginatorModule,
     MatTableModule,
-    MatSelectModule
+    MatSelectModule,
+    FullCalendarModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'it' },
@@ -114,7 +116,7 @@ registerLocaleData(localeIt, 'it'); // Registriamo il locale italiano
       useClass: LoadingInterceptor,
       multi: true,
     },
-    AlertService
+    AlertService,
   ],
   bootstrap: [AppComponent],
 })
